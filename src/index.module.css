@@ -1,0 +1,9 @@
+.app{
+    border-left: 0.25rem solid;
+    border-left-color: var(--mantine-color-blue-6) ;
+    margin-left: 4rem;
+    display: block;
+    padding: 1rem;
+}
+
+
