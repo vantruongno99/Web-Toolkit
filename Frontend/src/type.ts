@@ -1,6 +1,11 @@
-export interface Technology {
+
+
+export interface TechnologyForm {
     technology: string,
     description: string
+}
+
+export interface Technology extends TechnologyForm {
     potential: Application[]
 }
 

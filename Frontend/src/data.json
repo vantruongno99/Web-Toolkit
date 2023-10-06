@@ -1,0 +1,446 @@
+[
+    {
+        "technology": "Virtual Reality (VR)",
+        "description": "VR creates computer-generated 3D environments that users can interact with, using a headset. VR places the user in a new environment.",
+        "potential": [
+            {
+                "potentialApplications": "Virtual Collaboration",
+                "explanation": "Virtual collaboration refers to the process of collaborating among team members who are geographically dispersed. VR empowers designers, peers, and stakeholders to collaborate in a 3D virtual environment and work on prototypes in a shared virtual space.  An example of futuristic collaborative space is NVIDIA HOLODECK [1] which removes geographical barriers by providing photorealistic collaborative design in VR.",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, Co-creation",
+                "purposeOfEngagement": "Collaborate ",
+                "levelOfEngagement": "Immersive",
+                "scale": "Small group",
+                "budget": "$$",
+                "solutionFor": "Remote location, Lack of time",
+                "considerations": "Can cause motion sickness, as users are departed from the real world needs to consider safety in experience design, needs high speed internet infrastructures"
+            },
+            {
+                "potentialApplications": "Education and training",
+                "explanation": "VR can offer risk-free training and interventions, enhancing the process of skill development by visualizing complex concepts in near-realistic virtual environments. It enables us to implement various road safety scenarios to enhance the skills of road users. An example of this is ClassVR [3], which provides VR training solutions to educate drivers through diverse scenarios aimed at promoting safe driving practices. Australian Trucking Associations offers an interactive custom-built road safety exhibition that uses virtual reality and interactive messaging all packed into a real travelling truck and trailer called SafeT360​ [60].",
+                "maturity": "",
+                "stageOfParticipation": "?",
+                "purposeOfEngagement": "Inform",
+                "levelOfEngagement": "Immersive",
+                "scale": "Small group",
+                "budget": "$$",
+                "solutionFor": "Lack of knowledge and understanding",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Visualization of innovative design ",
+                "explanation": "With design visualization that is immersive and interactive, community members can obtain better understanding of the plan  and provide feedback on different design options, such as road alignments, intersections, and landscaping, before construction begins.  This makes it easy to notice errors and faults early and prevent issues before any  effort on the project. ",
+                "maturity": "",
+                "stageOfParticipation": "Problem definition/prioritization",
+                "purposeOfEngagement": "Inform, Consult, Involve",
+                "levelOfEngagement": "Immersive",
+                "scale": "Small group",
+                "budget": "?",
+                "solutionFor": "Resistance to Change, Distrust, Lack of interest, lack of understanding ",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Simulation",
+                "explanation": "VR can be used to create realistic simulations of road events, such as road accidents to allow stakeholders and community memebers to experience and understand the potential consequences of a typical issue (e.g. a former design). For example, Virtual Crash [4] has developed a product for public safety professionals to quickly and easily generate scenarios and animations for road safety issues. Also, in [7] VR simulation is suggested as a tool for understanding and evaluating pedestrian safety and perception at midblock crossings.",
+                "maturity": "",
+                "stageOfParticipation": "Problem definition/prioritization",
+                "purposeOfEngagement": "Inform",
+                "levelOfEngagement": "Immersive",
+                "scale": "Large Group",
+                "budget": "$",
+                "solutionFor": "Resistance to Change, Lack of interest, lack of understanding ",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Remote control",
+                "explanation": "VR can enable us to remote control and automated various devices and machines to monitor work plans, safety training, and integrated management. Furthermore, remote control allows for operating in hazardous situation. In  [7] a 3DVR system is used to to control a machine by mirroring a it dashboard for simultaneous control in the virtual space and real-world.",
+                "maturity": "",
+                "stageOfParticipation": "",
+                "purposeOfEngagement": "",
+                "levelOfEngagement": "",
+                "scale": "",
+                "budget": "",
+                "solutionFor": "",
+                "considerations": ""
+            }
+        ]
+    },
+    {
+        "technology": "Augmented Reality (AR)",
+        "description": "AR refers overlaying digital content onto the real world by utilizing mobile phones or special  glasses or headsets.",
+        "potential": [
+            {
+                "potentialApplications": "Remote collaboration",
+                "explanation": "Remote collaboration using AR can bridge physical distance between individuals to create shared virtual spaces, facilitate communication, and provide access to real-time information and expertise. The urban co-creation lab intuitive and simplified 3D modeling platform that integrates web-based desktop, virtual reality and mobile augmented reality technologies for remote simultaneous urban design collaboration [6]. ",
+                "maturity": "",
+                "stageOfParticipation": "Problem definition/prioritization, Co-creation",
+                "purposeOfEngagement": "Consult, Involve, Collaborate",
+                "levelOfEngagement": "Immersive",
+                "scale": "Small group",
+                "budget": "$$",
+                "solutionFor": "Remote location, Lack of time, Lack of knowledge and understanding, diverse interest",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "In-situ information visualization and gathering",
+                "explanation": "AR facilitates the on-site visualization of information related to specific locations utilizing geolocation data. As referenced in [10], AR provides users with information on historical landmarks in the city of Barcelos, allowing them to interact with and offer feedback on specific points. In the case of road safety, such an approach can be applicable to study and evaluate the experience of community members on the effectiveness  of various road safety plans.",
+                "maturity": "",
+                "stageOfParticipation": "Problem definition/ pioritization",
+                "purposeOfEngagement": "Consult",
+                "levelOfEngagement": "Active",
+                "scale": "Large Group",
+                "budget": "$",
+                "solutionFor": "Lack of knowledge and understanding, Resistance to change",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Effective project communication and quality assurance (QA)",
+                "explanation": "Project management and field operations encounters challenges such as the absence of real-time integrated information, disparities between planned strategies and their execution, insufficient quality assurance (QA) standards, and ineffective communication within projects. Augmented Reality/Mixed Reality (AR/MR) has the potential to overcome these challenges by overlaying immersive digital content, like 3D construction models, onto the real world. As an example, the United States Department of Transportation has recommended the use of augmented reality in highway construction to enhance construction inspection, QA, worker safety, and overall project management. [11]. ",
+                "maturity": "",
+                "stageOfParticipation": "Evaluation",
+                "purposeOfEngagement": "Involve, collaborate, Empower",
+                "levelOfEngagement": "Active to Immersive",
+                "scale": "Small group",
+                "budget": "$$",
+                "solutionFor": "Communication, Lack of knowledge and understanding, Remote location",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "User behavior study",
+                "explanation": "Mixed reality (MR) technology is highly effective for studying and analyzing road users' behavior due to its ability to provide an immersive and realistic experience, facilitate safe environment, and enable easy data collection. An example of its application can be seen in the work of the Australian College of Road Safety [2], which utilized a co-design approach to develop the Hector VR® MR driving simulator. This simulator was specifically designed to capture and analyze information regarding the driving competence of older drivers, including their reaction time and adherence to road rules. Furthermore, in [8] VR+eyetracking is proposed for evaluation of road safety education with different scenarios.",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, Evaluation",
+                "purposeOfEngagement": "Inform, Consult",
+                "levelOfEngagement": "Immersive",
+                "scale": "Small group",
+                "budget": "$$",
+                "solutionFor": "Limited Resources",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Participatory planning and design",
+                "explanation": "Participatory planning and design play a pivotal role in tailoring the development of projects to reflect the community's needs. By leveraging Mixed Reality (MR), communication in design and planning is enhanced, enabling stakeholders and citizens to articulate and understand diverse perspectives more effectively. An example of this approach is a pilot project implemented by ERICSON in Johannesburg, South Africa, which highlights the potential of MR to facilitate public involvement in designing sustainable urban and public spaces [13].",
+                "maturity": "",
+                "stageOfParticipation": "Co-creation",
+                "purposeOfEngagement": "Consult",
+                "levelOfEngagement": "Immersive",
+                "scale": "Large Group",
+                "budget": "$$",
+                "solutionFor": "Communication, Lack of understanding, Resistance to change, Sustainability",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Immersive and smart navigation",
+                "explanation": "MR offers immersive navigation through the integration of Augmented Reality (AR) technology and advanced eyewear, such as smart goggles. With these systems, users can visualize data overlays like their preferred route maps, speed metrics, and more. A notable application of this is the RideOn Ski Goggles, which provide an intelligent navigation solution for traversing mountain slopes [14].",
+                "maturity": "",
+                "stageOfParticipation": "",
+                "purposeOfEngagement": "",
+                "levelOfEngagement": "",
+                "scale": "",
+                "budget": "",
+                "solutionFor": "",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Advanced Simulation",
+                "explanation": "MR allows for advanced simulations by seamlessly combining the strengths of the real and virtual domains. In this setting, physical and digital components coexist and interact in real-time. MR enables the overlay of interactive 3D models onto real-world scenarios, supports multi-user collaboration, and track user interaction and provides immediate feedback through the integration of diverse sensors and devices based. In [12], MR is suggested as a technology for supporting the next stage of road traffic education by developing a mixed reality bycicle simulator to improve cyclist safety. ",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, Problem definition/prioritization, Co-creation",
+                "purposeOfEngagement": "Inform, Consult",
+                "levelOfEngagement": "Immersive",
+                "scale": "Small group",
+                "budget": "$$",
+                "solutionFor": "Communication, Lack of knowledge and understanding",
+                "considerations": ""
+            }
+        ]
+    },
+    {
+        "technology": "Geographic Information Systems(GIS)",
+        "description": "GIS refers to information system that collect, store, manipulate, analyze, manage, and present spatial or geographically refrenced data.    ",
+        "potential": [
+            {
+                "potentialApplications": "Community feedback collection",
+                "explanation": "Feedback collection from the public allows local officials to more comprehensively understand the challenges facing the community. Geographical component is a cucial component of public projects which help in understanding the dynamics between people and places. GIS helps to conduct map-focused surveys. For example, ArcGIS Hub includes map focused survey design facilities that allows for the public to input geographic data using mobile responsive maps [16].   ",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, Problem definition/prioritization, Input/feedback",
+                "purposeOfEngagement": "Consult",
+                "levelOfEngagement": "Passive",
+                "scale": "Public",
+                "budget": "$",
+                "solutionFor": "Communication, Remote location",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Hotspot Visualization",
+                "explanation": "Visualizing information about areas of interest, like areas with high accident rates, offers communities a clear insight into the problem. GIS hotspot visualization enables the road safety community to monitor, understand, prioritize actions, and share experiences transparently, making them accessible to all. For instance, in [17], ArcGIS Desktop is utilized to determine optimal stops for a bookmobile and the most efficient routes between them. This involves a Location-Allocation analysis to pinpoint stops optimize attendance, and the geoprocessing tool to devise the best routes and schedules.",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, problem definition/prioritization",
+                "purposeOfEngagement": "Empower",
+                "levelOfEngagement": "Passive",
+                "scale": "Large groups",
+                "budget": "$$$",
+                "solutionFor": "Lack of understanding and knowledge",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Spatio-temporal analysis",
+                "explanation": "GIS provides a powerful tool for conducting spatiotemporal analyses. In the context of road safety, these analyses in dimensions of time and space can offer insights into patterns of traffics, hotspots, and temporal trends and future trends for planning. An example of this is the application of GIS-based spatiotemporal analysis for road traffic crashes in the central-eastern section of Qatar to identify hotspot areas of road crashes [18]. Moreover, using a case study in Sherbrooke,  [22] proposed different methods to identify and rank hotspot locations in situations where the value of traffic volume is available or not.",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, problem definition/prioritization",
+                "purposeOfEngagement": "Empower",
+                "levelOfEngagement": "Passive",
+                "scale": "Small group",
+                "budget": "$$",
+                "solutionFor": "Lack of understanding and knowledge",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Environmental Sustainablity",
+                "explanation": "A balance between road infrastructure and environmental sustainability is crucial. A robust transportation network fosters a thriving economy while preserving delicate ecosystems. GIS offers various methods to balance projects with environmental concerns. For instance, Esri offers products like ArcGIS Online and Enterprise that aid in environmental sustainability, including environmental analysis and designing resilient transportation networks [23]. ",
+                "maturity": "",
+                "stageOfParticipation": "",
+                "purposeOfEngagement": "",
+                "levelOfEngagement": "",
+                "scale": "",
+                "budget": "",
+                "solutionFor": "",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Story Maps",
+                "explanation": "Storytelling with maps in GIS systems effectively conveys information, interprets spatial data, and simplifies complex topics into engaging and comprehensible narratives. It transforms GIS work into interactive content that can educate, motivate, and involve stakeholders. UC Berkeley introduced a community engagement tool permitting residents, community groups, and agencies to record details about transportation incidents, near-misses, hazards, and safe travel paths [24]. Similarly, Esri's ArcGIS StoryMaps tool transforms GIS outputs into interactive narratives that inform, inspire, and captivate stakeholders [25].",
+                "maturity": "",
+                "stageOfParticipation": "Problem identifcation",
+                "purposeOfEngagement": "Inform",
+                "levelOfEngagement": "Passive",
+                "scale": "Public",
+                "budget": "$$",
+                "solutionFor": "Lack of understanding and knowledge, remote location",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Safety Campaigns ",
+                "explanation": "GIS can help plan and implement community campaigns. In the context of road safety, targeted campaigns can be designed by identifying the most affected demographics. Vision Zero Washington DC's website provides an educational section highlighting campaigns that promote safer driving and pedestrian practices across the district created with ArcGIS StoryMaps technology [26]. ",
+                "maturity": "",
+                "stageOfParticipation": "input/feedback options",
+                "purposeOfEngagement": "Inform",
+                "levelOfEngagement": "Passive",
+                "scale": "Public",
+                "budget": "$$",
+                "solutionFor": "Lack of Understanding and knowledge, Lack of interest, Communication",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Geospatial Social Media",
+                "explanation": "Location-based social media provides a source of data to help public safety, healthcare, education, and non-profits. Esri initiated startups to fuse communication media with GIS.  Startup Echosec Systems developed a location-based search platform that allows public safety organizations, security firms, journalists, and intelligence professionals to analyze information on social media and turn it into actionable knowledge. In a research, the geocode traffic-related events collected from Twitter are used to describe the traffic behavior of specific areas of Mexico City  [27].",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, input/feedback options, evaluation",
+                "purposeOfEngagement": "Consult",
+                "levelOfEngagement": "Passive",
+                "scale": "Public",
+                "budget": "$$",
+                "solutionFor": "Lack of understanding and knowledge, remote location, Diverse interests",
+                "considerations": ""
+            }
+        ]
+    },
+    {
+        "technology": "Artificial Intelligence (AI)",
+        "description": "Artificial Intelligence (AI) is focused on creating systems capable of learning from experiences and performing tasks that require human-like intelligence, such as decision-making, language understanding, and pattern recognition.",
+        "potential": [
+            {
+                "potentialApplications": "Generative AI (GAI): Generative Artificial Intelligence (AI) is a type of artificial intelligence that can generate new forms of creative content such as text, images, or audio, based on patterns and data learned from existing examples.",
+                "explanation": "Content generation: technology is going to become more conversational and intuitive. With the advancements in language models such as GPT-4, conversational interfaces are able to understand and respond to human language more naturally and intelligently. It revolutionized AI-based textual conversation systems and paved the way for the development of multi-modal conversational systems. As a result, conversational systems will be applied beyond textual conversations to 3D modeling, virtual environment generation, and video generation [35, 36].",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, problem definition/prioritization",
+                "purposeOfEngagement": "Inform",
+                "levelOfEngagement": "Active",
+                "scale": "Small group",
+                "budget": "$$",
+                "solutionFor": "Lack of understanding and knowledge, Diverse interests, Resistance to changes, Communication",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "",
+                "explanation": "Customized chatbots: Community engagement chatbots aim to engage community members in two-way conversations. They can capture and process data and give insights for informed decision-making. Socialcauses offers solutions for improved communication and engagement of community members at scale [37]. ",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, problem definition/prioritization",
+                "purposeOfEngagement": "Inform, Involve and Empower",
+                "levelOfEngagement": "Active",
+                "scale": "Public",
+                "budget": "$$",
+                "solutionFor": "Communication, Trust",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Predictive analytics",
+                "explanation": "\"AI can help to assess road crash risks at scale. This can help reduce the consequences of dangerous roads around the world. Omdena collaborated with The International Road Assessment Programme (iRAP)  to work towards iRAP’s vision of “a world free of high-risk roads\"\". The project utilized AI techniques to introduce a pipeline to rate more than 100 million km of road worldwide by sourcing the crucial component of vehicle count under the traffic or vehicle flow attribute using satellite imageries with the help of Artificial Intelligence [34].\"",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, Evaluation",
+                "purposeOfEngagement": "Inform, consult",
+                "levelOfEngagement": "Passive",
+                "scale": "Small group",
+                "budget": "$$",
+                "solutionFor": "Lack of knowledge and understanding",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Scenario Generation",
+                "explanation": "Assessing and enhancing plans for autonomous vehicles necessitates the scalable creation of unique traffic situations. These scenarios should be authentic and demanding yet navigable safely. AI can help to generate useful accident-prone driving scenarios. STRIVE, is a method to automatically generate challenging scenarios that cause a given planner to produce undesirable behavior, like collisions [30].",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, problem definition/prioritization",
+                "purposeOfEngagement": "Inform",
+                "levelOfEngagement": "Active",
+                "scale": "Small group",
+                "budget": "$$$",
+                "solutionFor": "Lack of knowledge and Understanding, Diverse interest, Distrust, Communication",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Realtime feedback generation",
+                "explanation": "Generative AI utilizes real-time sensor and telematics (e.g., GPS position, speed, engine) data to tackle the fundamental causes of road accidents by influencing driving behavior. By identifying patterns linked to reckless driving, AI algorithms facilitate the creation of tailored interventions, offering feedback and guidance to drivers. This encourages safer driving habits, reducing accident risks. Gypsee drive safe is a  mobile app that uses generative AI to track driving behavior and give instant feedback. By evaluating data on acceleration, braking, and speeding, it offers tailored coaching for better driving [31]. ",
+                "maturity": "",
+                "stageOfParticipation": "",
+                "purposeOfEngagement": "Inform",
+                "levelOfEngagement": "Active ",
+                "scale": "Individual",
+                "budget": "$$",
+                "solutionFor": "Remote location",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Post-incident Analytics",
+                "explanation": "AI provides powerful tools for post-incident analytics. For example, Natural Language Processing algorithms can help to extract knowledge from road incidents reports with the objective of identification of the factors influencing road safety [33].",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification",
+                "purposeOfEngagement": "inform",
+                "levelOfEngagement": "Passive",
+                "scale": "individual",
+                "budget": "$$",
+                "solutionFor": "Lack of understanding and knowledge",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Risky behavior recognition",
+                "explanation": "AI can simulate road users' behaviors. Specifically, deep learning algorithms can recognize, predict, and reduce risky behaviors by offering real-time alerts and facilitating prompt intervention. For example, in [29], a vision-based algorithm is used to recognize driver activity to identify driver distraction from safe driving behavior. ",
+                "maturity": "",
+                "stageOfParticipation": "",
+                "purposeOfEngagement": "Inform",
+                "levelOfEngagement": "Pactive",
+                "scale": "Individual",
+                "budget": "$$",
+                "solutionFor": "Remote Location",
+                "considerations": ""
+            }
+        ]
+    },
+    {
+        "technology": "Web platforms (e.g., Online forums, discussion boards, Crowd-sourcing platforms and pooling tools)",
+        "description": "Online forums and discussion boards are dynamic community spaces to promote community members to discuss and collaborate on different topics/issues related to the community. It allows people to start new discussion threads or reply to existing threads to interact with other members of the community.",
+        "potential": [
+            {
+                "potentialApplications": "Feedback collection",
+                "explanation": "Web platforms and discussion boards enable community announce their concerns and experiences about road safety. Such feedback is crucial for local authorities to pinpoint problem areas. Participate Melbourne is the City of Melbourne's online hub for weighing in on pressing issues and future plans. For instance, on 11 April 2023, they sought public input on proposed pedestrian improvement projects, asking which should be prioritized [38].",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, Problem definition/prioritization, Input/feedback",
+                "purposeOfEngagement": "Inform, consult, Involve",
+                "levelOfEngagement": "Passive",
+                "scale": "Public",
+                "budget": "$",
+                "solutionFor": "Lack of knowledge and understanding, Limited resources, Remote location, diverse interests",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Crowdsourced data collection and analysis",
+                "explanation": "The emergence of cloud-based computing has revolutionized data collection and storage ways. With the ability to store and process data on remote servers accessed through the internet, cloud-based solutions offer a cost-effective and efficient way of collecting and storing data from various sources and locations. Amazon Mechanical Turk (MTurk) is a crowdsourcing marketplace that makes it easier for individuals and businesses to outsource their processes [39]. Moreover, Amazon Cloud Services, Microsoft Azure, and Google Cloud Services are popular solutions for data collection and storage. ",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification",
+                "purposeOfEngagement": "Inform, consult",
+                "levelOfEngagement": "Passive",
+                "scale": "Large group",
+                "budget": "$",
+                "solutionFor": "Lack of knowledge and understanding, Limited resources, Remote location, diverse interests",
+                "considerations": ""
+            }
+        ]
+    },
+    {
+        "technology": "Digital Twins",
+        "description": "A digital twin is a dynamic virtual representation of a real-world state, behavior, or environment. It facilitates simulations and evaluations across varied scenarios, providing crucial insights for real-world planning and monitoring.",
+        "potential": [
+            {
+                "potentialApplications": "Human Twins",
+                "explanation": "Refers to replicating human behavior (e.g., pedestrian movement, driver behavior, and interactions) to understand potential risks due to human factors. This research is in the very initial stages. In [46], a digital twin farework is proposed to support the relation between connected vehicle, pedestrian and traffic environment. In a case study, they used this framework to investigate the potential of digital twin in implementing vehicle-pedestrian warning system.  ",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, problem definition/prioritization, input/feedback options, evaluation",
+                "purposeOfEngagement": "Inform, consult, Empower",
+                "levelOfEngagement": "Active",
+                "scale": "Small group",
+                "budget": "$$$",
+                "solutionFor": "Lack of knowledge and understanding, remote location, Sustainability, Diverse interests",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Traffic flow DT",
+                "explanation": "This enables the traffic system to use past and present information to predict traffic conditions, facilitating more effective optimization for autonomous driving and intelligent transportation systems. In [48], the Internet of Vehicles (IoV) is integrated with sensor data from mainstream traffic sensors based on radar and camera fusion to construct an end-to-end digital twin system. This system is designed to build a Digital Twin (DT) model of traffic flow. Furthermore, MOREAI is a platform that uses DT to allow 3D-based real-time monitoring of virtual trafic flow [49]. ",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, problem definition/prioritization,Co-creation, input/feedback options, evaluation",
+                "purposeOfEngagement": "Inform, consult, Empower",
+                "levelOfEngagement": "Active",
+                "scale": "Small group",
+                "budget": "$$$",
+                "solutionFor": "Lack of knowledge and understanding, remote location, Sustainability",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Virtual replication of infrastructures and services",
+                "explanation": "\"Represents the physical layout of infrastructures and services, allowing for visual inspections, basic simulations, and preliminary planning. \"\"Virtual Singapore\"\" is an example of this type of DT, offering a 3D digital reflection of Singapore city, supported by real-time data, to simulate and test novel solutions for urban planning challenges [18].\"",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, problem definition/prioritization,co-creation, input/feedback options, evaluation",
+                "purposeOfEngagement": "Inform, consult, Empower, Collaborate",
+                "levelOfEngagement": "Active",
+                "scale": "Small group",
+                "budget": "$$$",
+                "solutionFor": "Lack of knowledge and understanding, remote location, Sustainability",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Planning and decision making",
+                "explanation": "Digital Twins enable the visualization of unbuilt infrastructure and properties in a realistic city model. These features offer the potential to communicate future projects and visualize how they integrate within an existing built landscape. The Wellington City digital twins use live city data to generate an interactive, large-scale city model with integrated data. The real-time data provides transportation statistics for bus, rail, ferry, bike, and car traffic, as well as air traffic visualization and car park availability [50].",
+                "maturity": "",
+                "stageOfParticipation": "Problem identification, problem definition/prioritization,co-creation, input/feedback options, evaluation",
+                "purposeOfEngagement": "Inform, consult, Empower, Collaborate",
+                "levelOfEngagement": "Active",
+                "scale": "Small group",
+                "budget": "$$$",
+                "solutionFor": "Lack of knowledge and understanding, remote location, Sustainability",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Life cycle management",
+                "explanation": "Digital Twins enable smart monitoring of assets and products, capturing real-time data and applying data-driven analysis to predict potential weak points or overloads. This can help to mitigate damages and plan for an efficient recovery. INTEC provides a solution for smart monitoring in the context of industrial digital services [51].",
+                "maturity": "",
+                "stageOfParticipation": "Evaluation",
+                "purposeOfEngagement": "Inform, consult",
+                "levelOfEngagement": "Active",
+                "scale": "Small group",
+                "budget": "$$$",
+                "solutionFor": "Lack of knowledge and understanding, remote location, Sustainability",
+                "considerations": ""
+            },
+            {
+                "potentialApplications": "Environmental ",
+                "explanation": "In combination with GIS, DT can be used to create environmental digital twins. This enables us to capture the current state of an ecosystem and predict how it will change. The Nature Conservancy is taking a digital twin approach to document the uniqueness of the Jack and Laura Dangermond Preserve, to guide its careful protection and restoration [51].",
+                "maturity": "",
+                "stageOfParticipation": "Problem definition/prioritization",
+                "purposeOfEngagement": "Inform, consult",
+                "levelOfEngagement": "Active",
+                "scale": "Small group",
+                "budget": "$$$",
+                "solutionFor": "Lack of knowledge and understanding, remote location, Resistance to change, Sustainability",
+                "considerations": ""
+            }
+        ]
+    }
+]

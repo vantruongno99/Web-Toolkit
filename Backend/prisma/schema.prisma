@@ -1,0 +1,31 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Technology {
+  technology String @unique
+  description String
+  Application Application[]
+}
+
+model Application {
+    potentialApplications String @unique
+    explanation String
+    maturity String
+    stageOfParticipation String
+    purposeOfEngagement String
+    levelOfEngagement String
+    scale String
+    budget String
+    solutionFor String
+    considerations String
+    technology String
+    Technology  Technology   @relation(fields: [technology], references: [technology])
+}
