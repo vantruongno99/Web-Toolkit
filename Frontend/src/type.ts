@@ -21,3 +21,10 @@ export interface Application {
     solutionFor: string,
     considerations: string
 }
+
+export interface LandingData {
+    title : string,
+    image? : any,
+    description : string,
+    link : string
+}

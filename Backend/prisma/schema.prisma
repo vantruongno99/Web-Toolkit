@@ -10,12 +10,14 @@ datasource db {
 }
 
 model Technology {
+  id           Int      @id @default(autoincrement())
   technology String @unique
   description String
   Application Application[]
 }
 
 model Application {
+    id           Int      @id @default(autoincrement())
     potentialApplications String @unique
     explanation String
     maturity String
@@ -28,4 +30,21 @@ model Application {
     considerations String
     technology String
     Technology  Technology   @relation(fields: [technology], references: [technology])
+      Vendor ApplicationVendor[]
+
+}
+
+model Vendor {
+    id           Int      @id @default(autoincrement())
+  name String @unique
+  ABN Int @unique
+  Application ApplicationVendor[]
+}
+
+model ApplicationVendor{
+  Vendor Vendor @relation(fields: [vendorId], references: [id])
+  vendorId Int 
+  Application Application @relation(fields: [applicationId], references: [id])
+  applicationId Int
+   @@id([vendorId, applicationId])
 }
