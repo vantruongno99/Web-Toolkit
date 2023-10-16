@@ -1,0 +1,13 @@
+.cardSection {
+    background-color: var(--mantine-primary-color-filled);
+    margin: 0;
+    padding: 0;
+    height : calc(100vh - 55px);
+
+}
+
+.scrollbar{
+    height: calc(100vh - 55px);
+}
+
+

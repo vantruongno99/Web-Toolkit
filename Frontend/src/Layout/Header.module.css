@@ -1,5 +1,5 @@
 .header {
-    height: 60px;
+    height: 70px;
     margin-bottom: 5px;
     margin-bottom: 5px;
     background-color: var(--mantine-color-body);
@@ -7,7 +7,7 @@
     }
   
   .inner {
-    height: 56px;
+    height: 68px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,7 +16,7 @@
   .link {
     display: block;
     line-height: 2;
-    padding: 8px 12px;
+    padding: 10px 12px;
     border-radius: var(--mantine-radius-sm);
     text-decoration: none;
     color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));

@@ -1,22 +1,109 @@
 import data from "../data.json"
-import { Modal, Card, Text, Group, ActionIcon, Flex, Textarea, Grid, Select, Title, MultiSelect, Center, Divider, TextInput, Button } from '@mantine/core'
+import { Container, ScrollArea, Modal, Card, Text, Group, ActionIcon, Flex, Textarea, Grid, Select, Title, MultiSelect, Center, Divider, TextInput, Button, Radio, Chip, RangeSlider } from '@mantine/core'
 import { Technology, Application, TechnologyForm } from "../type"
 import { useEffect, useState } from "react"
 import styles from './index.module.css'
 import { useForm } from '@mantine/form'
 import { IconTrash, IconCheck, IconTablePlus } from '@tabler/icons-react'
+import classes from './List.module.css';
 
 const List = () => {
     const [filter, setFilter] = useState<string>('')
-    return (
-        <>
-            <Group p={"1rem"} justify="space-between">
-                <TextInput size='md' placeholder="Input for search" mb="1rem" value={filter} onChange={(event) => setFilter(event.currentTarget.value)} />
-                <NewTechnologyForm />
-            </Group>
-            {data.map((d, i) => <Outside data={d} filter={filter} key={i} />)}
 
-        </>
+
+    const marks = [
+        { value: 0, label: '$' },
+        { value: 25, label: '$$' },
+        { value: 50, label: '$$$' },
+    ];
+
+
+    return (
+        <div >
+            <Grid  >
+                <Grid.Col span={4} p={'3rem'} >
+                    <Title order={3}>
+                        TOOLS
+                    </Title>
+                    <Text mt={"1rem"}>
+                        Use the filter below to identify the engagement tools that best suit your specific road safety engagement needs.
+                    </Text>
+                    <Title order={4} mt="1rem">
+                        Purpose (IAP2)
+                    </Title>
+                    <Flex
+                        mt={"1rem"}
+                        gap="sm"
+                        justify="flex-start"
+                        align="flex-start"
+                        direction="row"
+                        wrap="wrap"
+                    >
+                        <Chip defaultChecked size="md">Inform</Chip>
+                        <Chip defaultChecked size="md">Consult</Chip>
+                        <Chip defaultChecked size="md">Involve</Chip>
+                        <Chip defaultChecked size="md">Collaborate</Chip>
+                        <Chip defaultChecked size="md">Empower</Chip>
+                    </Flex>
+                    <Title order={4} mt="1rem">
+                        Level of Engagement
+                    </Title>
+                    <Flex
+                        mt={"1rem"}
+                        gap="sm"
+                        justify="flex-start"
+                        align="flex-start"
+                        direction="row"
+                        wrap="wrap"
+                    >
+                        <Chip defaultChecked size="md">Low</Chip>
+                        <Chip defaultChecked size="md">Medium</Chip>
+                        <Chip defaultChecked size="md">High</Chip>
+                    </Flex>
+                    <Title order={4} mt="1rem">
+                        Scale
+                    </Title>
+                    <Flex
+                        mt={"1rem"}
+                        gap="sm"
+                        justify="flex-start"
+                        align="flex-start"
+                        direction="row"
+                        wrap="wrap"
+                    >
+                        <Chip defaultChecked size="md">Invidual</Chip>
+                        <Chip defaultChecked size="md">Small Group</Chip>
+                        <Chip defaultChecked size="md">Large Group</Chip>
+                        <Chip defaultChecked size="md">Public</Chip>
+
+                    </Flex>
+                    <Title order={4} mt="1rem">
+                        Budget
+                    </Title>
+                    <Flex
+                        mt={"1rem"}
+                        gap="sm"
+                        justify="flex-start"
+                        align="flex-start"
+                        direction="row"
+                        wrap="wrap"
+                    >
+                        <Chip defaultChecked size="md">$</Chip>
+                        <Chip defaultChecked size="md">$$</Chip>
+                        <Chip defaultChecked size="md">$$$</Chip>
+                        <Chip defaultChecked size="md">$$$$</Chip>
+                    </Flex>
+                </Grid.Col>
+                <Grid.Col span={8} className={classes.cardSection} >
+                    <ScrollArea className={classes.scrollbar} scrollbarSize={2} scrollHideDelay={0}>
+                        <Container fluid p={"2rem"}>
+                        {data.map((d, i) => <Outside data={d} filter={filter} key={i} />)}
+                        {data.map((d, i) => <Outside data={d} filter={filter} key={i} />)}
+                    </Container>
+                </ScrollArea>
+            </Grid.Col>
+        </Grid>
+        </div >
     )
 }
 
@@ -50,7 +137,7 @@ const Outside = ({ data, filter }: { data: Technology, filter: string }) => {
             <Card p={"2rem"} radius="md" withBorder >
                 <Card.Section onClick={() => setShowed(!showed)}>
                     <Group justify="center">
-                        <Title order={3}>
+                        <Title order={4}>
                             {data.technology}
                         </Title>
                     </Group>
@@ -219,6 +306,7 @@ const Inside = ({ data }: { data: Application }) => {
                                         { value: '$', label: '$' },
                                         { value: '$$', label: '$$' },
                                         { value: '$$$', label: '$$$' },
+
                                     ]}
                                 />
                             </Grid.Col>
@@ -246,10 +334,10 @@ const Inside = ({ data }: { data: Application }) => {
                     direction="column"
                     wrap="wrap">
 
-                    <ActionIcon size="lg">
+                    <ActionIcon size="md">
                         <IconCheck />
                     </ActionIcon>
-                    <ActionIcon size="lg" color="red">
+                    <ActionIcon size="md" color="red">
                         <IconTrash />
                     </ActionIcon>
 
@@ -277,7 +365,7 @@ const NewTechnologyForm = () => {
             <Modal opened={opened} onClose={() => setOpened(false)} title="Add new technology">
                 <Title order={2}>
                     <TextInput
-                        size="lg"
+                        size="md"
                         variant="unstyled"
                         withAsterisk
                         placeholder="Technology"
@@ -334,7 +422,7 @@ const NewApplicationForm = () => {
                     <Title order={2}>
                         <TextInput
                             variant="unstyled"
-                            size="lg"
+                            size="md"
                             withAsterisk
                             placeholder="Technology"
                             {...form.getInputProps('potentialApplications')}
