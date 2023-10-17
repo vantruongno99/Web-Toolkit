@@ -14,23 +14,23 @@ const Home = () => {
             link: '/admin'
         },
         {
-            title: "About this toolkit ",
+            title: " Toolkit ",
             description: "Learn more",
             link: '/toolkit'
         },
         {
-            title: "About community engagement​",
+            title: "Community engagement​",
             description: "Learn more",
             link: '/ca'
         },
         {
             title: "Engagement tool",
             description: "Find",
-            link: '/list'
+            link: '/find'
         },
         {
             title: "Vendor Portal",
-            description: "Admin only",
+            description: "Learn more",
             link: '/vendor'
 
         }
@@ -57,15 +57,16 @@ const Card = ({ data }: { data: LandingData }) => {
     const navigate = useNavigate()
     return (<>
         <Paper onClick={() => {
-                navigate(`${data.link}`)
-            }} shadow="md" p="xl" radius="md" className={classes.card}>
+            navigate(`${data.link}`)
+        }} shadow="md" p="xl" radius="md" className={classes.card}>
             <div>
 
                 <Title order={3} className={classes.title}>
-                    {data.description}
+                    {data.title}
                 </Title>
                 <Text className={classes.category} size="xs">
-                    {data.title}
+                    {data.description}
+
                 </Text>
             </div>
         </Paper>

@@ -5,160 +5,169 @@ import { useEffect, useState } from "react"
 import styles from './index.module.css'
 import { useForm } from '@mantine/form'
 import { IconTrash, IconCheck, IconTablePlus } from '@tabler/icons-react'
-import classes from './List.module.css';
+import classes from './Find.module.css';
+import { ApplicationInfo } from "../Ultils/type"
+import ApplicationService from "../Services/application.service"
 
-const List = () => {
-    const [filter, setFilter] = useState<string>('')
+const Find = () => {
+    const [applications, setApplications] = useState<ApplicationInfo[] | undefined>([])
+    const [filtered, setFiltered] = useState<ApplicationInfo[] | undefined>([])
 
 
-    const marks = [
-        { value: 0, label: '$' },
-        { value: 25, label: '$$' },
-        { value: 50, label: '$$$' },
-    ];
+    useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = async () => {
+        const data = await ApplicationService.getAllApplication()
+        setApplications(data)
+        setFiltered(data)
+    }
+
+    const form = useForm<FilterForm>({
+        initialValues: {
+            keyword: '',
+            purpose: [],
+            engagement: [],
+            scale: [],
+            budget: []
+        },
+    });
+
+    interface FilterForm {
+        keyword: string,
+        purpose: string[],
+        engagement: string[],
+        scale: string[],
+        budget: string[]
+    }
+
+    const filterData = (data: FilterForm) => {
+        console.log(data)
+        const b = applications?.filter((a: ApplicationInfo) => 
+            (data.engagement.length === 0 ?  true  : data.engagement.includes(a.levelOfEngagement))
+            &&(data.budget.length === 0 ? true : data.budget.includes(a.budget))
+            &&(data.scale.length === 0 ? true : data.scale.includes(a.scale))
+        )
+
+        setFiltered(b)
+    }
 
 
     return (
         <div >
-            <Grid  >
-                <Grid.Col span={4} p={'3rem'} >
-                    <Title order={3}>
-                        TOOLS
-                    </Title>
-                    <Text mt={"1rem"}>
-                        Use the filter below to identify the engagement tools that best suit your specific road safety engagement needs.
-                    </Text>
-                    <Title order={4} mt="1rem">
-                        Purpose (IAP2)
-                    </Title>
-                    <Flex
-                        mt={"1rem"}
-                        gap="sm"
-                        justify="flex-start"
-                        align="flex-start"
-                        direction="row"
-                        wrap="wrap"
-                    >
-                        <Chip defaultChecked size="md">Inform</Chip>
-                        <Chip defaultChecked size="md">Consult</Chip>
-                        <Chip defaultChecked size="md">Involve</Chip>
-                        <Chip defaultChecked size="md">Collaborate</Chip>
-                        <Chip defaultChecked size="md">Empower</Chip>
-                    </Flex>
-                    <Title order={4} mt="1rem">
-                        Level of Engagement
-                    </Title>
-                    <Flex
-                        mt={"1rem"}
-                        gap="sm"
-                        justify="flex-start"
-                        align="flex-start"
-                        direction="row"
-                        wrap="wrap"
-                    >
-                        <Chip defaultChecked size="md">Low</Chip>
-                        <Chip defaultChecked size="md">Medium</Chip>
-                        <Chip defaultChecked size="md">High</Chip>
-                    </Flex>
-                    <Title order={4} mt="1rem">
-                        Scale
-                    </Title>
-                    <Flex
-                        mt={"1rem"}
-                        gap="sm"
-                        justify="flex-start"
-                        align="flex-start"
-                        direction="row"
-                        wrap="wrap"
-                    >
-                        <Chip defaultChecked size="md">Invidual</Chip>
-                        <Chip defaultChecked size="md">Small Group</Chip>
-                        <Chip defaultChecked size="md">Large Group</Chip>
-                        <Chip defaultChecked size="md">Public</Chip>
+            <form onSubmit={form.onSubmit(filterData)}>
+                <Grid  >
+                    <Grid.Col span={4} p={'3rem'} >
+                        <Title order={3}>
+                            TOOLS
+                        </Title>
+                        <Text mt={"1rem"}>
+                            Use the filter below to identify the engagement tools that best suit your specific road safety engagement needs.
+                        </Text>
+                        <Title order={4} mt="1rem">
+                            Keyword
+                        </Title>
+                        <TextInput mt="1rem"  {...form.getInputProps('keyword')} />
+                        <Title order={4} mt="1rem">
+                            Purpose (IAP2)
+                        </Title>
 
-                    </Flex>
-                    <Title order={4} mt="1rem">
-                        Budget
-                    </Title>
-                    <Flex
-                        mt={"1rem"}
-                        gap="sm"
-                        justify="flex-start"
-                        align="flex-start"
-                        direction="row"
-                        wrap="wrap"
-                    >
-                        <Chip defaultChecked size="md">$</Chip>
-                        <Chip defaultChecked size="md">$$</Chip>
-                        <Chip defaultChecked size="md">$$$</Chip>
-                        <Chip defaultChecked size="md">$$$$</Chip>
-                    </Flex>
-                </Grid.Col>
-                <Grid.Col span={8} className={classes.cardSection} >
-                    <ScrollArea className={classes.scrollbar} scrollbarSize={2} scrollHideDelay={0}>
-                        <Container fluid p={"2rem"}>
-                        {data.map((d, i) => <Outside data={d} filter={filter} key={i} />)}
-                        {data.map((d, i) => <Outside data={d} filter={filter} key={i} />)}
-                    </Container>
-                </ScrollArea>
-            </Grid.Col>
-        </Grid>
+
+                        <Chip.Group multiple {...form.getInputProps('purpose')}>
+                            <Flex
+                                mt={"1rem"}
+                                gap="sm"
+                                justify="flex-start"
+                                align="flex-start"
+                                direction="row"
+                                wrap="wrap"
+                            >
+                                <Chip value="Inform" size="md"  >Inform</Chip>
+                                <Chip value="Consult" size="md" >Consult</Chip>
+                                <Chip value="Involve" size="md">Involve</Chip>
+                                <Chip value="Collaborate" size="md">Collaborate</Chip>
+                                <Chip value="Empower" size="md">Empower</Chip>
+                            </Flex>
+                        </Chip.Group>
+
+
+
+                        <Title order={4} mt="1rem">
+                            Level of Engagement
+                        </Title>
+                        <Chip.Group multiple {...form.getInputProps('engagement')}>
+                            <Flex
+                                mt={"1rem"}
+                                gap="sm"
+                                justify="flex-start"
+                                align="flex-start"
+                                direction="row"
+                                wrap="wrap"
+                            >
+                                <Chip value="Active" size="md">Active</Chip>
+                                <Chip value="Passive" size="md">Passive</Chip>
+                                <Chip value="Immersive" size="md">Immersive</Chip>
+
+                            </Flex>
+                        </Chip.Group>
+
+                        <Title order={4} mt="1rem">
+                            Scale
+                        </Title>
+                        <Chip.Group multiple {...form.getInputProps('scale')}>
+                            <Flex
+                                mt={"1rem"}
+                                gap="sm"
+                                justify="flex-start"
+                                align="flex-start"
+                                direction="row"
+                                wrap="wrap"
+                            >
+                                <Chip value="Invidual" size="md">Invidual</Chip>
+                                <Chip value="Small Group" size="md">Small Group</Chip>
+                                <Chip value="Large Group" size="md">Large Group</Chip>
+                                <Chip value="Public" size="md">Public</Chip>
+
+                            </Flex>
+                        </Chip.Group>
+
+                        <Title order={4} mt="1rem">
+                            Budget
+                        </Title>
+                        <Chip.Group multiple {...form.getInputProps('budget')}>
+                            <Flex
+                                mt={"1rem"}
+                                gap="sm"
+                                justify="flex-start"
+                                align="flex-start"
+                                direction="row"
+                                wrap="wrap"
+                            >
+                                <Chip size="md" value="$">$</Chip>
+                                <Chip size="md" value="$$">$$</Chip>
+                                <Chip size="md" value="$$$">$$$</Chip>
+                                <Chip size="md" value="$$$$">$$$$</Chip>
+                            </Flex>
+                        </Chip.Group>
+                        <Button mt={"1rem"} type="submit">
+                            Search
+                        </Button>
+                    </Grid.Col>
+                    <Grid.Col span={8} className={classes.cardSection} >
+                        <ScrollArea className={classes.scrollbar} scrollbarSize={2} scrollHideDelay={0}>
+                            <Container fluid p={"2rem"}>
+                                {filtered?.map((a, i) => <Inside data={a} key={i} />)}
+
+                            </Container>
+                        </ScrollArea>
+                    </Grid.Col>
+                </Grid>
+            </form>
         </div >
     )
 }
 
-const Outside = ({ data, filter }: { data: Technology, filter: string }) => {
-
-    const [showed, setShowed] = useState<boolean>(false)
-    const [filteredApplications, setFiltededApllication] = useState<Application[]>(data.potential)
-
-    useEffect(() => {
-        if (filter.length !== 0) {
-            const newList = data.potential.filter((a: { explanation: string; potentialApplications: string }) =>
-                a.explanation.toLowerCase().includes(filter.toLowerCase()) || a.potentialApplications.toLowerCase().includes(filter.toLowerCase())
-            )
-
-            console.log(newList)
-            setFiltededApllication(newList)
-
-        }
-        else {
-            setFiltededApllication(data.potential)
-        }
-
-    }, [filter])
-
-    if (filteredApplications.length === 0) {
-        return
-    }
-
-    return (<>
-        <div style={{ width: "auto" }}>
-            <Card p={"2rem"} radius="md" withBorder >
-                <Card.Section onClick={() => setShowed(!showed)}>
-                    <Group justify="center">
-                        <Title order={4}>
-                            {data.technology}
-                        </Title>
-                    </Group>
-                    <Text fz="sm" mt="1rem">
-                        {data.description}
-                    </Text>
-                </Card.Section>
-            </Card>
-            {showed &&
-                <div>
-                    {filteredApplications.map(d => <Inside data={d} />)}
-                    <Center mt={"1rem"} mb={"2rem"}>
-                        <NewApplicationForm />
-                    </Center>
-                </div>
-            }
-        </div>
-
-    </>
-    )
-}
 
 interface ApplicationForm {
     potentialApplications: string,
@@ -175,10 +184,6 @@ interface ApplicationForm {
 
 
 const Inside = ({ data }: { data: Application }) => {
-
-
-
-
     const form = useForm<ApplicationForm>({
         initialValues: {
             potentialApplications: "",
@@ -202,6 +207,7 @@ const Inside = ({ data }: { data: Application }) => {
         }
         form.setValues(newData)
     }, [data])
+
 
 
     return (
@@ -313,37 +319,11 @@ const Inside = ({ data }: { data: Application }) => {
                         </Grid >
 
 
-                        <Grid justify="flex-start" align="center" mt={"1rem"} >
-                            <Grid.Col span={3} ><Text fz="sm" >
-                                Solution to :
-                            </Text >
-                            </Grid.Col>
-                            <Grid.Col span={9} >
-                                <Textarea
-                                    {...form.getInputProps('solutionFor')}
-                                    autosize
-                                    minRows={1}
-                                />
-                            </Grid.Col>
-                        </Grid >
+
+
+
                     </Card.Section>
                 </Card>
-                <Flex gap="md"
-                    justify="center"
-                    align="flex-start"
-                    direction="column"
-                    wrap="wrap">
-
-                    <ActionIcon size="md">
-                        <IconCheck />
-                    </ActionIcon>
-                    <ActionIcon size="md" color="red">
-                        <IconTrash />
-                    </ActionIcon>
-
-                </Flex>
-
-
             </Flex>
         </div>
     )
@@ -567,4 +547,4 @@ const NewApplicationForm = () => {
     )
 }
 
-export default List
+export default Find

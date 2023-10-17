@@ -18,7 +18,7 @@ const getApplicationByTechId = async (id: number) => {
     try {
         const applications = await prisma.application.findMany({
             where: {
-                technologyId: id
+                technologyId : id
             }
         })
         return applications

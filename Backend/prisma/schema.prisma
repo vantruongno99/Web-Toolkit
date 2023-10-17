@@ -12,14 +12,14 @@ datasource db {
 model Technology {
   id           Int      @id @default(autoincrement())
   technology String @unique
-  description String
+  description String @db.Text
   Application Application[]
 }
 
 model Application {
     id           Int      @id @default(autoincrement())
     potentialApplications String @unique
-    explanation String
+    explanation String @db.Text
     maturity String
     stageOfParticipation String
     purposeOfEngagement String
@@ -28,9 +28,9 @@ model Application {
     budget String
     solutionFor String
     considerations String
-    technology String
-    Technology  Technology   @relation(fields: [technology], references: [technology])
-      Vendor ApplicationVendor[]
+    technologyId Int
+    Technology  Technology   @relation(fields: [technologyId], references: [id])
+    Vendor ApplicationVendor[]
 
 }
 

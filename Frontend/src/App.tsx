@@ -3,15 +3,11 @@ import React, { Suspense } from 'react'
 import { Loader } from '@mantine/core';
 import { Layout } from "./Layout";
 import { outerRoutes, innerRoutes } from "./Route";
-import { MantineProvider, createTheme } from '@mantine/core';
+import { MantineProvider, createTheme  } from '@mantine/core';
 
 
 
 const App = () => {
-
-
-
-
     const routes = [{
         path: "/", element: <Layout />,
         children: [
@@ -25,7 +21,8 @@ const App = () => {
     
 const theme = createTheme({
     fontFamily: 'Open Sans, sans-serif',
-    primaryColor: 'blue'  });
+    primaryColor: "gray"  
+});
 
 
     return (
