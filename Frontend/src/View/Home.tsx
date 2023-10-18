@@ -16,7 +16,7 @@ const Home = () => {
         {
             title: " Toolkit ",
             description: "Learn more",
-            link: '/toolkit'
+            link: '/about'
         },
         {
             title: "Community engagement​",
@@ -39,6 +39,7 @@ const Home = () => {
     return (
         <>
             <Flex
+            mt="2rem"
                 mih={100}
                 gap="lg"
                 justify="center"
@@ -46,7 +47,7 @@ const Home = () => {
                 direction="row"
                 wrap="wrap"
             >
-                {data.map(d => <Card data={d} />)}
+                {data.map((d,i) => <Card data={d} key={i} />)}
             </Flex>
         </>
     )

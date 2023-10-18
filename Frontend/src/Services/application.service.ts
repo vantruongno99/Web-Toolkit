@@ -85,11 +85,11 @@ const getApplicationInfo = async (name: string, option?: any) => {
     }
 }
 
-const ApplicationService = {
+const applicationService = {
     getAllApplication,
     getApplication,
     createApplication,
     getApplicationInfo
 }
 
-export default ApplicationService
+export default applicationService

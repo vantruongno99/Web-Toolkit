@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client"
 import data from "./data.json"
-import { TechnologyInput } from "./src/models/technology.modal"
+import technologyService from "./src/services/technology.service"
 const prisma = new PrismaClient()
 
 const a = async () => {
@@ -25,7 +25,7 @@ const a = async () => {
 }
 
 const b = async () => {
-    const a = await prisma.application.findMany()
+    const a = await technologyService.getAllTechnology()
     console.log(a)
 }
 

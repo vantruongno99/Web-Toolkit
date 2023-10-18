@@ -33,11 +33,10 @@ export default function Header() {
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
-        <MantineLogo size={28} />
+        {/* <MantineLogo size={28} />
         <Group gap={5} visibleFrom="xs">
           {items}
-        </Group>
-
+        </Group> */}
         <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
       </Container>
     </header>

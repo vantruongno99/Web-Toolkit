@@ -6,7 +6,7 @@ import errorHandler from "../utils/errorHandler"
 const getAllTechnology = async () => {
     try {
         const technologies = await prisma.technology.findMany({
-            select: {
+            include: {
                 Application: true
             }
         })

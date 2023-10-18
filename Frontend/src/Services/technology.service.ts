@@ -4,7 +4,7 @@ import { AxiosHandleResponse } from '../Ultils/middleware'
 import { domain } from '../Ultils/config'
 import {  TechnologyInfo, TechnologyInput } from '../Ultils/type'
 
-const baseUrl = `${domain}/api/app`
+const baseUrl = `${domain}/api/tech`
 
 const config = {
     headers: { Authorization: `bearer ${Cookies.get('token')}` }, // notice the Bearer before your token

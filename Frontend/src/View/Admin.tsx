@@ -1,173 +1,86 @@
-import data from "../data.json"
-import { Container, ScrollArea, Modal, Card, Text, Group, ActionIcon, Flex, Textarea, Grid, Select, Title, MultiSelect, Center, Divider, TextInput, Button, Radio, Chip, RangeSlider } from '@mantine/core'
-import { Technology, Application, TechnologyForm } from "../type"
-import { useEffect, useState } from "react"
-import styles from './index.module.css'
-import { useForm } from '@mantine/form'
-import { IconTrash, IconCheck, IconTablePlus } from '@tabler/icons-react'
-import classes from './Find.module.css';
-import { ApplicationInfo } from "../Ultils/type"
-import applicationService from "../Services/application.service"
-
-const Find = () => {
-    const [applications, setApplications] = useState<ApplicationInfo[] | undefined>([])
-    const [filtered, setFiltered] = useState<ApplicationInfo[] | undefined>([])
+import React, { useState } from "react";
+import { Flex, Button, Paper, Title, Text, Textarea, Grid, Select, MultiSelect, Divider, Modal, Group, TextInput, ActionIcon, Card, Center } from "@mantine/core";
+import classes from './Home.module.css';
+import { Application, LandingData } from "../type";
+import { useNavigate } from 'react-router-dom';
+import technologyService from "../Services/technology.service";
+import { useEffect } from "react";
+import { useForm } from "@mantine/form";
+import { TechnologyInfo } from "../Ultils/type";
+import { IconCheck, IconTablePlus, IconTrash } from "@tabler/icons-react";
+import styles from './Admin.module.css'
 
 
-    useEffect(() => {
-        getData()
-    }, [])
+const Admin = () => {
 
-    const purposeCheck = (array1: string[], array2: string[]) => array2.length==0 || array1.length === 0 ? true : array2.every(val => array1.includes(val))
+    const [data, setData] = useState<TechnologyInfo[] | undefined>([])
 
-    const getData = async () => {
-        const data = await applicationService.getAllApplication()
-        console.log(data?.map(a => a.purposeOfEngagement.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
-            a.slice(1))))
-        setApplications(data)
-        setFiltered(data)
+    const getTechData = async () => {
+        try {
+            const technologies = await technologyService.getAllTechnology()
+            setData(technologies)
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
 
-    const form = useForm<FilterForm>({
-        initialValues: {
-            purpose: [],
-            engagement: [],
-            scale: [],
-            budget: []
-        },
-    });
+    useEffect(() => { getTechData() }, [])
 
-    interface FilterForm {
-        purpose: string[],
-        engagement: string[],
-        scale: string[],
-        budget: string[]
+    if (!data) {
+        return <>
+        </>
     }
 
-    const filterData = (data: FilterForm) => {
-        console.log(data)
-        const b = applications?.filter((a: ApplicationInfo) =>
-            (data.engagement.length === 0 ? true : data.engagement.includes(a.levelOfEngagement))
-            && (data.budget.length === 0 ? true : data.budget.includes(a.budget))
-            && (data.scale.length === 0 ? true : data.scale.includes(a.scale))
-            && purposeCheck(a.purposeOfEngagement.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
-            a.slice(1)),data.purpose)
-        )
-
-        setFiltered(b)
-    }
 
 
     return (
-        <div >
-            <form onSubmit={form.onSubmit(filterData)}>
-                <Grid  >
-                    <Grid.Col span={4} p={'3rem'} >
-                        <Title order={3}>
-                            TOOLS
-                        </Title>
-                        <Text mt={"1rem"}>
-                            Use the filter below to identify the engagement tools that best suit your specific road safety engagement needs.
-                        </Text>
-                        <Title order={4} mt="1rem">
-                            Purpose (IAP2)
-                        </Title>
+        <>
+            <Title>ABOUT THE TOOLKIT</Title>
+            <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non sem rhoncus, hendrerit felis malesuada, ornare nulla. Maecenas eu placerat urna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi ut fringilla lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+            </Text>
+            {data.map((d, i) => <Outside data={d} key={i} />)}
 
-
-                        <Chip.Group multiple {...form.getInputProps('purpose')}>
-                            <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
-                            >
-                                <Chip value="Inform" size="md"  >Inform</Chip>
-                                <Chip value="Consult" size="md" >Consult</Chip>
-                                <Chip value="Involve" size="md">Involve</Chip>
-                                <Chip value="Collaborate" size="md">Collaborate</Chip>
-                                <Chip value="Empower" size="md">Empower</Chip>
-                            </Flex>
-                        </Chip.Group>
-
-
-
-                        <Title order={4} mt="1rem">
-                            Level of Engagement
-                        </Title>
-                        <Chip.Group multiple {...form.getInputProps('engagement')}>
-                            <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
-                            >
-                                <Chip value="Active" size="md">Active</Chip>
-                                <Chip value="Passive" size="md">Passive</Chip>
-                                <Chip value="Immersive" size="md">Immersive</Chip>
-
-                            </Flex>
-                        </Chip.Group>
-
-                        <Title order={4} mt="1rem">
-                            Scale
-                        </Title>
-                        <Chip.Group multiple {...form.getInputProps('scale')}>
-                            <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
-                            >
-                                <Chip value="Invidual" size="md">Invidual</Chip>
-                                <Chip value="Small Group" size="md">Small Group</Chip>
-                                <Chip value="Large Group" size="md">Large Group</Chip>
-                                <Chip value="Public" size="md">Public</Chip>
-
-                            </Flex>
-                        </Chip.Group>
-
-                        <Title order={4} mt="1rem">
-                            Budget
-                        </Title>
-                        <Chip.Group multiple {...form.getInputProps('budget')}>
-                            <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
-                            >
-                                <Chip size="md" value="$">$</Chip>
-                                <Chip size="md" value="$$">$$</Chip>
-                                <Chip size="md" value="$$$">$$$</Chip>
-                                <Chip size="md" value="$$$$">$$$$</Chip>
-                            </Flex>
-                        </Chip.Group>
-                        <Button mt={"1rem"} type="submit">
-                            Search
-                        </Button>
-                    </Grid.Col>
-                    <Grid.Col span={8} className={classes.cardSection} >
-                        <ScrollArea className={classes.scrollbar} scrollbarSize={2} scrollHideDelay={0}>
-                            <Container fluid p={"2rem"}>
-                                {filtered?.map((a, i) => <Inside data={a} key={i} />)}
-
-                            </Container>
-                        </ScrollArea>
-                    </Grid.Col>
-                </Grid>
-            </form>
-        </div >
+        </>
     )
+
 }
 
+
+
+
+const Outside = ({ data }: { data: TechnologyInfo }) => {
+
+    const [showed, setShowed] = useState<boolean>(false)
+
+
+    return (<>
+        <div style={{ width: "auto" }}>
+            <Card p={"2rem"} radius="md" withBorder >
+                <Card.Section onClick={() => setShowed(!showed)}>
+                    <Group justify="center">
+                        <Title order={3}>
+                            {data.technology}
+                        </Title>
+                    </Group>
+                    <Text fz="sm" mt="1rem">
+                        {data.description}
+                    </Text>
+                </Card.Section>
+            </Card>
+            {showed &&
+                <div>
+                    {data.Application.map(d => <Inside data={d} />)}
+                    <Center mt={"1rem"} mb={"2rem"}>
+                        <NewApplicationForm />
+                    </Center>
+                </div>
+            }
+        </div>
+
+    </>
+    )
+}
 
 interface ApplicationForm {
     potentialApplications: string,
@@ -184,6 +97,10 @@ interface ApplicationForm {
 
 
 const Inside = ({ data }: { data: Application }) => {
+
+
+
+
     const form = useForm<ApplicationForm>({
         initialValues: {
             potentialApplications: "",
@@ -202,12 +119,11 @@ const Inside = ({ data }: { data: Application }) => {
     useEffect(() => {
         const newData = {
             ...data,
-            purposeOfEngagement: data.purposeOfEngagement.split(',').map((a: string) => a.charAt(0).toUpperCase()
+            purposeOfEngagement: data.purposeOfEngagement.split(',').map(a => a.charAt(0).toUpperCase()
                 + a.slice(1))
         }
         form.setValues(newData)
     }, [data])
-
 
 
     return (
@@ -312,68 +228,51 @@ const Inside = ({ data }: { data: Application }) => {
                                         { value: '$', label: '$' },
                                         { value: '$$', label: '$$' },
                                         { value: '$$$', label: '$$$' },
-
                                     ]}
                                 />
                             </Grid.Col>
                         </Grid >
 
 
-
-
-
+                        <Grid justify="flex-start" align="center" mt={"1rem"} >
+                            <Grid.Col span={3} ><Text fz="sm" >
+                                Solution to :
+                            </Text >
+                            </Grid.Col>
+                            <Grid.Col span={9} >
+                                <Textarea
+                                    {...form.getInputProps('solutionFor')}
+                                    autosize
+                                    minRows={1}
+                                />
+                            </Grid.Col>
+                        </Grid >
                     </Card.Section>
                 </Card>
+                <Flex gap="md"
+                    justify="center"
+                    align="flex-start"
+                    direction="column"
+                    wrap="wrap">
+
+                    <ActionIcon size="lg">
+                        <IconCheck />
+                    </ActionIcon>
+                    <ActionIcon size="lg" color="red">
+                        <IconTrash />
+                    </ActionIcon>
+
+                </Flex>
+
+
             </Flex>
         </div>
     )
 }
 
-const NewTechnologyForm = () => {
-    const [opened, setOpened] = useState<boolean>(false);
-
-    const form = useForm<TechnologyForm>({
-        initialValues: {
-            technology: '',
-            description: ''
-        },
-    })
 
 
-    return (
-        <>
-            <Modal opened={opened} onClose={() => setOpened(false)} title="Add new technology">
-                <Title order={2}>
-                    <TextInput
-                        size="md"
-                        variant="unstyled"
-                        withAsterisk
-                        placeholder="Technology"
-                        {...form.getInputProps('Tmail')}
-                    />
-                </Title>
-                <Textarea
-                    mt={"1rem"}
-                    autosize
-                    variant="unstyled"
-                    withAsterisk
-                    placeholder="Description"
-                    {...form.getInputProps('description')}
-                />
-                <Group justify="flex-end" mt={"1rem"}>
-                    <Button>Save</Button>
-                </Group>
-            </Modal>
 
-
-            <ActionIcon onClick={() => setOpened(!opened)} size={'lg'}>
-                <Button ></Button>
-            </ActionIcon>
-
-        </>
-
-    )
-}
 
 const NewApplicationForm = () => {
     const [opened, setOpened] = useState<boolean>(false);
@@ -402,7 +301,7 @@ const NewApplicationForm = () => {
                     <Title order={2}>
                         <TextInput
                             variant="unstyled"
-                            size="md"
+                            size="lg"
                             withAsterisk
                             placeholder="Technology"
                             {...form.getInputProps('potentialApplications')}
@@ -547,4 +446,11 @@ const NewApplicationForm = () => {
     )
 }
 
-export default Find
+
+
+
+
+
+
+
+export default Admin

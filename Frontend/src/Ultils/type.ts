@@ -22,6 +22,7 @@ export interface TechnologyInput {
 }
 
 export interface TechnologyInfo extends TechnologyInput {
+    Application: ApplicationInfo[];
     id: number,
     potentialApplications: ApplicationInfo[]
 }
