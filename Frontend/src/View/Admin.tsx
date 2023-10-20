@@ -1,32 +1,37 @@
 import React, { useState } from "react";
-import { Flex, Button, Paper, Title, Text, Textarea, Grid, Select, MultiSelect, Divider, Modal, Group, TextInput, ActionIcon, Card, Center } from "@mantine/core";
+import { Flex, Button, Paper, Title, Text, Textarea, Grid, Select, MultiSelect, Divider, Modal, Group, TextInput, ActionIcon, Card, Center, Container } from "@mantine/core";
 import classes from './Home.module.css';
 import { Application, LandingData } from "../type";
 import { useNavigate } from 'react-router-dom';
 import technologyService from "../Services/technology.service";
 import { useEffect } from "react";
 import { useForm } from "@mantine/form";
-import { TechnologyInfo } from "../Ultils/type";
-import { IconCheck, IconTablePlus, IconTrash } from "@tabler/icons-react";
+import { TechnologyInfo, TechnologyInput } from "../Ultils/type";
+import { IconCheck, IconCirclePlus, IconTablePlus, IconTrash } from "@tabler/icons-react";
 import styles from './Admin.module.css'
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import applicationService from "../Services/application.service";
 
 
 const Admin = () => {
+    const navigate = useNavigate()
+    const { isLoading, error, isError, data } = useQuery({
+        queryKey: ['admin', "list"],
+        queryFn: async () => {
+            try {
+                const res = await technologyService.getAllTechnology()
+                if (!res) {
+                    throw new Error()
+                }
 
-    const [data, setData] = useState<TechnologyInfo[] | undefined>([])
-
-    const getTechData = async () => {
-        try {
-            const technologies = await technologyService.getAllTechnology()
-            setData(technologies)
-        }
-        catch (e) {
-            console.log(e)
+                return res
+            }
+            catch (e) {
+                console.log(e)
+            }
         }
     }
-
-    useEffect(() => { getTechData() }, [])
-
+    )
     if (!data) {
         return <>
         </>
@@ -35,15 +40,91 @@ const Admin = () => {
 
 
     return (
-        <>
-            <Title>ABOUT THE TOOLKIT</Title>
-            <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non sem rhoncus, hendrerit felis malesuada, ornare nulla. Maecenas eu placerat urna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi ut fringilla lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-            </Text>
+        <Container>
+            <Button onClick={() => navigate(`/admin/approve`)}>Approval Magemement</Button>
             {data.map((d, i) => <Outside data={d} key={i} />)}
+            <NewTechology />
 
-        </>
+        </Container>
     )
 
+}
+
+const NewTechology = () => {
+    const [opened, setOpened] = useState<boolean>(false)
+
+    const form = useForm<TechnologyInput>({
+        initialValues: {
+            technology: "",
+            description: ""
+        },
+    })
+
+    const queryClient = useQueryClient()
+
+
+    const createApplication = useMutation({
+        mutationFn: async (input: TechnologyInput) => {
+            const output = await technologyService.createTechnology(input)
+            if (!output) {
+                throw new Error()
+            }
+            return output
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', "list"] })
+            setOpened(!opened)
+        },
+        onError: (e) => {
+            console.log(e)
+        },
+    })
+
+    return (<>
+        <Card p={"2rem"} radius="md" withBorder >
+            <Card.Section onClick={() => setOpened(!opened)}>
+                <Group justify="center">
+                    <ActionIcon size={'lg'}>
+                        <IconCirclePlus />
+                    </ActionIcon>
+                </Group>
+                <Text fz="sm" mt="1rem">
+                </Text>
+            </Card.Section>
+        </Card>
+
+
+        <Modal size="xl" opened={opened} onClose={() => setOpened(false)} title="Add new technology">
+            <form onSubmit={form.onSubmit(data => createApplication.mutate(data))}>
+                <Title order={2}>
+                    <TextInput
+                        variant="unstyled"
+                        size="lg"
+                        withAsterisk
+                        placeholder="Technology"
+                        {...form.getInputProps('technology')}
+                    />
+                </Title>
+                <Text fz="sm" mt={"1rem"} >
+                    <Textarea
+                        variant="unstyled"
+                        mt={"1rem"}
+                        autosize
+                        withAsterisk
+                        placeholder="Description"
+                        {...form.getInputProps('description')}
+                    />                            </Text>
+                <Group justify="flex-end" mt={"1rem"}>
+                    <Button type="submit">Save</Button>
+                </Group>
+            </form>
+        </Modal >
+
+
+
+
+
+    </>)
 }
 
 
@@ -72,7 +153,7 @@ const Outside = ({ data }: { data: TechnologyInfo }) => {
                 <div>
                     {data.Application.map(d => <Inside data={d} />)}
                     <Center mt={"1rem"} mb={"2rem"}>
-                        <NewApplicationForm />
+                        <NewApplicationForm technologyId={data.id} />
                     </Center>
                 </div>
             }
@@ -97,10 +178,6 @@ interface ApplicationForm {
 
 
 const Inside = ({ data }: { data: Application }) => {
-
-
-
-
     const form = useForm<ApplicationForm>({
         initialValues: {
             potentialApplications: "",
@@ -274,8 +351,10 @@ const Inside = ({ data }: { data: Application }) => {
 
 
 
-const NewApplicationForm = () => {
+const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
     const [opened, setOpened] = useState<boolean>(false);
+    const queryClient = useQueryClient()
+
 
     const form = useForm<ApplicationForm>({
         initialValues: {
@@ -293,148 +372,173 @@ const NewApplicationForm = () => {
     })
 
 
+    const createApplication = useMutation({
+        mutationFn: async (input: ApplicationForm) => {
+            console.log(input)
+            const data = {
+                ...input,
+                purposeOfEngagement: input.purposeOfEngagement.toString(),
+                technologyId
+            }
+            const output = await applicationService.createApplication(data)
+            if (!output) {
+                throw new Error()
+            }
+            return output
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['admin', "list"] })
+            setOpened(!opened)
+        },
+        onError: (e) => {
+            console.log(e)
+        },
+    })
+
+
     return (
         <>
             <Modal size="xl" opened={opened} onClose={() => setOpened(false)} title="Add new technology">
-
-                <Group justify="center">
-                    <Title order={2}>
-                        <TextInput
+                <form onSubmit={form.onSubmit(data => createApplication.mutate(data))}>
+                    <Group justify="center">
+                        <Title order={2}>
+                            <TextInput
+                                variant="unstyled"
+                                size="lg"
+                                withAsterisk
+                                placeholder="Technology"
+                                {...form.getInputProps('potentialApplications')}
+                            />
+                        </Title>
+                    </Group>
+                    <Text fz="sm" mt={"1rem"} >
+                        <Textarea
                             variant="unstyled"
-                            size="lg"
+                            mt={"1rem"}
+                            autosize
                             withAsterisk
-                            placeholder="Technology"
-                            {...form.getInputProps('potentialApplications')}
-                        />
-                    </Title>
-                </Group>
-                <Text fz="sm" mt={"1rem"} >
-                    <Textarea
-                        variant="unstyled"
-                        mt={"1rem"}
-                        autosize
-                        withAsterisk
-                        placeholder="Description"
-                        {...form.getInputProps('explanation')}
-                    />                            </Text>
-                <Text fz="sm" >
-                    <Textarea
-                        variant="unstyled"
-                        mt={"1rem"}
-                        autosize
-                        withAsterisk
-                        placeholder="Maturity"
-                        {...form.getInputProps('maturity')}
-                    />                            </Text>
-                <Divider mt="1rem" size="xs" color="black" />
-
-
-                <Grid justify="flex-start" align="center" mt={"1rem"} >
-                    <Grid.Col span={3} ><Text fz="sm" >
-                        Stage of participation :
-                    </Text >
-                    </Grid.Col>
-                    <Grid.Col span={9} >
+                            placeholder="Description"
+                            {...form.getInputProps('explanation')}
+                        />                            </Text>
+                    <Text fz="sm" >
                         <Textarea
-                            {...form.getInputProps('stageOfParticipation')}
+                            variant="unstyled"
+                            mt={"1rem"}
                             autosize
-                            minRows={1}
-                        />
-                    </Grid.Col>
-                </Grid >
+                            withAsterisk
+                            placeholder="Maturity"
+                            {...form.getInputProps('maturity')}
+                        />                            </Text>
+                    <Divider mt="1rem" size="xs" color="black" />
 
 
-                <Grid justify="flex-start" align="center" mt={"1rem"}  >
-                    <Grid.Col span={3} ><Text fz="sm" >
-                        Purpose :
-                    </Text >
-                    </Grid.Col>
-                    <Grid.Col span={9} >
-                        <MultiSelect
-                            {...form.getInputProps('purposeOfEngagement')}
-                            data={[
-                                { value: 'Collaborate', label: 'Collaborate' },
-                                { value: 'Inform', label: 'Inform' },
-                                { value: 'Involve', label: 'Involve' },
-                                { value: 'Consult', label: 'Consult' },
-                                { value: 'Empower', label: 'Empower' },
-                            ]}
-                        />
-                    </Grid.Col>
-                </Grid >
-
-                <Grid justify="flex-start" align="center" mt={"1rem"} >
-                    <Grid.Col span={3} ><Text fz="sm" >
-                        Level :
-                    </Text >
-                    </Grid.Col>
-                    <Grid.Col span={3} >
-                        <Select
-                            {...form.getInputProps('levelOfEngagement')}
-                            data={[
-                                { value: 'Active', label: 'Active' },
-                                { value: 'Passive', label: 'Passive' },
-                                { value: 'Immersive', label: 'Immersive' },
-                            ]}
-
-                        />
-                    </Grid.Col>
-                </Grid >
-
-                <Grid justify="flex-start" align="center" mt={"1rem"} >
-                    <Grid.Col span={3} ><Text fz="sm" >
-                        Scale :
-                    </Text >
-                    </Grid.Col>
-                    <Grid.Col span={3} >
-                        <Select
-                            {...form.getInputProps('scale')}
-                            data={[
-                                { value: 'Individual', label: 'Individual' },
-                                { value: 'Small group', label: 'Small group' },
-                                { value: 'Large group', label: 'Large group' },
-                                { value: 'Public', label: 'Public' },
-
-                            ]}
-                        />
-                    </Grid.Col>
-                </Grid >
-
-                <Grid justify="flex-start" align="center" mt={"1rem"} >
-                    <Grid.Col span={3} ><Text fz="sm" >
-                        Budget :
-                    </Text >
-                    </Grid.Col>
-                    <Grid.Col span={3} >
-                        <Select
-                            {...form.getInputProps('budget')}
-                            data={[
-                                { value: '$', label: '$' },
-                                { value: '$$', label: '$$' },
-                                { value: '$$$', label: '$$$' },
-                            ]}
-                        />
-                    </Grid.Col>
-                </Grid >
+                    <Grid justify="flex-start" align="center" mt={"1rem"} >
+                        <Grid.Col span={3} ><Text fz="sm" >
+                            Stage of participation :
+                        </Text >
+                        </Grid.Col>
+                        <Grid.Col span={9} >
+                            <Textarea
+                                {...form.getInputProps('stageOfParticipation')}
+                                autosize
+                                minRows={1}
+                            />
+                        </Grid.Col>
+                    </Grid >
 
 
-                <Grid justify="flex-start" align="center" mt={"1rem"} >
-                    <Grid.Col span={3} ><Text fz="sm" >
-                        Solution to :
-                    </Text >
-                    </Grid.Col>
-                    <Grid.Col span={9} >
-                        <Textarea
-                            {...form.getInputProps('solutionFor')}
-                            autosize
-                            minRows={1}
-                        />
-                    </Grid.Col>
-                </Grid >
-                <Group justify="flex-end" mt={"1rem"}>
-                    <Button>Save</Button>
-                </Group>
-            </Modal>
+                    <Grid justify="flex-start" align="center" mt={"1rem"}  >
+                        <Grid.Col span={3} ><Text fz="sm" >
+                            Purpose :
+                        </Text >
+                        </Grid.Col>
+                        <Grid.Col span={9} >
+                            <MultiSelect
+                                {...form.getInputProps('purposeOfEngagement')}
+                                data={[
+                                    { value: 'Collaborate', label: 'Collaborate' },
+                                    { value: 'Inform', label: 'Inform' },
+                                    { value: 'Involve', label: 'Involve' },
+                                    { value: 'Consult', label: 'Consult' },
+                                    { value: 'Empower', label: 'Empower' },
+                                ]}
+                            />
+                        </Grid.Col>
+                    </Grid >
+
+                    <Grid justify="flex-start" align="center" mt={"1rem"} >
+                        <Grid.Col span={3} ><Text fz="sm" >
+                            Level :
+                        </Text >
+                        </Grid.Col>
+                        <Grid.Col span={3} >
+                            <Select
+                                {...form.getInputProps('levelOfEngagement')}
+                                data={[
+                                    { value: 'Active', label: 'Active' },
+                                    { value: 'Passive', label: 'Passive' },
+                                    { value: 'Immersive', label: 'Immersive' },
+                                ]}
+
+                            />
+                        </Grid.Col>
+                    </Grid >
+
+                    <Grid justify="flex-start" align="center" mt={"1rem"} >
+                        <Grid.Col span={3} ><Text fz="sm" >
+                            Scale :
+                        </Text >
+                        </Grid.Col>
+                        <Grid.Col span={3} >
+                            <Select
+                                {...form.getInputProps('scale')}
+                                data={[
+                                    { value: 'Individual', label: 'Individual' },
+                                    { value: 'Small group', label: 'Small group' },
+                                    { value: 'Large group', label: 'Large group' },
+                                    { value: 'Public', label: 'Public' },
+
+                                ]}
+                            />
+                        </Grid.Col>
+                    </Grid >
+
+                    <Grid justify="flex-start" align="center" mt={"1rem"} >
+                        <Grid.Col span={3} ><Text fz="sm" >
+                            Budget :
+                        </Text >
+                        </Grid.Col>
+                        <Grid.Col span={3} >
+                            <Select
+                                {...form.getInputProps('budget')}
+                                data={[
+                                    { value: '$', label: '$' },
+                                    { value: '$$', label: '$$' },
+                                    { value: '$$$', label: '$$$' },
+                                ]}
+                            />
+                        </Grid.Col>
+                    </Grid >
+
+
+                    <Grid justify="flex-start" align="center" mt={"1rem"} >
+                        <Grid.Col span={3} ><Text fz="sm" >
+                            Solution to :
+                        </Text >
+                        </Grid.Col>
+                        <Grid.Col span={9} >
+                            <Textarea
+                                {...form.getInputProps('solutionFor')}
+                                autosize
+                                minRows={1}
+                            />
+                        </Grid.Col>
+                    </Grid >
+                    <Group justify="flex-end" mt={"1rem"}>
+                        <Button type="submit">Save</Button>
+                    </Group>
+                </form>
+            </Modal >
 
 
             <ActionIcon onClick={() => setOpened(!opened)} size={'lg'}>

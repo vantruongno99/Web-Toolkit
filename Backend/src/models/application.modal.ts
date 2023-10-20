@@ -1,3 +1,5 @@
+import { VendorInfo } from "./vendor.model"
+
 export interface ApplicationInput{
     potentialApplications: string
     explanation: string,
@@ -13,5 +15,6 @@ export interface ApplicationInput{
 }
 
 export interface Application extends ApplicationInput {
-    id : number
+    id : number,
+    Vendor? : {Vendor : VendorInfo}[]
 }

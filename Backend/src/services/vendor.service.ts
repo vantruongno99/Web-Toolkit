@@ -21,7 +21,7 @@ const getAllVendor = async () => {
     }
 }
 
-const getAllVendorById = async (id: number) => {
+const getVendorById = async (id: number) => {
     try {
         const vendor = await prisma.vendor.findFirstOrThrow({
             where: {
@@ -55,7 +55,7 @@ const addVendor = async (data: VendorInput) => {
     }
 }
 
-const assignVendor = async (vendorId: number, applicationId: number) => {
+const assignVendor = async (applicationId: number, vendorId: number) => {
     try {
         const VendorApplication = await prisma.applicationVendor.create({
             data: {
@@ -71,12 +71,32 @@ const assignVendor = async (vendorId: number, applicationId: number) => {
     }
 }
 
+const getApplicationByVendorId = async (vendorId: number) => {
+    try {
+        const VendorApplication = await prisma.applicationVendor.findMany({
+            where: {
+                vendorId
+            },
+            include: {
+                Vendor: true,
+                Application: true
+            }
+        })
+
+        return VendorApplication
+    }
+    catch (e: any) {
+        errorHandler(e)
+    }
+}
+
 
 export default {
     getAllVendor,
-    getAllVendorById,
+    getVendorById,
     addVendor,
-    assignVendor
+    assignVendor,
+    getApplicationByVendorId
 }
 
 

@@ -18,9 +18,9 @@ appRouter.get('/', async (req: Request, res: Response) => {
 })
 
 appRouter.get('/:id', async (req: Request, res: Response) => {
-    const id = Number(req.params.deviceId)
-    const sensors = await applicationService.getApplicationByTechId(id)
-    res.status(200).json(sensors)
+    const id = Number(req.params.id)
+    const sensor = await applicationService.getApplicationByTechId(id)
+    res.status(200).json(sensor)
 })
 
 

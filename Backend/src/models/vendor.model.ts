@@ -5,7 +5,7 @@ export interface VendorInput {
     ABN : number
 }
 
-export interface vendorInfo extends VendorInput {
+export interface VendorInfo extends VendorInput {
     Applications? : {
         Application : Application
     }[]

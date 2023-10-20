@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client"
 import data from "./data.json"
 import technologyService from "./src/services/technology.service"
+import vendorService from "./src/services/vendor.service"
 const prisma = new PrismaClient()
 
 const a = async () => {
@@ -25,7 +26,7 @@ const a = async () => {
 }
 
 const b = async () => {
-    const a = await technologyService.getAllTechnology()
+    const a = await vendorService.getVendorById(1)
     console.log(a)
 }
 

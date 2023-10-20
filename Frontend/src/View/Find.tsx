@@ -8,6 +8,7 @@ import { IconTrash, IconCheck, IconTablePlus } from '@tabler/icons-react'
 import classes from './Find.module.css';
 import { ApplicationInfo } from "../Ultils/type"
 import applicationService from "../Services/application.service"
+import { useNavigate } from "react-router-dom"
 
 const Find = () => {
     const [applications, setApplications] = useState<ApplicationInfo[] | undefined>([])
@@ -22,8 +23,7 @@ const Find = () => {
 
     const getData = async () => {
         const data = await applicationService.getAllApplication()
-        console.log(data?.map(a => a.purposeOfEngagement.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
-            a.slice(1))))
+        console.log(data)
         setApplications(data)
         setFiltered(data)
     }
@@ -45,7 +45,6 @@ const Find = () => {
     }
 
     const filterData = (data: FilterForm) => {
-        console.log(data)
         const b = applications?.filter((a: ApplicationInfo) =>
             (data.engagement.length === 0 ? true : data.engagement.includes(a.levelOfEngagement))
             && (data.budget.length === 0 ? true : data.budget.includes(a.budget))
@@ -183,7 +182,11 @@ interface ApplicationForm {
 }
 
 
-const Inside = ({ data }: { data: Application }) => {
+const Inside = ({ data }: { data: ApplicationInfo }) => {
+
+    const navigate = useNavigate()
+
+
     const form = useForm<ApplicationForm>({
         initialValues: {
             potentialApplications: "",
@@ -213,7 +216,7 @@ const Inside = ({ data }: { data: Application }) => {
     return (
         <div className={styles.app}>
             <Flex gap="md" >
-                <Card shadow="sm" radius="md" withBorder p="2rem" className={styles.insideCard} >
+                <Card shadow="sm" radius="md" withBorder p="2rem" className={styles.insideCard} onClick={()=>navigate(`/application/${data.id}`)}>
                     <Card.Section>
                         <Group justify="apart">
                             <Title order={2}>

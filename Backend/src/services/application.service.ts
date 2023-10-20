@@ -6,7 +6,16 @@ import errorHandler from "../utils/errorHandler"
 
 const getAllApplication = async () => {
     try {
-        const applications = await prisma.application.findMany()
+        const applications = await prisma.application.findMany({
+            include: {
+                Vendor:
+                {
+                    select: {
+                        Vendor: true
+                    }
+                }
+            }
+        })
         return applications
     }
     catch (e: any) {
@@ -16,10 +25,19 @@ const getAllApplication = async () => {
 
 const getApplicationByTechId = async (id: number) => {
     try {
-        const applications = await prisma.application.findMany({
+        const applications = await prisma.application.findFirstOrThrow({
             where: {
-                technologyId : id
+                id: id
+            },
+            include: {
+                Vendor:
+                {
+                    include: {
+                        Vendor: true
+                    }
+                }
             }
+
         })
         return applications
     }
@@ -40,6 +58,7 @@ const addApplication = async (data: ApplicationInput) => {
         errorHandler(e)
     }
 }
+
 
 
 export default {
