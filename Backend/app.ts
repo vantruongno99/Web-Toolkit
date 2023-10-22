@@ -12,10 +12,11 @@ app.use(json())
 app.use(compression())
 morganBody(app)
 
-app.get('/', (req: Request, res: Response) => {
+app.use(express.static('dist'))
+
+app.get('/api', (req: Request, res: Response) => {
     res.json({ status: 'API is running on /api' });
   });
-
 
 app.use(routes)
 app.use(middleware.unknownEndpoint);
