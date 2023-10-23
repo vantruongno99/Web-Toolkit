@@ -266,10 +266,10 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                     />
                 </Grid.Col>
             </Grid >
-
+            {rows && rows?.length > 0 && <>
             <Divider mt="1rem" size="xs" color="black" />
             <Text>Vendor partipation</Text>
-            <Table mt={"1rem"} highlightOnHover withTableBorder>
+             <Table mt={"1rem"} highlightOnHover withTableBorder>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>Name</Table.Th>
@@ -279,12 +279,13 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
+            </>}
 
 
             {vendorOption &&
                 <div>
                     {!alreadyRequest && 
-                    <Button mt="1rem" onClick={() => assignRequest.mutateAsync({ applicationId: application.id, vendorId: option.id as number})}>Request to particiapte</Button>
+                    <Button mb={"2rem"} mt="2rem" onClick={() => assignRequest.mutateAsync({ applicationId: application.id, vendorId: option.id as number})}>Request to particiapte</Button>
                 }
                 
                 </div>}

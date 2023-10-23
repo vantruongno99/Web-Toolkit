@@ -24,7 +24,7 @@ const Home = () => {
             link: '/ca'
         },
         {
-            title: "Engagement tool",
+            title: "Find solutions",
             description: "Find",
             link: '/find'
         },

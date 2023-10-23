@@ -13,9 +13,7 @@ const Vendor = () => {
     return (
         <>
             <Container p="2rem">
-                <Title>ABOUT THE TOOLKIT</Title>
-                <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non sem rhoncus, hendrerit felis malesuada, ornare nulla. Maecenas eu placerat urna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi ut fringilla lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-                </Text>
+                <Title>Vendor Portal</Title>
                 <Flex
                     mih={50}
                     gap="xl"

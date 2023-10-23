@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
-import { useNavigate, useParams , useSearchParams } from "react-router-dom"
-import { Box, Container, Input, NumberInput, Space, Table, Tabs, Title } from "@mantine/core"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { Box, Button, Container, Input, NumberInput, Space, Table, Tabs, Title } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import { VendorInfo, VendorInput } from "../Ultils/type";
@@ -146,25 +146,27 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
     )
 
     const rows = localQuery?.data && localQuery?.data.map((e, i) => (
-        <Table.Tr key={i} onClick={() =>!userSearch && navigate(`/application/${e.Application.id}?type=vendor&id=${e.Vendor.id}`)}>
+        <Table.Tr key={i} onClick={() => !userSearch && navigate(`/application/${e.Application.id}?type=vendor&id=${e.Vendor.id}`)}>
             <Table.Td>{e.Application.potentialApplications}</Table.Td>
-            <Table.Td>{e.approval === true ? "APPROVED" : "PENDING"}</Table.Td>
+            <Table.Td>{e.approved === true ? "APPROVED" : "PENDING"}</Table.Td>
         </Table.Tr>
     )
     )
 
 
-    return (<>
-        <Table highlightOnHover withTableBorder>
-            <Table.Thead>
-                <Table.Tr>
-                    <Table.Th>Name</Table.Th>
-                    <Table.Th>APPROVAL</Table.Th>
-                </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>{rows}</Table.Tbody>
-        </Table>
-    </>)
+    return (
+        <>
+            <Button mb="1rem" onClick={() => !userSearch && navigate(`/find?type=vendor&id=${vendor.id}`)}>Select Application</Button>
+            <Table >
+                <Table.Thead>
+                    <Table.Tr>
+                        <Table.Th>Name</Table.Th>
+                        <Table.Th>APPROVAL</Table.Th>
+                    </Table.Tr>
+                </Table.Thead>
+                <Table.Tbody>{rows}</Table.Tbody>
+            </Table>
+        </>)
 }
 
 

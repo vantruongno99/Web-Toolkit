@@ -8,7 +8,7 @@ import { IconTrash, IconCheck, IconTablePlus } from '@tabler/icons-react'
 import classes from './Find.module.css';
 import { ApplicationInfo } from "../Ultils/type"
 import applicationService from "../Services/application.service"
-import { useNavigate } from "react-router-dom"
+import { useNavigate , useSearchParams } from "react-router-dom"
 
 const Find = () => {
     const [applications, setApplications] = useState<ApplicationInfo[] | undefined>([])
@@ -185,6 +185,10 @@ interface ApplicationForm {
 const Inside = ({ data }: { data: ApplicationInfo }) => {
 
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams();
+    const value = Object.fromEntries([...searchParams]);
+    const objString = '?' + new URLSearchParams(value).toString();
+    
 
 
     const form = useForm<ApplicationForm>({
@@ -216,7 +220,7 @@ const Inside = ({ data }: { data: ApplicationInfo }) => {
     return (
         <div className={styles.app}>
             <Flex gap="md" >
-                <Card shadow="sm" radius="md" withBorder p="2rem" className={styles.insideCard} onClick={()=>navigate(`/application/${data.id}`)}>
+                <Card shadow="sm" radius="md" withBorder p="2rem" className={styles.insideCard} onClick={()=>navigate(`/application/${data.id}${objString}  `)}>
                     <Card.Section>
                         <Group justify="apart">
                             <Title order={2}>
