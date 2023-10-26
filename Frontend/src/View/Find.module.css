@@ -10,4 +10,12 @@
     height: calc(100vh - 55px);
 }
 
+.app {
+   height: 400px;
+}
+
+.app:hover {
+    box-shadow: inset 0 0 100px 100px rgb(235, 232, 232);
+}
+
 

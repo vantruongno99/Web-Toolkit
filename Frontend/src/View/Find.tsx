@@ -1,5 +1,5 @@
 import data from "../data.json"
-import { Container, ScrollArea, Modal, Card, Text, Group, ActionIcon, Flex, Textarea, Grid, Select, Title, MultiSelect, Center, Divider, TextInput, Button, Radio, Chip, RangeSlider } from '@mantine/core'
+import { Image, Container, ScrollArea, Modal, Card, Text, Group, ActionIcon, Flex, Textarea, Grid, Select, Title, MultiSelect, Center, Divider, TextInput, Button, Radio, Chip, RangeSlider } from '@mantine/core'
 import { Technology, Application, TechnologyForm } from "../type"
 import { useEffect, useState } from "react"
 import styles from './index.module.css'
@@ -8,7 +8,7 @@ import { IconTrash, IconCheck, IconTablePlus } from '@tabler/icons-react'
 import classes from './Find.module.css';
 import { ApplicationInfo } from "../Ultils/type"
 import applicationService from "../Services/application.service"
-import { useNavigate , useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 
 const Find = () => {
     const [applications, setApplications] = useState<ApplicationInfo[] | undefined>([])
@@ -19,7 +19,9 @@ const Find = () => {
         getData()
     }, [])
 
-    const purposeCheck = (array1: string[], array2: string[]) => array2.length==0 || array1.length === 0 ? true : array2.every(val => array1.includes(val))
+    const check = (array1: string[], array2: string[]) => array2.length == 0 || array1.length === 0 ? true : array2.every(val => array1.includes(val))
+
+
 
     const getData = async () => {
         const data = await applicationService.getAllApplication()
@@ -33,7 +35,8 @@ const Find = () => {
             purpose: [],
             engagement: [],
             scale: [],
-            budget: []
+            budget: [],
+            stage: []
         },
     });
 
@@ -41,7 +44,8 @@ const Find = () => {
         purpose: string[],
         engagement: string[],
         scale: string[],
-        budget: string[]
+        budget: string[],
+        stage: string[]
     }
 
     const filterData = (data: FilterForm) => {
@@ -49,8 +53,10 @@ const Find = () => {
             (data.engagement.length === 0 ? true : data.engagement.includes(a.levelOfEngagement))
             && (data.budget.length === 0 ? true : data.budget.includes(a.budget))
             && (data.scale.length === 0 ? true : data.scale.includes(a.scale))
-            && purposeCheck(a.purposeOfEngagement.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
-            a.slice(1)),data.purpose)
+            && check(a.purposeOfEngagement.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
+                a.slice(1)), data.purpose)
+            && check(a.stageOfParticipation.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
+                a.slice(1)), data.stage)
         )
 
         setFiltered(b)
@@ -82,11 +88,35 @@ const Find = () => {
                                 direction="row"
                                 wrap="wrap"
                             >
-                                <Chip value="Inform" size="md"  >Inform</Chip>
+                                <Chip value="Problem identification" size="md"  >Inform</Chip>
                                 <Chip value="Consult" size="md" >Consult</Chip>
                                 <Chip value="Involve" size="md">Involve</Chip>
                                 <Chip value="Collaborate" size="md">Collaborate</Chip>
                                 <Chip value="Empower" size="md">Empower</Chip>
+                            </Flex>
+                        </Chip.Group>
+
+
+
+                        <Title order={4} mt="1rem">
+                            Stage of participation
+                        </Title>
+
+
+                        <Chip.Group multiple {...form.getInputProps('stage')}>
+                            <Flex
+                                mt={"1rem"}
+                                gap="sm"
+                                justify="flex-start"
+                                align="flex-start"
+                                direction="row"
+                                wrap="wrap"
+                            >
+                                <Chip value="Problem identification" size="md"  >Problem identification</Chip>
+                                <Chip value="Problem definition/prioritization" size="md" >Problem definition/prioritization</Chip>
+                                <Chip value="Input/feedback" size="md">Input/feedback</Chip>
+                                <Chip value="Evaluation" size="md">Evaluation</Chip>
+                                <Chip value="Co-creation" size="md">Co-creation</Chip>
                             </Flex>
                         </Chip.Group>
 
@@ -149,15 +179,17 @@ const Find = () => {
                                 <Chip size="md" value="$$$$">$$$$</Chip>
                             </Flex>
                         </Chip.Group>
-                        <Button mt={"1rem"} type="submit">
+                        <Button mt="2rem" type="submit">
                             Search
                         </Button>
                     </Grid.Col>
                     <Grid.Col span={8} className={classes.cardSection} >
                         <ScrollArea className={classes.scrollbar} scrollbarSize={2} scrollHideDelay={0}>
                             <Container fluid p={"2rem"}>
-                                {filtered?.map((a, i) => <Inside data={a} key={i} />)}
-
+                                <Grid justify="left" align="stretch" gutter="xl">
+                                    {filtered?.map((a, i) => <Grid.Col span={4}> <Inside data={a} key={i} />                                    </Grid.Col>
+                                    )}
+                                </Grid>
                             </Container>
                         </ScrollArea>
                     </Grid.Col>
@@ -188,7 +220,7 @@ const Inside = ({ data }: { data: ApplicationInfo }) => {
     const [searchParams] = useSearchParams();
     const value = Object.fromEntries([...searchParams]);
     const objString = '?' + new URLSearchParams(value).toString();
-    
+
 
 
     const form = useForm<ApplicationForm>({
@@ -218,120 +250,34 @@ const Inside = ({ data }: { data: ApplicationInfo }) => {
 
 
     return (
-        <div className={styles.app}>
-            <Flex gap="md" >
-                <Card shadow="sm" radius="md" withBorder p="2rem" className={styles.insideCard} onClick={()=>navigate(`/application/${data.id}${objString}  `)}>
-                    <Card.Section>
-                        <Group justify="apart">
-                            <Title order={2}>
-                                {data.potentialApplications}
-                            </Title>
-                        </Group>
-                        <Text fz="sm" mt={"1rem"} >
-                            {data.explanation}
-                        </Text>
-                        <Text fz="sm" >
-                            {data.maturity}
-                        </Text>
-                        <Divider mt="1rem" size="xs" color="black" />
+        <div >
+
+            <Card
+                shadow="sm"
+                padding="xl"
+                component="a"
+                radius="md"
+                href={`/application/${data.id}${objString}`}
+                target="_blank"
+                className={classes.app}
+            >
+                 <Card.Section>
+                    <Image
+                        src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                        height={160}
+                        alt="Norway"
+                    />
+                </Card.Section>
+
+                <Text fw={500} size="lg" mt="md">
+                {data.potentialApplications}  
+                    </Text>
 
 
-                        <Grid justify="flex-start" align="center" mt={"1rem"} >
-                            <Grid.Col span={3} ><Text fz="sm" >
-                                Stage of participation :
-                            </Text >
-                            </Grid.Col>
-                            <Grid.Col span={9} >
-                                <Textarea
-                                    {...form.getInputProps('stageOfParticipation')}
-                                    autosize
-                                    minRows={1}
-                                />
-                            </Grid.Col>
-                        </Grid >
-
-
-                        <Grid justify="flex-start" align="center" mt={"1rem"}  >
-                            <Grid.Col span={3} ><Text fz="sm" >
-                                Purpose :
-                            </Text >
-                            </Grid.Col>
-                            <Grid.Col span={9} >
-                                <MultiSelect
-                                    {...form.getInputProps('purposeOfEngagement')}
-                                    data={[
-                                        { value: 'Collaborate', label: 'Collaborate' },
-                                        { value: 'Inform', label: 'Inform' },
-                                        { value: 'Involve', label: 'Involve' },
-                                        { value: 'Consult', label: 'Consult' },
-                                        { value: 'Empower', label: 'Empower' },
-                                    ]}
-                                />
-                            </Grid.Col>
-                        </Grid >
-
-                        <Grid justify="flex-start" align="center" mt={"1rem"} >
-                            <Grid.Col span={3} ><Text fz="sm" >
-                                Level :
-                            </Text >
-                            </Grid.Col>
-                            <Grid.Col span={3} >
-                                <Select
-                                    {...form.getInputProps('levelOfEngagement')}
-                                    data={[
-                                        { value: 'Active', label: 'Active' },
-                                        { value: 'Passive', label: 'Passive' },
-                                        { value: 'Immersive', label: 'Immersive' },
-                                    ]}
-
-                                />
-                            </Grid.Col>
-                        </Grid >
-
-                        <Grid justify="flex-start" align="center" mt={"1rem"} >
-                            <Grid.Col span={3} ><Text fz="sm" >
-                                Scale :
-                            </Text >
-                            </Grid.Col>
-                            <Grid.Col span={3} >
-                                <Select
-                                    {...form.getInputProps('scale')}
-                                    data={[
-                                        { value: 'Individual', label: 'Individual' },
-                                        { value: 'Small group', label: 'Small group' },
-                                        { value: 'Large group', label: 'Large group' },
-                                        { value: 'Public', label: 'Public' },
-
-                                    ]}
-                                />
-                            </Grid.Col>
-                        </Grid >
-
-                        <Grid justify="flex-start" align="center" mt={"1rem"} >
-                            <Grid.Col span={3} ><Text fz="sm" >
-                                Budget :
-                            </Text >
-                            </Grid.Col>
-                            <Grid.Col span={3} >
-                                <Select
-                                    {...form.getInputProps('budget')}
-                                    data={[
-                                        { value: '$', label: '$' },
-                                        { value: '$$', label: '$$' },
-                                        { value: '$$$', label: '$$$' },
-
-                                    ]}
-                                />
-                            </Grid.Col>
-                        </Grid >
-
-
-
-
-
-                    </Card.Section>
-                </Card>
-            </Flex>
+                <Text size="sm" c="dimmed">
+                    {data.explanation}
+                </Text>
+            </Card>
         </div>
     )
 }

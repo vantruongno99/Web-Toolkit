@@ -31,7 +31,9 @@ export interface TechnologyInfo extends TechnologyInput {
 
 export interface VendorInput {
     name: string,
-    ABN: number
+    ABN: number,
+    email : string,
+    link: string
 }
 
 export interface VendorInfo extends VendorInput {

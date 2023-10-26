@@ -12,7 +12,7 @@ const CreateVendor = () => {
     const navigate = useNavigate();
 
     const form = useForm({
-        initialValues: { name: '', ABN: 0 },
+        initialValues: { name: '', ABN: 0, email: ' ', link: '' },
         // functions will be used to validate values at corresponding key
         validate: {
             name: (value) => (value.length < 5 ? 'Name must have at least 5 letters' : null)
@@ -21,10 +21,11 @@ const CreateVendor = () => {
 
     const createVendor = useMutation({
         mutationFn: async (input: VendorInput) => {
-            return await vendorService.createVendor(input)
+            const res =  await vendorService.createVendor({...input,ABN : Number(input.ABN)})
+            return res
         },
-        onSuccess: () => {
-            navigate("/vendor")
+        onSuccess: (res) => {
+            navigate(`/vendor/${res?.id}`)
         },
         onError: (e: Error) => {
             console.log(e)
@@ -53,9 +54,24 @@ const CreateVendor = () => {
                             <NumberInput {...form.getInputProps('ABN')} />
                         </Input.Wrapper>
 
+                        <Input.Wrapper
+
+                            label="Email :" placeholder="Email" mt={"1rem"}
+                        >
+                            <TextInput {...form.getInputProps('email')} />
+                        </Input.Wrapper>
+
+
+                        <Input.Wrapper
+
+                            label="Link :" placeholder="Link" mt={"1rem"}
+                        >
+                            <TextInput {...form.getInputProps('link')} />
+                        </Input.Wrapper>
+
                         <Space h="md" />
                         <Button type="submit" disabled={createVendor.isPending} mt="sm">
-                            Save
+                            Proceed
                         </Button>
                         <Space h="md" />
                         {errorMessage.value}

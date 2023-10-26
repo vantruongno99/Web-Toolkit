@@ -39,6 +39,8 @@ model Vendor {
   name String @unique
   ABN Int @unique
   Application ApplicationVendor[]
+  email String 
+  link String 
 }
 
 model ApplicationVendor{
@@ -46,6 +48,7 @@ model ApplicationVendor{
   vendorId Int 
   Application Application @relation(fields: [applicationId], references: [id])
   applicationId Int
+  showcase String 
   approved Boolean    @default(false)
    @@id([vendorId, applicationId])
 }

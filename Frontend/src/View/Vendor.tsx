@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Box, Button, Container, Input, NumberInput, Space, Table, Tabs, Title } from "@mantine/core"
+import { Anchor, Box, Button, Container, Input, NumberInput, Space, Table, Tabs, Title } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import { VendorInfo, VendorInput } from "../Ultils/type";
@@ -82,12 +82,15 @@ const Vendor = () => {
 
 const VendorDetail = ({ vendor, isLoading }: { vendor: VendorInfo, isLoading: boolean }) => {
 
-
+    const [searchParams] = useSearchParams();
+    const userSearch = searchParams.get('type') === "user"
     const form = useForm<VendorInfo>({
         initialValues: {
             name: "",
             ABN: 0,
-            id: 0
+            id: 0,
+            email: "",
+            link: ""
         },
         validate: {
             name: (value) => (value.length < 5 ? 'Name must have at least 5 letters' : null),
@@ -96,13 +99,48 @@ const VendorDetail = ({ vendor, isLoading }: { vendor: VendorInfo, isLoading: bo
         },
     });
 
+
     useEffect(() => {
         form.setValues(vendor)
     }, [vendor])
 
+    if (userSearch) {
+        return (<>
+            <Title mt={"1rem"} order={3} >INFORMATION</Title>
+            <Space h="xl" />
+            <Box maw={440} >
+                <Input.Wrapper
+                    label="Name :"
+                >
+                    <Input   size="md" />
+                </Input.Wrapper>
+                <Input.Wrapper
+                    label="ABN :"
+                    mt={"1rem"}
+                >
+                    <NumberInput  value={form.values.ABN} size="md" />
+                </Input.Wrapper>
+                <Input.Wrapper
+                    label="Email :"
+                    mt={"1rem"}
+                >
+                    <Input   value={form.values.email} size="md" />
+                </Input.Wrapper>
+                <Input.Wrapper
+                    label="Link :"
+                    mt={"1rem"}
+                >
+                   <Anchor href={form.values.email} target="_blank">
+                        {form.values.email}
+                    </Anchor>
+                </Input.Wrapper>
+            </Box>
+        </>)
+    }
+
     return (
         <>
-            <Title order={3} >INFORMATION</Title>
+            <Title mt={"1rem"} order={3} >INFORMATION</Title>
             <Space h="xl" />
             <Box maw={440} >
                 <Input.Wrapper
@@ -115,6 +153,18 @@ const VendorDetail = ({ vendor, isLoading }: { vendor: VendorInfo, isLoading: bo
                     mt={"1rem"}
                 >
                     <NumberInput   {...form.getInputProps('ABN')} size="md" />
+                </Input.Wrapper>
+                <Input.Wrapper
+                    label="Email :"
+                    mt={"1rem"}
+                >
+                    <Input   {...form.getInputProps('email')} size="md" />
+                </Input.Wrapper>
+                <Input.Wrapper
+                    label="Link :"
+                    mt={"1rem"}
+                >
+                    <Input   {...form.getInputProps('link')} size="md" />
                 </Input.Wrapper>
             </Box>
 

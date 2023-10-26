@@ -19,11 +19,6 @@ const Home = () => {
             link: '/about'
         },
         {
-            title: "Community engagement​",
-            description: "Learn more",
-            link: '/ca'
-        },
-        {
             title: "Find solutions",
             description: "Find",
             link: '/find'

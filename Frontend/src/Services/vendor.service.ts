@@ -66,6 +66,24 @@ const getVendor = async (id: number): Promise<VendorInfo | undefined> => {
     }
 }
 
+const getVendorByABN = async (ABN: number): Promise<VendorInfo | undefined> => {
+    try {
+        const res = await axios.get(`${baseUrl}/ABN/${ABN}`,
+            config
+        )
+
+        return res.data
+    }
+    catch (error: any | AxiosError) {
+        if (axios.isAxiosError(error)) {
+            throw AxiosHandleResponse(error)
+        } else {
+            console.log(error)
+
+        }
+    }
+}
+
 const getVendorInfo = async (name: string, option?: any) => {
     try {
         const objString = '?' + new URLSearchParams(option).toString();
@@ -104,9 +122,8 @@ const getAllVendorApplication = async (id: number): Promise<ApplicationVendor[] 
 }
 
 
-const ApplicationRequest = async (applicationId: number, vendorId: number): Promise<ApplicationVendor[] | undefined> => {
+const applicationRequest = async (applicationId: number, vendorId: number): Promise<ApplicationVendor[] | undefined> => {
     try {
-        console.log(`${baseUrl}/${vendorId}/apply/${applicationId}`)
         const res = await axios.post(`${baseUrl}/${vendorId}/apply/${applicationId}`,
             config
         )
@@ -129,7 +146,8 @@ const vendorService = {
     createVendor,
     getVendorInfo,
     getAllVendorApplication,
-    ApplicationRequest
+    applicationRequest,
+    getVendorByABN
 }
 
 export default vendorService

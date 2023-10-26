@@ -26,7 +26,12 @@ const a = async () => {
 }
 
 const b = async () => {
-    const a = await vendorService.getVendorById(1)
+    const a = await vendorService.addVendor({
+        name: "test1",
+        ABN: 11111111,
+        email: "11111",
+        link: "11111"
+})
     console.log(a)
 }
 

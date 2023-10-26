@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button } from "@mantine/core"
+import { Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal } from "@mantine/core"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import { ApplicationInfo, ApplicationInput } from "../Ultils/type";
@@ -12,7 +12,7 @@ import Vendor from "./Vendors";
 
 
 interface Option {
-    type: string|null,
+    type: string | null,
     id?: number
 }
 
@@ -24,9 +24,9 @@ const Application = () => {
     const type = searchParams.get('type')
     const typeId = Number(searchParams.get('id'))
 
-    const option : Option= {
+    const option: Option = {
         type,
-       ...(typeId && {id : typeId})
+        ...(typeId && { id: typeId })
     }
 
     if (!id) {
@@ -125,24 +125,23 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
     const alreadyRequest = application.Vendor?.find(a => a.Vendor.id === option.id)
 
 
-    let rows = option.type =="vendor" ? 
-    (application.Vendor?.filter(a => a.Vendor.id === option.id).map((e, i) => (
-        <Table.Tr key={i} >
-            <Table.Td>{e.Vendor.name}</Table.Td>
-            <Table.Td>{e.Vendor.ABN}</Table.Td>
-            <Table.Td>{e.approved === true ? "APPROVED" : "PENDING"}</Table.Td>
-        </Table.Tr>
-    )))
-    :
-    (application.Vendor?.map((e, i) => (
-        <Table.Tr key={i}  onClick={()=>navigate(`/vendor/${e.Vendor.id}?type=user`)}>
-            <Table.Td>{e.Vendor.name}</Table.Td>
-            <Table.Td>{e.Vendor.ABN}</Table.Td>
-            <Table.Td>{e.approved === true ? "APPROVED" : "PENDING"}</Table.Td>
-        </Table.Tr>
-    )))
+    let rows = option.type == "vendor" ?
+        (application.Vendor?.filter(a => a.Vendor.id === option.id).map((e, i) => (
+            <Table.Tr key={i} >
+                <Table.Td>{e.Vendor.name}</Table.Td>
+                <Table.Td>{e.Vendor.ABN}</Table.Td>
+                <Table.Td>{e.approved === true ? "APPROVED" : "PENDING"}</Table.Td>
+            </Table.Tr>
+        )))
+        :
+        (application.Vendor?.filter(a => a.approved === true).map((e, i) => (
+            <Table.Tr >
+                <Table.Td key={i} onClick={() => navigate(`/vendor/${e.Vendor.id}?type=user`)}>{e.Vendor.name}</Table.Td>
+                <Table.Td key={i} onClick={() => navigate(`/vendor/${e.Vendor.id}?type=user`)}>{e.Vendor.ABN}</Table.Td>
+            </Table.Tr>
+        )))
 
-   
+
 
     interface assignInput {
         vendorId: number,
@@ -152,7 +151,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
 
     const assignRequest = useMutation({
         mutationFn: async (input: assignInput) => {
-            return await vendorService.ApplicationRequest(input.applicationId, input.vendorId)
+            return await vendorService.applicationRequest(input.applicationId, input.vendorId)
         },
         onSuccess: () => {
             navigate(`/vendor/${option.id}`)
@@ -162,18 +161,20 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
         },
     })
 
+    const [showcase, setShowcase] = useState<string>('')
+
+
 
     return (
         <div >
             <Title>
-                <TextInput size="30" fz="sm" {...form.getInputProps('potentialApplications')} />
+                {form.values.potentialApplications}
             </Title>
-            <Textarea
-                autosize
-                minRows={3}
-                mt={"1rem"} fz="sm" {...form.getInputProps('explanation')} />
 
-            <TextInput mt={"1rem"} fz="sm" {...form.getInputProps('maturity')} />
+
+            <Text mt={"1rem"} fz="sm"  >
+                {form.values.explanation}
+            </Text>
 
             <Divider mt="1rem" size="xs" color="black" />
 
@@ -184,11 +185,9 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
-                    <Textarea
-                        {...form.getInputProps('stageOfParticipation')}
-                        autosize
-                        minRows={1}
-                    />
+                    <Text fz="sm"  >
+                        {form.values.stageOfParticipation}
+                    </Text>
                 </Grid.Col>
             </Grid >
 
@@ -199,18 +198,14 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
-                    <MultiSelect
-                        {...form.getInputProps('purposeOfEngagement')}
-                        data={[
-                            { value: 'Collaborate', label: 'Collaborate' },
-                            { value: 'Inform', label: 'Inform' },
-                            { value: 'Involve', label: 'Involve' },
-                            { value: 'Consult', label: 'Consult' },
-                            { value: 'Empower', label: 'Empower' },
-                        ]}
-                    />
+                    <Text fz="sm"  >
+                        {form.values.purposeOfEngagement}
+                    </Text>
                 </Grid.Col>
             </Grid >
+
+
+
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
                 <Grid.Col span={3} ><Text fz="sm" >
@@ -218,15 +213,9 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
-                    <Select
-                        {...form.getInputProps('levelOfEngagement')}
-                        data={[
-                            { value: 'Active', label: 'Active' },
-                            { value: 'Passive', label: 'Passive' },
-                            { value: 'Immersive', label: 'Immersive' },
-                        ]}
-
-                    />
+                    <Text fz="sm"  >
+                        {form.values.levelOfEngagement}
+                    </Text>
                 </Grid.Col>
             </Grid >
 
@@ -236,16 +225,10 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
-                    <Select
-                        {...form.getInputProps('scale')}
-                        data={[
-                            { value: 'Individual', label: 'Individual' },
-                            { value: 'Small group', label: 'Small group' },
-                            { value: 'Large group', label: 'Large group' },
-                            { value: 'Public', label: 'Public' },
 
-                        ]}
-                    />
+                    <Text fz="sm"  >
+                        {form.values.scale}
+                    </Text>
                 </Grid.Col>
             </Grid >
 
@@ -255,43 +238,66 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
-                    <Select
-                        {...form.getInputProps('budget')}
-                        data={[
-                            { value: '$', label: '$' },
-                            { value: '$$', label: '$$' },
-                            { value: '$$$', label: '$$$' },
-
-                        ]}
-                    />
+                    <Text fz="sm"  >
+                        {form.values.budget}
+                    </Text>
                 </Grid.Col>
             </Grid >
             {rows && rows?.length > 0 && <>
-            <Divider mt="1rem" size="xs" color="black" />
-            <Text>Vendor partipation</Text>
-             <Table mt={"1rem"} highlightOnHover withTableBorder>
-                <Table.Thead>
-                    <Table.Tr>
-                        <Table.Th>Name</Table.Th>
-                        <Table.Th>ABN</Table.Th>
-                        <Table.Th>approval</Table.Th>
-                    </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
+                <Divider mt="1rem" size="xs" color="black" />
+                <Text>Vendor partipation</Text>
+                <Table mt={"1rem"} highlightOnHover withTableBorder>
+                    <Table.Thead>
+                        <Table.Tr>
+                            <Table.Th>Name</Table.Th>
+                            <Table.Th>ABN</Table.Th>
+                            {(option.type === "vendor") ? <Table.Th>Approval</Table.Th> : <Table.Th>Showcase</Table.Th>}
+                        </Table.Tr>
+                    </Table.Thead>
+                    <Table.Tbody>{rows}</Table.Tbody>
+                </Table>
             </>}
+
 
 
             {vendorOption &&
                 <div>
-                    {!alreadyRequest && 
-                    <Button mb={"2rem"} mt="2rem" onClick={() => assignRequest.mutateAsync({ applicationId: application.id, vendorId: option.id as number})}>Request to particiapte</Button>
-                }
-                
+                    {!alreadyRequest &&
+                        <>
+                            <Divider mt="1rem" size="xs" color="black" />
+                            <Button mb={"2rem"} mt="2rem" onClick={() => assignRequest.mutateAsync({ applicationId: application.id, vendorId: option.id as number })}>Request to particiapte</Button>
+                            <Request />
+                        </>
+                    }
+
+
+
                 </div>}
 
         </div>
     )
+}
+
+const Request = () => {
+
+    const [showed, setShowed] = useState<boolean>(false)
+    const [showcase, setShowcase] = useState<string>("")
+
+
+    return (<>
+
+        <Modal opened={showed} onClose={() => setShowed(false)} title="Add Additional information">
+            <Title order={3}></Title>
+            <Input.Wrapper
+                label="Showcase:"
+            >
+                <TextInput size="md" value={showcase} onChange={(event) => setShowcase(event.currentTarget.value)}/>
+            </Input.Wrapper>
+
+        </Modal>
+        <Button mb={"2rem"} mt="2rem" onClick={() => setShowed(true)}>Request to particiapte</Button>
+
+    </>)
 }
 
 
