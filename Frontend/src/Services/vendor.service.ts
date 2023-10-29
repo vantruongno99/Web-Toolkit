@@ -122,9 +122,9 @@ const getAllVendorApplication = async (id: number): Promise<ApplicationVendor[] 
 }
 
 
-const applicationRequest = async (applicationId: number, vendorId: number): Promise<ApplicationVendor[] | undefined> => {
+const applicationRequest = async (applicationId: number, vendorId: number, input: { showcase: string }): Promise<ApplicationVendor[] | undefined> => {
     try {
-        const res = await axios.post(`${baseUrl}/${vendorId}/apply/${applicationId}`,
+        const res = await axios.post(`${baseUrl}/${vendorId}/apply/${applicationId}`, input,
             config
         )
 

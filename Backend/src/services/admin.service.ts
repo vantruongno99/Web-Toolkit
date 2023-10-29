@@ -3,6 +3,10 @@ import { ApplicationInput } from "../models/application.modal"
 import { TechnologyInput } from "../models/technology.modal"
 import errorHandler from "../utils/errorHandler"
 
+BigInt.prototype.toJSON = function () {
+    return String(this)
+}
+
 
 const approve = async (vendorId: number, applicationId: number) => {
     try {
@@ -15,7 +19,27 @@ const approve = async (vendorId: number, applicationId: number) => {
 
             },
             data: {
-                approved: true
+                approved: "APPROVED"
+            }
+        })
+    }
+    catch (e: any) {
+        errorHandler(e)
+    }
+}
+
+const disapprove = async (vendorId: number, applicationId: number) => {
+    try {
+        await prisma.applicationVendor.update({
+            where: {
+                vendorId_applicationId: {
+                    vendorId,
+                    applicationId
+                }
+
+            },
+            data: {
+                approved: "DISAPPROVED"
             }
         })
     }
@@ -43,7 +67,8 @@ const getAll = async () => {
 
 export default {
     approve,
-    getAll
+    getAll,
+    disapprove
 }
 
 

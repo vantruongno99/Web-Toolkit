@@ -31,7 +31,7 @@ const getAllApproval = async (): Promise<ApplicationVendor []| undefined> => {
 
 
 
-const ConfirmApprove = async (vendorId: number ,applicationId: number ): Promise<void> => {
+const confirmApprove = async (vendorId: number ,applicationId: number ): Promise<void> => {
     try {
         console.log(`${baseUrl}/approve/${vendorId}/${applicationId}`)
         await axios.put(`${baseUrl}/approve/${vendorId}/${applicationId}`,
@@ -49,9 +49,27 @@ const ConfirmApprove = async (vendorId: number ,applicationId: number ): Promise
     }
 }
 
+const confirmDisapprove = async (vendorId: number ,applicationId: number ): Promise<void> => {
+    try {
+        await axios.put(`${baseUrl}/disapprove/${vendorId}/${applicationId}`,
+            config
+        )
+
+    }
+    catch (error: any | AxiosError) {
+        if (axios.isAxiosError(error)) {
+            throw AxiosHandleResponse(error)
+        } else {
+            console.log(error)
+
+        }
+    }
+}
+
 const adminService = {
     getAllApproval,
-    ConfirmApprove
+    confirmApprove,
+    confirmDisapprove
 }
 
 export default adminService

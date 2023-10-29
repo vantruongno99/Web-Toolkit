@@ -8,7 +8,7 @@ import applicationService from "../Services/application.service";
 import { useForm } from "@mantine/form";
 import styles from './index.module.css'
 import vendorService from "../Services/vendor.service";
-import Vendor from "./Vendors";
+import Vendor from "./Vendor/Vendors";
 
 
 interface Option {
@@ -130,11 +130,11 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
             <Table.Tr key={i} >
                 <Table.Td>{e.Vendor.name}</Table.Td>
                 <Table.Td>{e.Vendor.ABN}</Table.Td>
-                <Table.Td>{e.approved === true ? "APPROVED" : "PENDING"}</Table.Td>
+                <Table.Td>{e.approved}</Table.Td>
             </Table.Tr>
         )))
         :
-        (application.Vendor?.filter(a => a.approved === true).map((e, i) => (
+        (application.Vendor?.filter(a => a.approved === "APPROVED").map((e, i) => (
             <Table.Tr >
                 <Table.Td key={i} onClick={() => navigate(`/vendor/${e.Vendor.id}?type=user`)}>{e.Vendor.name}</Table.Td>
                 <Table.Td key={i} onClick={() => navigate(`/vendor/${e.Vendor.id}?type=user`)}>{e.Vendor.ABN}</Table.Td>
@@ -145,13 +145,14 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
 
     interface assignInput {
         vendorId: number,
-        applicationId: number
+        applicationId: number,
+        showcase: string
     }
 
 
     const assignRequest = useMutation({
         mutationFn: async (input: assignInput) => {
-            return await vendorService.applicationRequest(input.applicationId, input.vendorId)
+            return await vendorService.applicationRequest(input.applicationId, input.vendorId, { showcase: input.showcase })
         },
         onSuccess: () => {
             navigate(`/vendor/${option.id}`)
@@ -160,10 +161,6 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
             console.log(e)
         },
     })
-
-    const [showcase, setShowcase] = useState<string>('')
-
-
 
     return (
         <div >
@@ -265,8 +262,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                     {!alreadyRequest &&
                         <>
                             <Divider mt="1rem" size="xs" color="black" />
-                            <Button mb={"2rem"} mt="2rem" onClick={() => assignRequest.mutateAsync({ applicationId: application.id, vendorId: option.id as number })}>Request to particiapte</Button>
-                            <Request />
+                            <Request request={assignRequest.mutateAsync} applicationId={application.id} vendorId={option.id} />
                         </>
                     }
 
@@ -278,10 +274,23 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
     )
 }
 
-const Request = () => {
+const Request = ({ request, applicationId, vendorId }: { request: any, applicationId: number, vendorId: number | undefined }) => {
 
     const [showed, setShowed] = useState<boolean>(false)
     const [showcase, setShowcase] = useState<string>("")
+
+    const onRequest = async () => {
+        try {
+            await request({
+                vendorId,
+                applicationId,
+                showcase: showcase
+            })
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
 
 
     return (<>
@@ -291,8 +300,10 @@ const Request = () => {
             <Input.Wrapper
                 label="Showcase:"
             >
-                <TextInput size="md" value={showcase} onChange={(event) => setShowcase(event.currentTarget.value)}/>
+                <TextInput size="md" value={showcase} onChange={(event) => setShowcase(event.currentTarget.value)} />
             </Input.Wrapper>
+
+            <Button mt={"2rem"} onClick={() => onRequest()}>Request</Button>
 
         </Modal>
         <Button mb={"2rem"} mt="2rem" onClick={() => setShowed(true)}>Request to particiapte</Button>

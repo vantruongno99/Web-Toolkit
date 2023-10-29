@@ -2,6 +2,10 @@ import { prisma } from "../../prisma/prismaClient"
 import { TechnologyInput } from "../models/technology.modal"
 import errorHandler from "../utils/errorHandler"
 
+BigInt.prototype.toJSON = function () {
+    return String(this)
+}
+
 
 const getAllTechnology = async () => {
     try {
@@ -17,11 +21,14 @@ const getAllTechnology = async () => {
     }
 }
 
-const getAllTechnologyById = async (id : number) => {
+const getTechnology = async (id : number) => {
     try {
         const technology = await prisma.technology.findFirstOrThrow({
             where: {
                 id : id 
+            },
+            include:{
+                Application : true
             }
         })
         return technology
@@ -45,10 +52,41 @@ const addTechnology = async (data: TechnologyInput) => {
 }
 
 
+const deleteTechnology= async (id: number) => {
+    try {
+        await prisma.technology.delete({
+            where: {
+                id: id
+            },
+        })
+    }
+    catch (e: any) {
+        errorHandler(e)
+    }
+}
+
+const editTechnology= async (data: TechnologyInput, id: number) => {
+    try {
+        const newAppliction = await prisma.technology.update({
+            where: {
+                id
+            },
+            data: data
+        })
+
+        return newAppliction
+    }
+    catch (e: any) {
+        errorHandler(e)
+    }
+}
+
 export default {
     getAllTechnology,
-    getAllTechnologyById,
+    getTechnology,
     addTechnology,
+    deleteTechnology,
+    editTechnology
   }
   
 

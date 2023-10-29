@@ -42,10 +42,18 @@ export interface VendorInfo extends VendorInput {
 }
 
 export interface ApplicationVendor {
-    approved: boolean;
+    approved: String;
     Application: ApplicationInfo,
     Vendor: VendorInfo,
     applicationId : number,
     vendorId : number ,
-    approval: Boolean
+    showcase: string
 }
+
+export interface LandingData {
+    title: string,
+    image?: any,
+    description: string,
+    link: string
+}
+

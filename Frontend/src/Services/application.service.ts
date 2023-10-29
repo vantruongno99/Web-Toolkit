@@ -85,11 +85,48 @@ const getApplicationInfo = async (name: string, option?: any) => {
     }
 }
 
+const editApplication = async (data: ApplicationInput, id: number): Promise<ApplicationInfo | undefined> => {
+    try {
+        const res = await axios.put(`${baseUrl}/${id}`, data,
+            config
+        )
+        return res.data
+    }
+    catch (error: any | AxiosError) {
+        if (axios.isAxiosError(error)) {
+            console.log(error)
+            AxiosHandleResponse(error)
+        } else {
+            console.log(error)
+
+        }
+    }
+}
+
+const deleteApplication = async (id: number): Promise<void> => {
+    try {
+        await axios.delete(`${baseUrl}/${id}`,
+            config
+        )
+
+    }
+    catch (error: any | AxiosError) {
+        if (axios.isAxiosError(error)) {
+            throw AxiosHandleResponse(error)
+        } else {
+            console.log(error)
+
+        }
+    }
+}
+
 const applicationService = {
     getAllApplication,
     getApplication,
     createApplication,
-    getApplicationInfo
+    getApplicationInfo,
+    editApplication,
+    deleteApplication
 }
 
 export default applicationService

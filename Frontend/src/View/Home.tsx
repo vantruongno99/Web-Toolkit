@@ -1,8 +1,8 @@
 import React from "react";
 import { Flex, Button, Paper, Title, Text } from "@mantine/core";
 import classes from './Home.module.css';
-import { LandingData } from "../type";
 import { useNavigate } from 'react-router-dom';
+import { LandingData } from "../Ultils/type";
 
 
 const Home = () => {

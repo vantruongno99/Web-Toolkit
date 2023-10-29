@@ -2,6 +2,10 @@ import { prisma } from "../../prisma/prismaClient"
 import { VendorInput } from "../models/vendor.model"
 import errorHandler from "../utils/errorHandler"
 
+BigInt.prototype.toJSON = function () {
+    return String(this)
+}
+
 
 const getAllVendor = async () => {
     try {

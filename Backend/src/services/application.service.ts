@@ -4,6 +4,17 @@ import { TechnologyInput } from "../models/technology.modal"
 import errorHandler from "../utils/errorHandler"
 
 
+declare global {
+    interface BigInt {
+      toJSON(): string
+    }
+  }
+
+BigInt.prototype.toJSON = function () {
+    return String(this)
+}
+
+
 const getAllApplication = async () => {
     try {
         const applications = await prisma.application.findMany({
@@ -23,7 +34,7 @@ const getAllApplication = async () => {
     }
 }
 
-const getApplicationByTechId = async (id: number) => {
+const getApplicationById = async (id: number) => {
     try {
         const applications = await prisma.application.findFirstOrThrow({
             where: {
@@ -59,12 +70,43 @@ const addApplication = async (data: ApplicationInput) => {
     }
 }
 
+const deleteApplication = async (id: number) => {
+    try {
+        await prisma.application.delete({
+            where: {
+                id: id
+            },
+        })
+    }
+    catch (e: any) {
+        errorHandler(e)
+    }
+}
+
+const editApplication = async (data: ApplicationInput, id: number) => {
+    try {
+        const newAppliction = await prisma.application.update({
+            where: {
+                id
+            },
+            data: data
+        })
+
+        return newAppliction
+    }
+    catch (e: any) {
+        errorHandler(e)
+    }
+}
+
 
 
 export default {
     getAllApplication,
-    getApplicationByTechId,
+    getApplicationById,
     addApplication,
+    deleteApplication,
+    editApplication
 }
 
 

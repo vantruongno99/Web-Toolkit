@@ -14,6 +14,7 @@ morganBody(app)
 
 app.use(express.static('dist'))
 
+
 app.get('/api', (req: Request, res: Response) => {
     res.json({ status: 'API is running on /api' });
   });
