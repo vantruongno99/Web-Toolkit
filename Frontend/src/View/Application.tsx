@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal } from "@mantine/core"
+import { Image ,Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal } from "@mantine/core"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import { ApplicationInfo, ApplicationInput } from "../Ultils/type";
 import applicationService from "../Services/application.service";
-import { useForm } from "@mantine/form";
+import { useForm } from '@mantine/form';
 import styles from './index.module.css'
 import vendorService from "../Services/vendor.service";
 import Vendor from "./Vendor/Vendors";
@@ -164,7 +164,11 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
 
     return (
         <div >
-            <Title>
+
+            <Image   h={300} w={400} src={application.imageUrl} />
+
+
+            <Title mt={"1rem"}>
                 {form.values.potentialApplications}
             </Title>
 

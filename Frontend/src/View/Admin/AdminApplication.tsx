@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Box, Card, Container, Divider, Flex, Grid, Group, ActionIcon, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal } from "@mantine/core"
+import { Image, Box, Card, Container, Divider, Flex, Grid, Group, ActionIcon, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, FileButton } from "@mantine/core"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import applicationService from "../../Services/application.service";
-import { useForm } from "@mantine/form";
+import { useForm } from '@mantine/form';
 import { ApplicationInput } from "../../Ultils/type";
 import { IconCircleX, IconCircleCheck, IconTablePlus } from "@tabler/icons-react";
 import adminService from "../../Services/admin.service";
+import imageService from "../../Services/image.service";
 
 interface localApplicationForm {
     purposeOfEngagement: string[];
@@ -19,7 +20,7 @@ interface localApplicationForm {
     levelOfEngagement: string
     scale: string;
     budget: string;
-    solutionFor: string;
+    solutionFor: string[];
     considerations: string;
 }
 
@@ -28,6 +29,8 @@ interface localApplicationForm {
 
 
 const AdminApplication = () => {
+
+    const [file, setFile] = useState<File | null>(null)
 
     const params = useParams();
     if (!params.id) {
@@ -51,7 +54,7 @@ const AdminApplication = () => {
             levelOfEngagement: "",
             scale: "",
             budget: "",
-            solutionFor: "",
+            solutionFor: [],
             considerations: "",
         }
     })
@@ -76,11 +79,9 @@ const AdminApplication = () => {
                         a.slice(1)),
                     stageOfParticipation: application.stageOfParticipation.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
                         a.slice(1)),
-
+                    solutionFor: application.solutionFor.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
+                        a.slice(1)),
                 }
-
-                console.log(localData)
-
 
                 form.setInitialValues(localData);
                 form.setValues(localData);
@@ -116,6 +117,7 @@ const AdminApplication = () => {
 
         },
     })
+
 
 
     interface ApprovalInput {
@@ -156,13 +158,37 @@ const AdminApplication = () => {
         const updateData = {
             ...form.values,
             purposeOfEngagement: form.values.purposeOfEngagement.join(', '),
-            stageOfParticipation: form.values.stageOfParticipation.join(', ')
+            stageOfParticipation: form.values.stageOfParticipation.join(', '),
+            solutionFor: form.values.solutionFor.join(', ')
+
 
         }
 
 
         await updateApplication.mutateAsync(updateData)
     }
+
+    const uploadImage = useMutation({
+        mutationFn: async (input: File | null) => {
+            if (!input) {
+                return;
+            }
+            const link = await imageService.uploadImage(input)
+            if (!link) {
+                return;
+            }
+            await applicationService.editApplicationImage(link.url, id)
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['approval'] })
+            queryClient.invalidateQueries({ queryKey: ['admin', 'application', id] })
+        },
+        onError: (e) => {
+            console.log(e)
+        },
+    })
+
+
 
     let rows = data?.Vendor?.map((v, i) =>
         <Table.Tr key={i}>
@@ -185,9 +211,14 @@ const AdminApplication = () => {
             }
         </Table.Tr>)
 
-    if(!data){
-        return(<></>)
+    if (!data) {
+        return (<></>)
     }
+
+
+
+
+
 
 
 
@@ -199,8 +230,11 @@ const AdminApplication = () => {
                 <Title order={3}>Details</Title>
                 <Button onClick={() => deleteApplication.mutateAsync()} color={"red"}>Delete</Button>
             </Group>
-            <Group justify="center">
-                <Title order={2}>
+            <FileButton onChange={uploadImage.mutateAsync} accept="image/png,image/jpeg">
+                {(props) => <Image  {...props} h={300} w={400} src={data.imageUrl} />}
+            </FileButton>
+
+                <Title order={2} >
                     <TextInput
                         variant="unstyled"
                         size="md"
@@ -209,7 +243,6 @@ const AdminApplication = () => {
                         {...form.getInputProps('potentialApplications')}
                     />
                 </Title>
-            </Group>
             <Text fz="sm" mt={"1rem"} >
                 <Textarea
                     variant="unstyled"
@@ -331,14 +364,20 @@ const AdminApplication = () => {
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
-                    <Textarea
+                    <MultiSelect
                         {...form.getInputProps('solutionFor')}
-                        autosize
-                        minRows={1}
+                        data={[
+                            { value: 'Lack of knowledge and understanding', label: 'Lack of knowledge and understanding' },
+                            { value: 'Dialogue', label: 'Dialogue' },
+                            { value: 'Lack of interest and time', label: 'Lack of interest and time' },
+                            { value: 'Distrust', label: 'Distrust' },
+                            { value: 'Resistance to change', label: 'Resistance to change' },
+                            { value: 'Conflict in interests', label: 'Conflict in interests' },
+                        ]}
                     />
                 </Grid.Col>
             </Grid >
-                <Button mt={"1rem"} mb={"1rem"} disabled={!form.isDirty()} onClick={() => update()}>Save</Button>
+            <Button mt={"1rem"} mb={"1rem"} disabled={!form.isDirty()} onClick={() => update()}>Save</Button>
 
             <Title mt="2rem" order={4}>Vendor</Title>
             <Table mt={"1rem"} mb={"1rem"} highlightOnHover withTableBorder>

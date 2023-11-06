@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Flex, Button, Paper, Title, Text, Textarea, Grid, Select, MultiSelect, Divider, Modal, Group, TextInput, ActionIcon, Card, Center, Container } from "@mantine/core";
 import { useNavigate } from 'react-router-dom';
 import technologyService from "../../Services/technology.service";
-import { useForm } from "@mantine/form";
+import { useForm } from '@mantine/form';
 import { TechnologyInfo, TechnologyInput } from "../../Ultils/type";
 import { IconCheck, IconCirclePlus, IconTablePlus, IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

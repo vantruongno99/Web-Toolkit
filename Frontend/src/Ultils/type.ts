@@ -10,12 +10,13 @@ export interface ApplicationInput {
     budget: string;
     solutionFor: string;
     considerations: string;
+    imageUrl?: string;
 }
 
 
 export interface ApplicationInfo extends ApplicationInput {
     id: number,
-    Vendor? : ApplicationVendor[]
+    Vendor?: ApplicationVendor[]
 }
 
 export interface TechnologyInput {
@@ -32,7 +33,7 @@ export interface TechnologyInfo extends TechnologyInput {
 export interface VendorInput {
     name: string,
     ABN: number,
-    email : string,
+    email: string,
     link: string
 }
 
@@ -45,8 +46,8 @@ export interface ApplicationVendor {
     approved: String;
     Application: ApplicationInfo,
     Vendor: VendorInfo,
-    applicationId : number,
-    vendorId : number ,
+    applicationId: number,
+    vendorId: number,
     showcase: string
 }
 
@@ -56,4 +57,17 @@ export interface LandingData {
     description: string,
     link: string
 }
+
+export interface Data {
+    purpose: string[],
+    participation: string[],
+    engagement: string[],
+    scale: string[],
+    budget: string[],
+    solution: string[]
+}
+
+
+
+
 

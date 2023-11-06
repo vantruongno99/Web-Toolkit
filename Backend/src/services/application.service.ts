@@ -6,9 +6,9 @@ import errorHandler from "../utils/errorHandler"
 
 declare global {
     interface BigInt {
-      toJSON(): string
+        toJSON(): string
     }
-  }
+}
 
 BigInt.prototype.toJSON = function () {
     return String(this)
@@ -99,6 +99,24 @@ const editApplication = async (data: ApplicationInput, id: number) => {
     }
 }
 
+const editImage = async (imageUrl: string, id: number) => {
+try {
+    const newAppliction = await prisma.application.update({
+        where: {
+            id
+        },
+        data: {
+            imageUrl: imageUrl
+        }
+    })
+
+    return newAppliction
+}
+catch (e: any) {
+    errorHandler(e)
+}
+}
+
 
 
 export default {
@@ -106,7 +124,8 @@ export default {
     getApplicationById,
     addApplication,
     deleteApplication,
-    editApplication
+    editApplication,
+    editImage
 }
 
 

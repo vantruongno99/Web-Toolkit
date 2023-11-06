@@ -29,7 +29,7 @@ model Application {
   technologyId          Int
   Technology            Technology          @relation(fields: [technologyId], references: [id], onDelete: Cascade)
   Vendor                ApplicationVendor[]
-
+  imageUrl              String @default("")
   @@index([technologyId], map: "Application_technologyId_fkey")
 }
 
@@ -52,4 +52,28 @@ model ApplicationVendor {
 
   @@id([vendorId, applicationId])
   @@index([applicationId], map: "ApplicationVendor_applicationId_fkey")
+}
+
+model Purpose{
+  name String @unique @id
+}
+
+model Participation{
+  name String @unique @id
+}
+
+model Engagement{
+  name String @unique @id
+}
+
+model Scale{
+  name String @unique @id
+}
+
+model Budget{
+  name String @unique @id
+}
+
+model Solution{
+  name String @unique @id
 }

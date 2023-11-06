@@ -1,8 +1,8 @@
-import data from "../data.json"
 import { Image, Container, ScrollArea, Modal, Card, Text, Group, ActionIcon, Flex, Textarea, Grid, Select, Title, MultiSelect, Center, Divider, TextInput, Button, Radio, Chip, RangeSlider } from '@mantine/core'
 import { useEffect, useState } from "react"
 import styles from './index.module.css'
-import { useForm } from '@mantine/form'
+import { useForm } from '@mantine/form';
+
 import { IconTrash, IconCheck, IconTablePlus } from '@tabler/icons-react'
 import classes from './Find.module.css';
 import { ApplicationInfo } from "../Ultils/type"
@@ -35,7 +35,8 @@ const Find = () => {
             engagement: [],
             scale: [],
             budget: [],
-            stage: []
+            stage: [],
+            solution: []
         },
     });
 
@@ -44,7 +45,8 @@ const Find = () => {
         engagement: string[],
         scale: string[],
         budget: string[],
-        stage: string[]
+        stage: string[],
+        solution: string[]
     }
 
     const filterData = (data: FilterForm) => {
@@ -56,6 +58,8 @@ const Find = () => {
                 a.slice(1)), data.purpose)
             && check(a.stageOfParticipation.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
                 a.slice(1)), data.stage)
+            && check(a.solutionFor.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
+                a.slice(1)), data.solution)
         )
 
         setFiltered(b)
@@ -178,6 +182,26 @@ const Find = () => {
                                 <Chip size="md" value="$$$$">$$$$</Chip>
                             </Flex>
                         </Chip.Group>
+                        <Title order={4} mt="1rem">
+                            Solution For
+                        </Title>
+                        <Chip.Group multiple {...form.getInputProps('solution')}>
+                            <Flex
+                                mt={"1rem"}
+                                gap="sm"
+                                justify="flex-start"
+                                align="flex-start"
+                                direction="row"
+                                wrap="wrap"
+                            >
+                                <Chip size="md" value="Lack of knowledge and understanding">Lack of knowledge and understanding</Chip>
+                                <Chip size="md" value="Dialogue">Dialogue</Chip>
+                                <Chip size="md" value="Lack of interest and time">Lack of interest and time</Chip>
+                                <Chip size="md" value="Distrust">Distrust</Chip>
+                                <Chip size="md" value="Resistance to change">Resistance to change</Chip>
+                                <Chip size="md" value="Conflict in interests">Conflict in interests</Chip>
+                            </Flex>
+                        </Chip.Group>
                         <Button mt="2rem" type="submit">
                             Search
                         </Button>
@@ -262,9 +286,9 @@ const Inside = ({ data }: { data: ApplicationInfo }) => {
             >
                 <Card.Section>
                     <Image
-                        src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+                        src={data.imageUrl}
                         height={160}
-                        alt="Norway"
+                        alt="Image"
                     />
                 </Card.Section>
 

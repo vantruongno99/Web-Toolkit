@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import { VendorInfo, VendorInput } from "../../Ultils/type";
 import vendorService from "../../Services/vendor.service";
-import { useForm } from "@mantine/form";
+import { useForm } from '@mantine/form';
 
 
 

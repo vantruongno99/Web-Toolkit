@@ -103,6 +103,24 @@ const editApplication = async (data: ApplicationInput, id: number): Promise<Appl
     }
 }
 
+const editApplicationImage = async (imageUrl: string, id: number): Promise<ApplicationInfo | undefined> => {
+    try {
+        const res = await axios.put(`${baseUrl}/${id}/image`, {imageUrl},
+            config
+        )
+        return res.data
+    }
+    catch (error: any | AxiosError) {
+        if (axios.isAxiosError(error)) {
+            console.log(error)
+            AxiosHandleResponse(error)
+        } else {
+            console.log(error)
+
+        }
+    }
+}
+
 const deleteApplication = async (id: number): Promise<void> => {
     try {
         await axios.delete(`${baseUrl}/${id}`,
@@ -126,7 +144,8 @@ const applicationService = {
     createApplication,
     getApplicationInfo,
     editApplication,
-    deleteApplication
+    deleteApplication,
+    editApplicationImage
 }
 
 export default applicationService

@@ -33,7 +33,6 @@ const getAllApproval = async (): Promise<ApplicationVendor []| undefined> => {
 
 const confirmApprove = async (vendorId: number ,applicationId: number ): Promise<void> => {
     try {
-        console.log(`${baseUrl}/approve/${vendorId}/${applicationId}`)
         await axios.put(`${baseUrl}/approve/${vendorId}/${applicationId}`,
             config
         )

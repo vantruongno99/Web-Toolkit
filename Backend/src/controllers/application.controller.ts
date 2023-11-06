@@ -5,34 +5,40 @@ import { ApplicationInput } from '../models/application.modal';
 
 require('express-async-errors');
 
-const techRouter = Router();
+const appRouter = Router();
 
-techRouter.post('/', async (req: Request, res: Response) => {
+appRouter.post('/', async (req: Request, res: Response) => {
     const sensors = await applicationService.addApplication(req.body)
     res.status(200).json(sensors)
 })
 
 
-techRouter.get('/', async (req: Request, res: Response) => {
+appRouter.get('/', async (req: Request, res: Response) => {
     const sensors = await applicationService.getAllApplication()
     res.status(200).json(sensors)
 })
 
-techRouter.get('/:id', async (req: Request, res: Response) => {
+appRouter.get('/:id', async (req: Request, res: Response) => {
     const id = Number(req.params.id)
     console.log("trigger")
     const technology = await applicationService.getApplicationById(id)
     res.status(200).json(technology)
 })
 
-
-techRouter.delete('/:id', async (req: Request, res: Response) => {
+appRouter.delete('/:id', async (req: Request, res: Response) => {
     const id = Number(req.params.id)
     await applicationService.deleteApplication(id)
     res.status(204).end()
 })
 
-techRouter.put('/:id', async (req: Request, res: Response) => {
+appRouter.put('/:id/image', async (req: Request, res: Response) => {
+    const id = Number(req.params.id)
+    const imageUrl = req.body.imageUrl
+    const sensor = await applicationService.editImage(imageUrl, id)
+    res.status(200).json(sensor)
+})
+
+appRouter.put('/:id', async (req: Request, res: Response) => {
     const id = Number(req.params.id)
     const data: ApplicationInput = req.body
     const sensor = await applicationService.editApplication(data, id)
@@ -41,4 +47,6 @@ techRouter.put('/:id', async (req: Request, res: Response) => {
 
 
 
-export default techRouter
+
+
+export default appRouter

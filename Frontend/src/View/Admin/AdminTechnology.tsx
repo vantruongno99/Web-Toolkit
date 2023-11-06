@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, ActionIcon } from "@mantine/core"
+import { FileInput, Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, ActionIcon, Fieldset } from "@mantine/core"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import technologyService from "../../Services/technology.service";
-import { useForm } from "@mantine/form";
+import { useForm } from '@mantine/form';
 import { TechnologyInput } from "../../Ultils/type";
 import { IconTablePlus } from "@tabler/icons-react";
 import applicationService from "../../Services/application.service";
+import imageService from "../../Services/image.service";
+import dataService from "../../Services/data.service";
 
 const AdminTechnology = () => {
 
@@ -92,6 +94,9 @@ const AdminTechnology = () => {
 
 
 
+
+
+
     return (<>
         <Container p={"2rem"}>
             <Group justify="space-between">
@@ -142,14 +147,33 @@ interface newApplicationForm {
     levelOfEngagement: string
     scale: string;
     budget: string;
-    solutionFor: string;
+    solutionFor: string[];
     considerations: string;
+    image: File | null
 }
+
 
 const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
 
     const [opened, setOpened] = useState<boolean>(false);
     const queryClient = useQueryClient()
+
+    const [file, setFile] = useState<File | null>(null)
+
+    const test = async () => {
+        try {
+
+            if (file) {
+                const link = await imageService.uploadImage(file)
+                console.log(link)
+            }
+
+        }
+        catch (e) {
+            console.log(e)
+        }
+    }
+
 
 
     const form = useForm<newApplicationForm>({
@@ -162,22 +186,42 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
             levelOfEngagement: "",
             scale: "",
             budget: "",
-            solutionFor: "",
-            considerations: ""
+            solutionFor: [],
+            considerations: "",
+            image: null
+
         },
     })
 
 
     const createApplication = useMutation({
         mutationFn: async (input: newApplicationForm) => {
-            console.log(input)
+
+            let { image, ...rest } = input
+
             const data = {
-                ...input,
-                stageOfParticipation: input.purposeOfEngagement.join(', '),
-                purposeOfEngagement: input.purposeOfEngagement.join(', '),
+                ...rest,
+                stageOfParticipation: rest.purposeOfEngagement.join(', '),
+                purposeOfEngagement: rest.purposeOfEngagement.join(', '),
+                solutionFor: rest.solutionFor.join(', '),
                 technologyId
             }
-            const output = await applicationService.createApplication(data)
+
+            let imageUrl = ""
+
+            if (input.image) {
+                const link = await imageService.uploadImage(input.image)
+                if (link) {
+                    imageUrl = link.url
+                }
+            }
+
+            const dataInput = {
+                ...data,
+                imageUrl
+            }
+
+            const output = await applicationService.createApplication(dataInput)
             if (!output) {
                 throw new Error()
             }
@@ -193,10 +237,34 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
     })
 
 
+    const { isLoading, error, isError, data } = useQuery({
+        queryKey: ["admin , input"],
+        queryFn: async () => {
+            try {
+                const res = await dataService.getAll()
+                if (!res) {
+                    throw new Error()
+                }
+                return res
+            }
+            catch (e) {
+                console.log(e)
+            }
+        }
+    }
+    )
+
+    if (!data) {
+        return (<>
+            Loading
+        </>)
+    }
+
+
 
     return (
         <>
-            <Modal size="xl" opened={opened} onClose={() => setOpened(false)} title="Add new technology">
+            <Modal size="xl" opened={opened} onClose={() => setOpened(false)} title="Add new Application">
                 <form onSubmit={form.onSubmit(data => createApplication.mutate(data))}>
                     <Group justify="left">
                         <Title order={2}>
@@ -229,6 +297,19 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         />                            </Text>
                     <Divider mt="1rem" size="xs" color="black" />
 
+                    <FileInput accept="image/png,image/jpeg" label="Upload Background" placeholder="Upload file"   {...form.getInputProps('image')} />
+
+                    {form.values.image !== null && <>
+                        <Image
+                            radius="md"
+                            h={400}
+                            w={400}
+                            src={URL.createObjectURL(form.values.image)}
+                        />
+                    </>}
+
+                    <Divider mt="1rem" size="xs" color="black" />
+
 
                     <Grid justify="flex-start" align="center" mt={"1rem"} >
                         <Grid.Col span={3} ><Text fz="sm" >
@@ -238,13 +319,9 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         <Grid.Col span={9} >
                             <MultiSelect
                                 {...form.getInputProps('stageOfParticipation')}
-                                data={[
-                                    { value: 'Problem identification', label: 'Problem identification' },
-                                    { value: 'InfProblem definition/prioritizationorm', label: 'Problem definition/prioritization' },
-                                    { value: 'Input/feedback', label: 'Input/feedback' },
-                                    { value: 'Evaluation', label: 'Evaluation' },
-                                    { value: 'Co-creation', label: 'Co-creation' },
-                                ]}
+                                data={
+                                    data.participation.map(d => ({ value: d, label: d }))
+                                }
                             />
                         </Grid.Col>
                     </Grid >
@@ -257,13 +334,9 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         <Grid.Col span={9} >
                             <MultiSelect
                                 {...form.getInputProps('purposeOfEngagement')}
-                                data={[
-                                    { value: 'Collaborate', label: 'Collaborate' },
-                                    { value: 'Inform', label: 'Inform' },
-                                    { value: 'Involve', label: 'Involve' },
-                                    { value: 'Consult', label: 'Consult' },
-                                    { value: 'Empower', label: 'Empower' },
-                                ]}
+                                data={
+                                    data.purpose.map(d => ({ value: d, label: d }))
+                                }
                             />
                         </Grid.Col>
                     </Grid >
@@ -276,11 +349,9 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         <Grid.Col span={3} >
                             <Select
                                 {...form.getInputProps('levelOfEngagement')}
-                                data={[
-                                    { value: 'Active', label: 'Active' },
-                                    { value: 'Passive', label: 'Passive' },
-                                    { value: 'Immersive', label: 'Immersive' },
-                                ]}
+                                data={
+                                    data.engagement.map(d => ({ value: d, label: d }))
+                                }
 
                             />
                         </Grid.Col>
@@ -294,13 +365,9 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         <Grid.Col span={3} >
                             <Select
                                 {...form.getInputProps('scale')}
-                                data={[
-                                    { value: 'Individual', label: 'Individual' },
-                                    { value: 'Small group', label: 'Small group' },
-                                    { value: 'Large group', label: 'Large group' },
-                                    { value: 'Public', label: 'Public' },
-
-                                ]}
+                                data={
+                                    data.scale.map(d => ({ value: d, label: d }))
+                                }
                             />
                         </Grid.Col>
                     </Grid >
@@ -313,11 +380,9 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         <Grid.Col span={3} >
                             <Select
                                 {...form.getInputProps('budget')}
-                                data={[
-                                    { value: '$', label: '$' },
-                                    { value: '$$', label: '$$' },
-                                    { value: '$$$', label: '$$$' },
-                                ]}
+                                data={
+                                    data.budget.map(d => ({ value: d, label: d }))
+                                }
                             />
                         </Grid.Col>
                     </Grid >
@@ -329,10 +394,11 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         </Text >
                         </Grid.Col>
                         <Grid.Col span={9} >
-                            <Textarea
+                            <MultiSelect
                                 {...form.getInputProps('solutionFor')}
-                                autosize
-                                minRows={1}
+                                data={
+                                    data.solution.map(d => ({ value: d, label: d }))
+                                }
                             />
                         </Grid.Col>
                     </Grid >

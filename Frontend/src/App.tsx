@@ -10,16 +10,40 @@ import {
     useQueryClient,
     QueryClient,
     QueryClientProvider,
-  } from '@tanstack/react-query'
+} from '@tanstack/react-query'
+import Cookies from "js-cookie";
+
+
 
 
 const App = () => {
+
+
+    const loader = async () => {
+       const type = Cookies.get("role")
+       if(!type || type != "admin"){
+        return redirect("/");
+       }
+        return null;
+    };
+
+
+
     const routes = [{
         path: "/", element: <Layout />,
         children: [
             ...outerRoutes
+        ],
+
+    },
+    {
+        path: "/", element: <Layout />,
+        loader: loader,
+        children: [
+            ...innerRoutes
         ]
     }
+
     ]
     const router = createBrowserRouter(routes)
 

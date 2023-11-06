@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+    frontend:
+      build: ./frontend
+      container_name: frontend
+      volumes:
+        - web_data:/app/dist
+    backend:
+      container_name: backend
+      build: ./backend
+      restart: always
+      ports:
+       - "3001:3001"
+      environment:
+       - NODE_ENV=production
+    nginx:
+      build: ./nginx
+      container_name: nginx
+      restart: always
+      volumes:
+        - web_data:/web
+      ports: 
+      - "80:80"
+volumes:
+  web_data:
