@@ -6,7 +6,7 @@ import { Loader } from '@mantine/core';
 import technologyService from "../../Services/technology.service";
 import { useForm } from '@mantine/form';
 import { TechnologyInput } from "../../Ultils/type";
-import { IconTablePlus } from "@tabler/icons-react";
+import { IconTablePlus, IconTrashX } from "@tabler/icons-react";
 import applicationService from "../../Services/application.service";
 import imageService from "../../Services/image.service";
 import dataService from "../../Services/data.service";
@@ -101,7 +101,9 @@ const AdminTechnology = () => {
         <Container p={"2rem"}>
             <Group justify="space-between">
                 <Title order={3}>Details</Title>
-                <Button onClick={() => deleteTechnology.mutateAsync()} color={"red"}>Delete</Button>
+                <ActionIcon variant="outline" color="red" aria-label="Settings" onClick={() => deleteTechnology.mutateAsync()}>
+                    <IconTrashX style={{ width: '80%', height: '80%' }} stroke={1.5} />
+                </ActionIcon>
             </Group>
             <Input.Wrapper
                 label="Name:"
@@ -157,24 +159,6 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
 
     const [opened, setOpened] = useState<boolean>(false);
     const queryClient = useQueryClient()
-
-    const [file, setFile] = useState<File | null>(null)
-
-    const test = async () => {
-        try {
-
-            if (file) {
-                const link = await imageService.uploadImage(file)
-                console.log(link)
-            }
-
-        }
-        catch (e) {
-            console.log(e)
-        }
-    }
-
-
 
     const form = useForm<newApplicationForm>({
         initialValues: {
@@ -297,13 +281,14 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         />                            </Text>
                     <Divider mt="1rem" size="xs" color="black" />
 
-                    <FileInput accept="image/png,image/jpeg" label="Upload Background" placeholder="Upload file"   {...form.getInputProps('image')} />
+                    <FileInput accept="image/png,image/jpeg" label="Upload Image" placeholder="Upload file"   {...form.getInputProps('image')} />
 
                     {form.values.image !== null && <>
                         <Image
+                            mt={"1rem"}
                             radius="md"
-                            h={400}
-                            w={400}
+                            h={300}
+                            w={500}
                             src={URL.createObjectURL(form.values.image)}
                         />
                     </>}
@@ -403,7 +388,7 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         </Grid.Col>
                     </Grid >
                     <Group justify="flex-end" mt={"1rem"} >
-                        <Button type="submit">Save</Button>
+                        <Button disabled={createApplication.isPending || !form.isDirty()} mt="2rem" type="submit">Save {createApplication.isPending && <Loader ml={"1rem"} size="sm" />} </Button>
                     </Group>
                 </form>
             </Modal>

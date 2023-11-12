@@ -71,3 +71,11 @@ export interface Data {
 
 
 
+export interface LoginDetail {
+    username : string,
+    password : string
+}
+
+export interface AdminResetPasswordInput {
+    password : string
+}

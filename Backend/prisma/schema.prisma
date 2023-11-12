@@ -77,3 +77,10 @@ model Budget{
 model Solution{
   name String @unique @id
 }
+
+model User {
+  id             Int    @id @default(autoincrement())
+  username       String @unique
+  hashedPassword String
+  role           String @default("user")
+}

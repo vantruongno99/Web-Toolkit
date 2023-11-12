@@ -1,9 +1,9 @@
-import { Image, Container, ScrollArea, Modal, Card, Text, Group, ActionIcon, Flex, Textarea, Grid, Select, Title, MultiSelect, Center, Divider, TextInput, Button, Radio, Chip, RangeSlider } from '@mantine/core'
+import { Image, Container, ScrollArea, Modal, Card, Text, Group, ActionIcon, Flex, Textarea, Grid, Select, Title, MultiSelect, Center, Divider, TextInput, Button, Radio, Chip, RangeSlider, Collapse, UnstyledButton } from '@mantine/core'
 import { useEffect, useState } from "react"
 import styles from './index.module.css'
 import { useForm } from '@mantine/form';
 
-import { IconTrash, IconCheck, IconTablePlus } from '@tabler/icons-react'
+import { IconCircleMinus, IconCirclePlus } from '@tabler/icons-react'
 import classes from './Find.module.css';
 import { ApplicationInfo } from "../Ultils/type"
 import applicationService from "../Services/application.service"
@@ -40,6 +40,18 @@ const Find = () => {
         },
     });
 
+
+    const optionForm = useForm<FilterOption>({
+        initialValues: {
+            purpose: false,
+            engagement: false,
+            scale: false,
+            budget: false,
+            stage: false,
+            solution: false
+        },
+    });
+
     interface FilterForm {
         purpose: string[],
         engagement: string[],
@@ -47,6 +59,15 @@ const Find = () => {
         budget: string[],
         stage: string[],
         solution: string[]
+    }
+
+    interface FilterOption {
+        purpose: boolean,
+        engagement: boolean,
+        scale: boolean,
+        budget: boolean,
+        stage: boolean,
+        solution: boolean
     }
 
     const filterData = (data: FilterForm) => {
@@ -77,131 +98,204 @@ const Find = () => {
                         <Text mt={"1rem"}>
                             Use the filter below to identify the engagement tools that best suit your specific road safety engagement needs.
                         </Text>
-                        <Title order={4} mt="1rem">
-                            Purpose (IAP2)
-                        </Title>
 
-
-                        <Chip.Group multiple {...form.getInputProps('purpose')}>
+                        <UnstyledButton onClick={() => optionForm.setFieldValue("purpose", !optionForm.values.purpose)} component="button">
                             <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
+                                justify="center"
+                                align="center"
+                                mt="1rem"
+                                gap={"0.5rem"}
                             >
-                                <Chip value="Problem identification" size="md"  >Inform</Chip>
-                                <Chip value="Consult" size="md" >Consult</Chip>
-                                <Chip value="Involve" size="md">Involve</Chip>
-                                <Chip value="Collaborate" size="md">Collaborate</Chip>
-                                <Chip value="Empower" size="md">Empower</Chip>
+                                <Title order={4} >
+                                    Purpose (IAP2)
+                                </Title>
+                                {optionForm.values.purpose ? <IconCircleMinus /> : <IconCirclePlus />}
                             </Flex>
-                        </Chip.Group>
+                        </UnstyledButton>
+                        <Collapse in={optionForm.values.purpose} transitionTimingFunction="linear">
+                            <Chip.Group multiple {...form.getInputProps('purpose')}>
+                                <Flex
+                                    mt={"1rem"}
+                                    gap="sm"
+                                    justify="flex-start"
+                                    align="flex-start"
+                                    direction="row"
+                                    wrap="wrap"
+                                >
+                                    <Chip value="Problem identification" size="md"  >Inform</Chip>
+                                    <Chip value="Consult" size="md" >Consult</Chip>
+                                    <Chip value="Involve" size="md">Involve</Chip>
+                                    <Chip value="Collaborate" size="md">Collaborate</Chip>
+                                    <Chip value="Empower" size="md">Empower</Chip>
+                                </Flex>
+                            </Chip.Group>
+                        </Collapse>
+                        <br />
 
-
-
-                        <Title order={4} mt="1rem">
-                            Stage of participation
-                        </Title>
-
-
-                        <Chip.Group multiple {...form.getInputProps('stage')}>
+                        <UnstyledButton onClick={() => optionForm.setFieldValue("stage", !optionForm.values.stage)} component="button">
                             <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
+                                justify="center"
+                                align="center"
+                                mt="1rem"
+                                gap={"0.5rem"}
                             >
-                                <Chip value="Problem identification" size="md"  >Problem identification</Chip>
-                                <Chip value="Problem definition/prioritization" size="md" >Problem definition/prioritization</Chip>
-                                <Chip value="Input/feedback" size="md">Input/feedback</Chip>
-                                <Chip value="Evaluation" size="md">Evaluation</Chip>
-                                <Chip value="Co-creation" size="md">Co-creation</Chip>
+                                <Title order={4} >
+                                    Stage of participation
+                                </Title>
+                                {optionForm.values.stage ? <IconCircleMinus /> : <IconCirclePlus />}
                             </Flex>
-                        </Chip.Group>
+                        </UnstyledButton>
 
-
-
-                        <Title order={4} mt="1rem">
-                            Level of Engagement
-                        </Title>
-                        <Chip.Group multiple {...form.getInputProps('engagement')}>
+                        <Collapse in={optionForm.values.stage} transitionTimingFunction="linear">
+                            <Chip.Group multiple {...form.getInputProps('stage')}>
+                                <Flex
+                                    mt={"1rem"}
+                                    gap="sm"
+                                    justify="flex-start"
+                                    align="flex-start"
+                                    direction="row"
+                                    wrap="wrap"
+                                >
+                                    <Chip value="Problem identification" size="md"  >Problem identification</Chip>
+                                    <Chip value="Problem definition/prioritization" size="md" >Problem definition/prioritization</Chip>
+                                    <Chip value="Input/feedback" size="md">Input/feedback</Chip>
+                                    <Chip value="Evaluation" size="md">Evaluation</Chip>
+                                    <Chip value="Co-creation" size="md">Co-creation</Chip>
+                                </Flex>
+                            </Chip.Group>
+                        </Collapse>
+                        <br />
+                        <UnstyledButton onClick={() => optionForm.setFieldValue("engagement", !optionForm.values.engagement)} component="button">
                             <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
+                                justify="center"
+                                align="center"
+                                mt="1rem"
+                                gap={"0.5rem"}
                             >
-                                <Chip value="Active" size="md">Active</Chip>
-                                <Chip value="Passive" size="md">Passive</Chip>
-                                <Chip value="Immersive" size="md">Immersive</Chip>
-
+                                <Title order={4} >
+                                    Level of Engagement
+                                </Title>
+                                {optionForm.values.engagement ? <IconCircleMinus /> : <IconCirclePlus />}
                             </Flex>
-                        </Chip.Group>
+                        </UnstyledButton>
+                        <Collapse in={optionForm.values.engagement} transitionTimingFunction="linear">
+                            <Chip.Group multiple {...form.getInputProps('engagement')}>
+                                <Flex
+                                    mt={"1rem"}
+                                    gap="sm"
+                                    justify="flex-start"
+                                    align="flex-start"
+                                    direction="row"
+                                    wrap="wrap"
+                                >
+                                    <Chip value="Active" size="md">Active</Chip>
+                                    <Chip value="Passive" size="md">Passive</Chip>
+                                    <Chip value="Immersive" size="md">Immersive</Chip>
 
-                        <Title order={4} mt="1rem">
-                            Scale
-                        </Title>
-                        <Chip.Group multiple {...form.getInputProps('scale')}>
+                                </Flex>
+                            </Chip.Group>
+                        </Collapse>
+
+                        <br />
+                        <UnstyledButton onClick={() => optionForm.setFieldValue("scale", !optionForm.values.scale)} component="button">
                             <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
+                                justify="center"
+                                align="center"
+                                mt="1rem"
+                                gap={"0.5rem"}
                             >
-                                <Chip value="Invidual" size="md">Invidual</Chip>
-                                <Chip value="Small Group" size="md">Small Group</Chip>
-                                <Chip value="Large Group" size="md">Large Group</Chip>
-                                <Chip value="Public" size="md">Public</Chip>
+                                <Title order={4} >
+                                    Scale
+                                </Title>
+                                {optionForm.values.scale ? <IconCircleMinus /> : <IconCirclePlus />}
+                            </Flex>
+                        </UnstyledButton>
+                        <Collapse in={optionForm.values.scale} transitionTimingFunction="linear">
+                            <Chip.Group multiple {...form.getInputProps('scale')}>
+                                <Flex
+                                    mt={"1rem"}
+                                    gap="sm"
+                                    justify="flex-start"
+                                    align="flex-start"
+                                    direction="row"
+                                    wrap="wrap"
+                                >
+                                    <Chip value="Invidual" size="md">Invidual</Chip>
+                                    <Chip value="Small Group" size="md">Small Group</Chip>
+                                    <Chip value="Large Group" size="md">Large Group</Chip>
+                                    <Chip value="Public" size="md">Public</Chip>
 
-                            </Flex>
-                        </Chip.Group>
+                                </Flex>
+                            </Chip.Group>
+                        </Collapse>
 
-                        <Title order={4} mt="1rem">
-                            Budget
-                        </Title>
-                        <Chip.Group multiple {...form.getInputProps('budget')}>
+                        <br />
+                        <UnstyledButton onClick={() => optionForm.setFieldValue("budget", !optionForm.values.budget)} component="button">
                             <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
+                                justify="center"
+                                align="center"
+                                mt="1rem"
+                                gap={"0.5rem"}
                             >
-                                <Chip size="md" value="$">$</Chip>
-                                <Chip size="md" value="$$">$$</Chip>
-                                <Chip size="md" value="$$$">$$$</Chip>
-                                <Chip size="md" value="$$$$">$$$$</Chip>
+                                <Title order={4} >
+                                    Budget
+                                </Title>
+                                {optionForm.values.budget ? <IconCircleMinus /> : <IconCirclePlus />}
                             </Flex>
-                        </Chip.Group>
-                        <Title order={4} mt="1rem">
-                            Solution For
-                        </Title>
-                        <Chip.Group multiple {...form.getInputProps('solution')}>
+                        </UnstyledButton>
+                        <Collapse in={optionForm.values.budget} transitionTimingFunction="linear">
+                            <Chip.Group multiple {...form.getInputProps('budget')}>
+                                <Flex
+                                    mt={"1rem"}
+                                    gap="sm"
+                                    justify="flex-start"
+                                    align="flex-start"
+                                    direction="row"
+                                    wrap="wrap"
+                                >
+                                    <Chip size="md" value="$">$</Chip>
+                                    <Chip size="md" value="$$">$$</Chip>
+                                    <Chip size="md" value="$$$">$$$</Chip>
+                                    <Chip size="md" value="$$$$">$$$$</Chip>
+                                </Flex>
+                            </Chip.Group>
+                        </Collapse>
+
+                        <br />
+                        <UnstyledButton onClick={() => optionForm.setFieldValue("solution", !optionForm.values.solution)} component="button">
                             <Flex
-                                mt={"1rem"}
-                                gap="sm"
-                                justify="flex-start"
-                                align="flex-start"
-                                direction="row"
-                                wrap="wrap"
+                                justify="center"
+                                align="center"
+                                mt="1rem"
+                                gap={"0.5rem"}
                             >
-                                <Chip size="md" value="Lack of knowledge and understanding">Lack of knowledge and understanding</Chip>
-                                <Chip size="md" value="Dialogue">Dialogue</Chip>
-                                <Chip size="md" value="Lack of interest and time">Lack of interest and time</Chip>
-                                <Chip size="md" value="Distrust">Distrust</Chip>
-                                <Chip size="md" value="Resistance to change">Resistance to change</Chip>
-                                <Chip size="md" value="Conflict in interests">Conflict in interests</Chip>
+                                <Title order={4} >
+                                    Solution for
+                                </Title>
+                                {optionForm.values.solution ? <IconCircleMinus /> : <IconCirclePlus />}
                             </Flex>
-                        </Chip.Group>
+                        </UnstyledButton>
+                        <Collapse in={optionForm.values.solution} transitionTimingFunction="linear">
+                            <Chip.Group multiple {...form.getInputProps('solution')}>
+                                <Flex
+                                    mt={"1rem"}
+                                    gap="sm"
+                                    justify="flex-start"
+                                    align="flex-start"
+                                    direction="row"
+                                    wrap="wrap"
+                                >
+                                    <Chip size="md" value="Lack of knowledge and understanding">Lack of knowledge and understanding</Chip>
+                                    <Chip size="md" value="Dialogue">Dialogue</Chip>
+                                    <Chip size="md" value="Lack of interest and time">Lack of interest and time</Chip>
+                                    <Chip size="md" value="Distrust">Distrust</Chip>
+                                    <Chip size="md" value="Resistance to change">Resistance to change</Chip>
+                                    <Chip size="md" value="Conflict in interests">Conflict in interests</Chip>
+                                </Flex>
+                            </Chip.Group>
+                        </Collapse>
+                        <br/>
+
                         <Button mt="2rem" type="submit">
                             Search
                         </Button>

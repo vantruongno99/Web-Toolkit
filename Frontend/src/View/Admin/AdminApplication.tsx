@@ -6,7 +6,7 @@ import { Loader } from '@mantine/core';
 import applicationService from "../../Services/application.service";
 import { useForm } from '@mantine/form';
 import { ApplicationInput } from "../../Ultils/type";
-import { IconCircleX, IconCircleCheck, IconTablePlus } from "@tabler/icons-react";
+import { IconCircleX, IconCircleCheck, IconTrashX } from "@tabler/icons-react";
 import adminService from "../../Services/admin.service";
 import imageService from "../../Services/image.service";
 
@@ -199,12 +199,12 @@ const AdminApplication = () => {
                 <>
                     <Table.Td>
                         <ActionIcon onClick={() => confirmApprove.mutateAsync({ vendorId: v.vendorId, applicationId: v.applicationId })} aria-label="Settings" variant="light" color="green" >
-                            <IconCircleCheck style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                            <IconCircleCheck style={{ width: '80%', height: '80%' }} stroke={1.5} />
                         </ActionIcon>
                     </Table.Td>
                     <Table.Td>
                         <ActionIcon onClick={() => confirmDisapprove.mutateAsync({ vendorId: v.vendorId, applicationId: v.applicationId })} aria-label="Settings" variant="light" color="red" >
-                            <IconCircleX style={{ width: '70%', height: '70%' }} stroke={1.5} />
+                            <IconCircleX style={{ width: '80%', height: '80%' }} stroke={1.5} />
                         </ActionIcon>
                     </Table.Td>
                 </>
@@ -228,21 +228,24 @@ const AdminApplication = () => {
         <Container p={"2rem"}>
             <Group justify="space-between">
                 <Title order={3}>Details</Title>
-                <Button onClick={() => deleteApplication.mutateAsync()} color={"red"}>Delete</Button>
+                <IconTrashX />
+                <ActionIcon variant="outline" color="red" aria-label="Settings" onClick={() => deleteApplication.mutateAsync()}>
+                    <IconTrashX style={{ width: '80%', height: '80%' }} stroke={1.5} />
+                </ActionIcon>
             </Group>
             <FileButton onChange={uploadImage.mutateAsync} accept="image/png,image/jpeg">
                 {(props) => <Image  {...props} h={300} w={400} src={data.imageUrl} />}
             </FileButton>
 
-                <Title order={2} >
-                    <TextInput
-                        variant="unstyled"
-                        size="md"
-                        withAsterisk
-                        placeholder="Technology"
-                        {...form.getInputProps('potentialApplications')}
-                    />
-                </Title>
+            <Title order={2} >
+                <TextInput
+                    variant="unstyled"
+                    size="md"
+                    withAsterisk
+                    placeholder="Technology"
+                    {...form.getInputProps('potentialApplications')}
+                />
+            </Title>
             <Text fz="sm" mt={"1rem"} >
                 <Textarea
                     variant="unstyled"

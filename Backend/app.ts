@@ -11,8 +11,7 @@ app.use(cors())
 app.use(json())
 app.use(compression())
 morganBody(app)
-
-app.use(express.static('dist'))
+app.use(middleware.tokenExtractor)
 
 
 app.get('/api', (req: Request, res: Response) => {

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import userService from '../services/user.service';
 const jwt = require('jsonwebtoken')
 
 
@@ -38,4 +39,46 @@ const unknownEndpoint = (req: Request, res: Response) => {
     res.status(404).send({ error: 'unknown endpoint' });
 };
 
-export default { errorHandler, unknownEndpoint}
+
+const tokenExtractor = (req: Request, res: Response, next: NextFunction) => {
+    /* #swagger.security = [{
+      "bearerAuth": []
+  }] */
+    const authorization = req.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        req.token = authorization.substring(7)
+    }
+    next()
+}
+
+// get user from token 
+const userExtractor = async (req: Request, response: Response, next: NextFunction) => {
+    const token = req.token
+    try {
+        const decodedToken = jwt.verify(token, 'superSecret')
+        if (!token || !decodedToken.username) {
+            response.status(401).json({ error: 'token missing or invalid' })
+            return;
+        }
+        req.user = await userService.findUserByUsername(decodedToken.username);
+        next()
+    }
+    catch (e) {
+        response.status(401).json({ error: 'token missing or invalid' })
+        return;
+    }
+
+}
+
+const adminRequire = async (req: Request, response: Response, next: NextFunction) => {
+    const user = req.user
+    if (user?.role !== "admin") {
+        response.status(403).json({ error: 'not admin' })
+        return;
+    }
+    next()
+}
+
+
+
+export default { errorHandler, unknownEndpoint, tokenExtractor, userExtractor, adminRequire }

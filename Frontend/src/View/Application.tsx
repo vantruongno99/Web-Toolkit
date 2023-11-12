@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Image ,Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal } from "@mantine/core"
+import { Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, Pill } from "@mantine/core"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import { ApplicationInfo, ApplicationInput } from "../Ultils/type";
 import applicationService from "../Services/application.service";
 import { useForm } from '@mantine/form';
-import styles from './index.module.css'
 import vendorService from "../Services/vendor.service";
-import Vendor from "./Vendor/Vendors";
+import { IconTrashX } from "@tabler/icons-react";
 
 
 interface Option {
@@ -85,7 +84,7 @@ interface ApplicationForm {
     potentialApplications: string,
     explanation: string,
     maturity: string,
-    stageOfParticipation: string,
+    stageOfParticipation: string[],
     purposeOfEngagement: string[],
     levelOfEngagement: string,
     scale: string,
@@ -101,7 +100,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
             potentialApplications: "",
             explanation: "",
             maturity: "",
-            stageOfParticipation: "",
+            stageOfParticipation: [],
             purposeOfEngagement: [],
             levelOfEngagement: "",
             scale: "",
@@ -115,6 +114,8 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
         const data = {
             ...application,
             purposeOfEngagement: application.purposeOfEngagement.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
+                a.slice(1)),
+            stageOfParticipation: application.stageOfParticipation.split(', ').map(a => a == '' ? '' : a[0].toUpperCase() +
                 a.slice(1))
         }
         form.setValues(data)
@@ -165,7 +166,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
     return (
         <div >
 
-            <Image   h={300} w={400} src={application.imageUrl} />
+            <Image h={300} w={500} src={application.imageUrl} />
 
 
             <Title mt={"1rem"}>
@@ -187,7 +188,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Grid.Col>
                 <Grid.Col span={9} >
                     <Text fz="sm"  >
-                        {form.values.stageOfParticipation}
+                        {form.values.stageOfParticipation.map(a => <Pill mr={"0.5rem"}>{a}</Pill>)}
                     </Text>
                 </Grid.Col>
             </Grid >
@@ -200,7 +201,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Grid.Col>
                 <Grid.Col span={9} >
                     <Text fz="sm"  >
-                        {form.values.purposeOfEngagement}
+                        {form.values.purposeOfEngagement.map(a => <Pill mr={"0.5rem"}>{a}</Pill>)}
                     </Text>
                 </Grid.Col>
             </Grid >
@@ -215,7 +216,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Grid.Col>
                 <Grid.Col span={3} >
                     <Text fz="sm"  >
-                        {form.values.levelOfEngagement}
+                        <Pill>   {form.values.levelOfEngagement}</Pill>
                     </Text>
                 </Grid.Col>
             </Grid >
@@ -228,7 +229,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 <Grid.Col span={3} >
 
                     <Text fz="sm"  >
-                        {form.values.scale}
+                        <Pill> {form.values.scale}</Pill>
                     </Text>
                 </Grid.Col>
             </Grid >
@@ -239,9 +240,11 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
-                    <Text fz="sm"  >
-                        {form.values.budget}
-                    </Text>
+                    <Pill>
+                        <Text fz="sm"  >
+                            {form.values.budget}
+                        </Text>
+                    </Pill>
                 </Grid.Col>
             </Grid >
             {rows && rows?.length > 0 && <>

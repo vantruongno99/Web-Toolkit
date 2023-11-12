@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Flex, Button, Paper, Title, Text, Textarea, Grid, Select, MultiSelect, Divider, Modal, Group, TextInput, ActionIcon, Card, Center, Container, TagsInput } from "@mantine/core";
+import { Flex, Button, Paper, Title, Loader, Center, Container, TagsInput } from "@mantine/core";
 import { useNavigate } from 'react-router-dom';
 import { IconCheck, IconCirclePlus, IconTablePlus, IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,7 +9,6 @@ import dataService from "../../Services/data.service";
 
 
 const AdminInput = () => {
-    const navigate = useNavigate()
     let initial = useRef<Data>({
         purpose: [],
         engagement: [],
@@ -76,6 +75,14 @@ const AdminInput = () => {
             participation: [],
             solution: []
         },
+        validate: {
+            purpose: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
+            engagement: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
+            scale: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
+            budget: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
+            participation: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
+            solution: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
+        }
     });
 
     const add = (arr1: string[], arr2: string[]) => {
@@ -231,7 +238,7 @@ const AdminInput = () => {
                 <TagsInput size="md" splitChars={[',']}  {...form.getInputProps('participation')} />
                 <Title order={4} mt={"1rem"}>Solution For</Title>
                 <TagsInput size="md" splitChars={[',']}  {...form.getInputProps('solution')} />
-                <Button mt="1rem" type="submit">Save</Button>
+                <Button disabled={updateInput.isPending || !form.isDirty()} mt="2rem" type="submit">Save {updateInput.isPending && <Loader ml={"1rem"} size="sm" />} </Button>
             </form>
         </Container>
     )

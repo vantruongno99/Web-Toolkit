@@ -1,14 +1,23 @@
 import { Flex, Button, Paper, Title, Text, Textarea, Grid, Select, MultiSelect, Divider, Modal, Group, TextInput, ActionIcon, Card, Center, Container, Box, PasswordInput } from "@mantine/core";
 import { useNavigate } from 'react-router-dom';
 import { useForm } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Cookies from 'js-cookie';
+import { useMutation } from "@tanstack/react-query";
+import authservice from "../../Services/auth.service";
+import { forEach } from "lodash";
 
 
 
 const Admin = () => {
     const navigate = useNavigate()
     const [showed, setShowed] = useState<Boolean>(false)
+
+    useEffect(() => {
+        if (Cookies.get("role") === "admin") {
+            setShowed(true)
+        }
+    }, [])
 
     const form = useForm<{ password: string }>({
         initialValues: {
@@ -20,9 +29,26 @@ const Admin = () => {
         },
     });
 
+
+    const login = useMutation({
+        mutationFn: async (input: string) => {
+            return await authservice.loging(
+                {
+                    username: "admin",
+                    password: input
+                }
+            )
+        },
+        onSuccess: () => {
+            setShowed(true)
+        },
+        onError: (e: Error) => {
+            form.setErrors({ password: "Incorrect" })
+        },
+    })
+
     const handleSubmit = (input: { password: string }) => {
-        setShowed(true)
-        Cookies.set("role","admin")
+        login.mutateAsync(input.password)
     }
 
 
