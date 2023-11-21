@@ -61,13 +61,11 @@ const App = () => {
     return (
         <>
             <MantineProvider theme={theme}>
-
                 <QueryClientProvider client={queryClient}>
                     <Suspense fallback={<Loader />}>
                         <RouterProvider router={router} />
                     </Suspense>
                 </QueryClientProvider>
-
             </MantineProvider>
 
         </>

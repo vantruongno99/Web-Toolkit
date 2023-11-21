@@ -36,9 +36,10 @@ model Application {
 model Vendor {
   id          Int                 @id @default(autoincrement())
   name        String              @unique
-  ABN         BigInt               @unique
+  ABN         BigInt              @unique
   email       String
   link        String
+  phone       String               
   Application ApplicationVendor[]
 }
 

@@ -31,7 +31,7 @@ export interface TechnologyInfo extends TechnologyInput {
 }
 
 export interface VendorInput {
-    name: string,
+    phone: string,
     ABN: number,
     email: string,
     link: string
@@ -39,6 +39,7 @@ export interface VendorInput {
 
 export interface VendorInfo extends VendorInput {
     id: number,
+    name : string
     Application?: { Application: ApplicationInfo }[]
 }
 
@@ -78,4 +79,10 @@ export interface LoginDetail {
 
 export interface AdminResetPasswordInput {
     password : string
+}
+
+export interface VendorEdit {
+    phone : string,
+    link : string,
+    email : string
 }

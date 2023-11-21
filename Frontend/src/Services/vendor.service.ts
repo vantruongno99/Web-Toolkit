@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios'
 import Cookies from 'js-cookie'
 import { AxiosHandleResponse } from '../Ultils/middleware'
 import { domain } from '../Ultils/config'
-import { ApplicationVendor, VendorInfo, VendorInput } from '../Ultils/type'
+import { ApplicationVendor, VendorEdit, VendorInfo, VendorInput } from '../Ultils/type'
 
 const baseUrl = `${domain}/vendor`
 
@@ -140,6 +140,25 @@ const applicationRequest = async (applicationId: number, vendorId: number, input
     }
 }
 
+const editVendor = async ( id: number ,data: VendorEdit): Promise<void> => {
+    try {
+        await axios.put(`${baseUrl}/${id}`, data,
+            config
+        )
+
+    }
+    catch (error: any | AxiosError) {
+        if (axios.isAxiosError(error)) {
+            console.log(error)
+            AxiosHandleResponse(error)
+        } else {
+            console.log(error)
+
+        }
+    }
+}
+
+
 const vendorService = {
     getAllVendor,
     getVendor,
@@ -147,7 +166,8 @@ const vendorService = {
     getVendorInfo,
     getAllVendorApplication,
     applicationRequest,
-    getVendorByABN
+    getVendorByABN,
+    editVendor
 }
 
 export default vendorService

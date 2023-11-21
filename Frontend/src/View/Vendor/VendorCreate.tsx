@@ -1,6 +1,6 @@
 import React from "react"
-import { useForm } from '@mantine/form';
-import { NumberInput, TextInput, Button, Box, Space, Input, Title, Container } from '@mantine/core';
+import { useForm, isEmail ,isNotEmpty } from '@mantine/form';
+import { NumberInput, TextInput, Button, Box, Space, Input, Title, Container ,Text} from '@mantine/core';
 import { useError } from "../../Hook";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -12,25 +12,26 @@ const CreateVendor = () => {
     const navigate = useNavigate();
 
     const form = useForm({
-        initialValues: { name: '', ABN: 0, email: ' ', link: '' },
+        initialValues: { ABN: 0, email: ' ', link: '', phone: '' },
         // functions will be used to validate values at corresponding key
         validate: {
-            name: (value) => (value.length < 5 ? 'Name must have at least 5 letters' : null),
-            ABN: (value) => (value.toString().length !== 11 ? 'ABN must have 11 numbers' : null)
+            phone: (value) => (value.length < 10 ? 'phone must have at least 10 letters' : null),
+            ABN: (value) => (value.toString().length !== 11 ? 'ABN must have 11 numbers' : null),
+            email: isNotEmpty('Email must not be empty'),
 
         },
     });
 
     const createVendor = useMutation({
         mutationFn: async (input: VendorInput) => {
-            const res =  await vendorService.createVendor({...input,ABN : Number(input.ABN)})
+            const res = await vendorService.createVendor({ ...input, ABN: Number(input.ABN) })
             return res
         },
         onSuccess: (res) => {
             navigate(`/vendor/${res?.id}`)
         },
         onError: (e: Error) => {
-            console.log(e)
+            form.setErrors({ABN :"ABN is not valid"})
         },
     })
 
@@ -44,13 +45,6 @@ const CreateVendor = () => {
                     <form onSubmit={form.onSubmit(data => createVendor.mutate(data))}>
                         <Input.Wrapper
 
-                            label="Name :" placeholder="Name"
-                        >
-                            <TextInput  {...form.getInputProps('name')} />
-                        </Input.Wrapper>
-                        <Space h="xs" />
-                        <Input.Wrapper
-
                             label="ABN :" placeholder="ABN"
                         >
                             <NumberInput {...form.getInputProps('ABN')} />
@@ -62,8 +56,12 @@ const CreateVendor = () => {
                         >
                             <TextInput {...form.getInputProps('email')} />
                         </Input.Wrapper>
+                        <Input.Wrapper
 
-
+                            label="Phone :" placeholder="Phone" mt={"1rem"}
+                        >
+                            <TextInput  {...form.getInputProps('phone')} />
+                        </Input.Wrapper>
                         <Input.Wrapper
 
                             label="Link :" placeholder="Link" mt={"1rem"}
@@ -76,7 +74,6 @@ const CreateVendor = () => {
                             Proceed
                         </Button>
                         <Space h="md" />
-                        {errorMessage.value}
                     </form>
                 </Box>
             </Container>

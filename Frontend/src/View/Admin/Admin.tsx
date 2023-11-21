@@ -58,8 +58,10 @@ const Admin = () => {
             <Container>
                 <Box mt={"2rem"} maw={340} mx="auto">
                     <form onSubmit={form.onSubmit(handleSubmit)}>
-                        <Title mt={"2rem"} mb={"1rem"} order={4}>Enter password to continue</Title>
+                        <Title mt={"2rem"} order={4}>Enter password to continue</Title>
+                        <Text size="xs">Please use 12345678 for now </Text>
                         <PasswordInput
+                         mt={"1rem"}
                             withAsterisk
                             placeholder="password"
                             {...form.getInputProps('password')}
@@ -90,6 +92,8 @@ const Admin = () => {
                 <Button onClick={() => navigate(`/admin/data`)}>Data Magemement</Button>
                 <Button onClick={() => navigate(`/admin/approve`)}>Approval Magemement</Button>
                 <Button onClick={() => navigate(`/admin/input`)}>Input Magemement</Button>
+                <Button onClick={() => navigate(`/admin/vendor`)}>Vendor List</Button>
+
             </Flex>
         </Container>
     )

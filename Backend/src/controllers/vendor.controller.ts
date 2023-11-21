@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express';
 import vendorService from '../services/vendor.service';
 import middleware from "../utils/middleware"
+import { VendorEdit } from '../models/vendor.model';
 
 require('express-async-errors');
 
@@ -36,11 +37,20 @@ vendorRoute.get('/:id', async (req: Request, res: Response) => {
     res.status(200).json(sensors)
 })
 
+vendorRoute.put('/:id', async (req: Request, res: Response) => {
+    const id = Number(req.params.id)
+    const data: VendorEdit = req.body
+    const sensor = await vendorService.editVendor(id, data)
+    res.status(200).json(sensor)
+})
+
 vendorRoute.get('/ABN/:ABN', async (req: Request, res: Response) => {
     const ABN = Number(req.params.ABN)
     const sensors = await vendorService.getVendorByABN(ABN)
     res.status(200).json(sensors)
 })
+
+
 
 
 

@@ -8,13 +8,8 @@ const prisma = new PrismaClient()
 
 const a = async () => {
   try {
-
-    await userService.createUser({
-        username : "admin",
-        password : "12345678",
-        role : "admin"
-      
-    })
+    const b = await vendorService.getAllVendor()
+    console.log(b)
   }
   catch (e) {
     console.log(e)
