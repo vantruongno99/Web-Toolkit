@@ -18,9 +18,8 @@ appRouter.get('/', async (req: Request, res: Response) => {
     res.status(200).json(sensors)
 })
 
-appRouter.get('/:id',middleware.userExtractor, middleware.adminRequire,  async (req: Request, res: Response) => {
+appRouter.get('/:id',async (req: Request, res: Response) => {
     const id = Number(req.params.id)
-    console.log("trigger")
     const technology = await applicationService.getApplicationById(id)
     res.status(200).json(technology)
 })
