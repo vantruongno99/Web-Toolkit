@@ -11,7 +11,7 @@ const config = {
 }
 
 
-const getAllApproval = async (): Promise<ApplicationVendor []| undefined> => {
+const getAllApproval = async (): Promise<ApplicationVendor[] | undefined> => {
     try {
         const res = await axios.get(`${baseUrl}/approve`,
             config
@@ -31,11 +31,10 @@ const getAllApproval = async (): Promise<ApplicationVendor []| undefined> => {
 
 
 
-const confirmApprove = async (vendorId: number ,applicationId: number ): Promise<void> => {
+const confirmApprove = async (vendorId: number, applicationId: number): Promise<void> => {
     try {
-        await axios.put(`${baseUrl}/approve/${vendorId}/${applicationId}`,
-            config
-        )
+        await axios.put(`${baseUrl}/approve/${vendorId}/${applicationId}`, {},
+            config)
 
     }
     catch (error: any | AxiosError) {
@@ -48,11 +47,10 @@ const confirmApprove = async (vendorId: number ,applicationId: number ): Promise
     }
 }
 
-const confirmDisapprove = async (vendorId: number ,applicationId: number ): Promise<void> => {
+const confirmDisapprove = async (vendorId: number, applicationId: number): Promise<void> => {
     try {
-        await axios.put(`${baseUrl}/disapprove/${vendorId}/${applicationId}`,
-            config
-        )
+        await axios.put(`${baseUrl}/disapprove/${vendorId}/${applicationId}`, {},
+            config)
 
     }
     catch (error: any | AxiosError) {

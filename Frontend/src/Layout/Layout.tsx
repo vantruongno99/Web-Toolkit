@@ -1,10 +1,12 @@
 import {
   AppShell,
+  AppShellFooter,
   Box,
 } from '@mantine/core';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
 import HeroHeader from './HeroHeader';
+import Footer from './Footer';
 
 export default function Layout() {
   return (
@@ -18,7 +20,9 @@ export default function Layout() {
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>
-
+      <AppShell.Section mt={"3rem"}>
+        <Footer />
+      </AppShell.Section>
     </AppShell>
   );
 } 

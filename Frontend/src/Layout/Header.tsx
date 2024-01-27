@@ -6,8 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 const links = [
   { link: '/about', label: 'About' },
-  { link: '/solution', label: 'Solution' },
-  { link: '/login', label: 'Login' },
+  { link: '/find', label: 'Solution' },
+  { link: '/admin    ', label: 'Admin' },
+  { link: '/vendor    ', label: 'Vendor' },
 ];
 
 export default function Header() {
@@ -20,7 +21,7 @@ export default function Header() {
       href={link.link}
       className={classes.link}
       onClick={(event) => {
-        event.preventDefault();
+        navigate(link.link)
       }}
     >
       {link.label}
@@ -30,7 +31,7 @@ export default function Header() {
   return (
     <header className={classes.header}>
       <Container size="md" className={classes.inner}>
-        <h3>
+        <h3 onClick={()=> navigate('/')}>
           Logo
         </h3>
         {/* <Group gap={5} visibleFrom="xs">

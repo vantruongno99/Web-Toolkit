@@ -63,7 +63,6 @@ const Admin = () => {
                         <PasswordInput
                          mt={"1rem"}
                             withAsterisk
-                            placeholder="password"
                             {...form.getInputProps('password')}
                         />
 
@@ -79,7 +78,7 @@ const Admin = () => {
     return (
         <Container>
             <Center mt={"2rem"} mb={"1rem"}>
-                <Title>Admin Portal</Title>
+                <Title c="indigo">ADMIN PORTAL</Title>
             </Center>
             <Flex
                 mt={"2rem"}

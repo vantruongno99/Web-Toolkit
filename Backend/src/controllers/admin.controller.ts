@@ -6,7 +6,7 @@ require('express-async-errors');
 
 const adminRouter = Router();
 
-adminRouter.put('/approve/:vendorId/:applicationId', middleware.userExtractor, middleware.adminRequire, async (req: Request, res: Response) => {
+adminRouter.put('/approve/:vendorId/:applicationId', middleware.userExtractor, async (req: Request, res: Response) => {
     const applicationId = Number(req.params.applicationId)
     const vendorId = Number(req.params.vendorId)
     await adminService.approve(vendorId, applicationId)

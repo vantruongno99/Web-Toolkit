@@ -1,13 +1,19 @@
 import React from "react"
-import { useForm, isEmail ,isNotEmpty } from '@mantine/form';
-import { NumberInput, TextInput, Button, Box, Space, Input, Title, Container ,Text} from '@mantine/core';
+import { useForm, isEmail, isNotEmpty } from '@mantine/form';
+import { MantineThemeProvider, NumberInput, TextInput, Button, Box, Space, Input, Title, Container, Text, createTheme, Grid, GridCol } from '@mantine/core';
 import { useError } from "../../Hook";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import vendorService from "../../Services/vendor.service";
 import { VendorInput } from "../../Ultils/type";
+import Cookies from "js-cookie";
 
 const CreateVendor = () => {
+
+
+
+
+
     const errorMessage = useError()
     const navigate = useNavigate();
 
@@ -25,13 +31,19 @@ const CreateVendor = () => {
     const createVendor = useMutation({
         mutationFn: async (input: VendorInput) => {
             const res = await vendorService.createVendor({ ...input, ABN: Number(input.ABN) })
+            if(!res){
+                form.setErrors({ ABN: "ABN is not valid" })
+            }
             return res
         },
         onSuccess: (res) => {
-            navigate(`/vendor/${res?.id}`)
+            if (res && res.ABN) {
+                Cookies.set("ABN",String (res?.ABN))
+            }
+            navigate(`/vendor`)
         },
         onError: (e: Error) => {
-            form.setErrors({ABN :"ABN is not valid"})
+            form.setErrors({ ABN: "ABN is not valid" })
         },
     })
 
@@ -39,43 +51,48 @@ const CreateVendor = () => {
     return (
         <>
             <Container p={"1rem"}>
-                <Title order={3}>DETAILS</Title>
-                <Space h="xl" />
-                <Box maw={320}>
-                    <form onSubmit={form.onSubmit(data => createVendor.mutate(data))}>
-                        <Input.Wrapper
+                <Grid>
+                    <Grid.Col span={6}>
+                        <Title order={3}>Sign Up</Title>
+                        <Space h="xl" />
+                        <Box maw={320}>
 
-                            label="ABN :" placeholder="ABN"
-                        >
-                            <NumberInput {...form.getInputProps('ABN')} />
-                        </Input.Wrapper>
+                            <form onSubmit={form.onSubmit(data => createVendor.mutate(data))}>
+                                <Input.Wrapper
 
-                        <Input.Wrapper
+                                    label="ABN" description=""
+                                >
+                                    <NumberInput {...form.getInputProps('ABN')} />
+                                </Input.Wrapper>
 
-                            label="Email :" placeholder="Email" mt={"1rem"}
-                        >
-                            <TextInput {...form.getInputProps('email')} />
-                        </Input.Wrapper>
-                        <Input.Wrapper
+                                <Input.Wrapper
 
-                            label="Phone :" placeholder="Phone" mt={"1rem"}
-                        >
-                            <TextInput  {...form.getInputProps('phone')} />
-                        </Input.Wrapper>
-                        <Input.Wrapper
+                                    label="Email" mt={"1rem"}
+                                >
+                                    <TextInput {...form.getInputProps('email')} />
+                                </Input.Wrapper>
+                                <Input.Wrapper
 
-                            label="Link :" placeholder="Link" mt={"1rem"}
-                        >
-                            <TextInput {...form.getInputProps('link')} />
-                        </Input.Wrapper>
+                                    label="Phone" mt={"1rem"}
+                                >
+                                    <TextInput  {...form.getInputProps('phone')} />
+                                </Input.Wrapper>
+                                <Input.Wrapper
 
-                        <Space h="md" />
-                        <Button type="submit" disabled={createVendor.isPending} mt="sm">
-                            Proceed
-                        </Button>
-                        <Space h="md" />
-                    </form>
-                </Box>
+                                    label="Link" mt={"1rem"}
+                                >
+                                    <TextInput {...form.getInputProps('link')} />
+                                </Input.Wrapper>
+
+                                <Space h="md" />
+                                <Button variant="filled" color="indigo" type="submit" disabled={createVendor.isPending} mt="sm">
+                                    Sign Up
+                                </Button>
+                                <Space h="md" />
+                            </form>
+                        </Box>
+                    </Grid.Col>
+                </Grid>
             </Container>
         </>
     )

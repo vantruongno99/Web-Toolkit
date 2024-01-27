@@ -36,6 +36,11 @@ const AdminData = () => {
 
     return (
         <Container>
+            <Center mt={"1rem"} mb={"2rem"}>
+                <Title order={2} c="indigo">
+                    TECHNOLOGY LIST
+                </Title>
+            </Center>
             {data.map((d, i) => <Outside data={d} key={i} />)}
             <NewTechology />
 
@@ -77,37 +82,35 @@ const NewTechology = () => {
     })
 
     return (<>
-        <Card p={"2rem"} radius="md" withBorder >
-            <Card.Section onClick={() => setOpened(!opened)}>
-                <Group justify="center">
-                    <ActionIcon size={'lg'}>
-                        <IconCirclePlus />
-                    </ActionIcon>
-                </Group>
-                <Text fz="sm" mt="1rem">
-                </Text>
-            </Card.Section>
-        </Card>
+        <Group justify="center" mt={"2rem"}>
+            <Button onClick={() => setOpened(!opened)} size={'md'}>
+                ADD MORE
+            </Button>
+        </Group>
 
 
-        <Modal size="xl" opened={opened} onClose={() => setOpened(false)} title="Add new technology">
+
+        <Modal withCloseButton={false} size="xl" opened={opened} onClose={() => setOpened(false)}>
+            <Center mb={"1rem"}>
+                <Title order={3}>
+                    ADD NEW TECHNOLOGY
+                </Title>
+            </Center>
+            <Divider />
             <form onSubmit={form.onSubmit(data => createApplication.mutate(data))}>
                 <Title order={2}>
                     <TextInput
-                        variant="unstyled"
-                        size="lg"
                         withAsterisk
-                        placeholder="Technology"
+                        label="Technology"
                         {...form.getInputProps('technology')}
                     />
                 </Title>
                 <Text fz="sm" mt={"1rem"} >
                     <Textarea
-                        variant="unstyled"
                         mt={"1rem"}
                         autosize
                         withAsterisk
-                        placeholder="Description"
+                        label="Description"
                         {...form.getInputProps('description')}
                     />                            </Text>
                 <Group justify="flex-end" mt={"1rem"}>
@@ -134,7 +137,8 @@ const Outside = ({ data }: { data: TechnologyInfo }) => {
 
     return (<>
         <div style={{ width: "auto" }}>
-            <Card p={"2rem"} radius="md" withBorder onClick={()=>navigate(`/admin/technology/${data.id}`)}>
+
+            <Card p={"2rem"} radius="md" mt={"1rem"} withBorder onClick={() => navigate(`/admin/technology/${data.id}`)}>
                 <Card.Section onClick={() => setShowed(!showed)}>
                     <Group justify="center">
                         <Title order={3}>

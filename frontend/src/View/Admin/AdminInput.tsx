@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Flex, Button, Paper, Title, Loader, Center, Container, TagsInput } from "@mantine/core";
+import { Text, Button, Paper, Title, Loader, Center, Container, TagsInput, Tabs } from "@mantine/core";
 import { useNavigate } from 'react-router-dom';
 import { IconCheck, IconCirclePlus, IconTablePlus, IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -79,7 +79,6 @@ const AdminInput = () => {
             purpose: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
             engagement: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
             scale: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
-            budget: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
             participation: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
             solution: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
         }
@@ -218,31 +217,88 @@ const AdminInput = () => {
 
 
 
+
+
     return (
         <Container>
             <Center mt={"1rem"} mb={"2rem"}>
-                <Title order={3}>
-                    Input Magement
+                <Title order={2} c="indigo">
+                    INPUT MANAGEMENT
                 </Title>
             </Center>
             <form onSubmit={form.onSubmit(handleSubmit)}>
-                <Title order={4} mt={"1rem"}>Purpose</Title>
-                <TagsInput size="md" splitChars={[',']} {...form.getInputProps('purpose')} />
-                <Title order={4} mt={"1rem"}>Enagagement</Title>
-                <TagsInput size="md" splitChars={[',']}  {...form.getInputProps('engagement')} />
-                <Title order={4} mt={"1rem"}>Scale</Title>
-                <TagsInput size="md" splitChars={[',']}  {...form.getInputProps('scale')} />
-                <Title order={4} mt={"1rem"}>Budget</Title>
-                <TagsInput size="md" splitChars={[',']}  {...form.getInputProps('budget')} />
-                <Title order={4} mt={"1rem"}>Participation</Title>
-                <TagsInput size="md" splitChars={[',']}  {...form.getInputProps('participation')} />
-                <Title order={4} mt={"1rem"}>Solution For</Title>
-                <TagsInput size="md" splitChars={[',']}  {...form.getInputProps('solution')} />
-                <Button disabled={updateInput.isPending || !form.isDirty()} mt="2rem" type="submit">Save {updateInput.isPending && <Loader ml={"1rem"} size="sm" />} </Button>
+
+                <Tabs defaultValue="purpose">
+                    <Tabs.List>
+                        <Tabs.Tab value="purpose" >
+                            Purpose
+                        </Tabs.Tab>
+                        <Tabs.Tab value="enagagement" >
+                            Enagagement
+                        </Tabs.Tab>
+                        <Tabs.Tab value="scale">
+                            Scale
+                        </Tabs.Tab>
+                        <Tabs.Tab value="budget">
+                            Budget
+                        </Tabs.Tab>
+                        <Tabs.Tab value="participation">
+                            Participation
+                        </Tabs.Tab>
+                        <Tabs.Tab value="solution">
+                            Solution
+                        </Tabs.Tab>
+                    </Tabs.List>
+
+                    <Tabs.Panel value="purpose">
+                        <Guide />
+                        <TagsInput mt="1rem" size="md" splitChars={[',']} {...form.getInputProps('purpose')} />
+                    </Tabs.Panel>
+                    <Tabs.Panel value="enagagement">
+                        <Guide />
+                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('engagement')} />
+                    </Tabs.Panel>
+                    <Tabs.Panel value="scale">
+                        <Guide />
+                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('scale')} />
+                    </Tabs.Panel>
+                    <Tabs.Panel value="budget">
+                    <Guide/>
+                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('budget')} />
+                    </Tabs.Panel>
+                    <Tabs.Panel value="participation">
+                    <Guide/>
+                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('participation')} />
+                    </Tabs.Panel>
+                    <Tabs.Panel value="solution">
+                    <Guide/>
+                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('solution')} />
+                    </Tabs.Panel>
+
+
+
+
+
+
+
+
+                    <Button disabled={updateInput.isPending || !form.isDirty()} mt="2rem" type="submit">Submit {updateInput.isPending && <Loader ml={"1rem"} size="sm" />} </Button>
+                </Tabs>
+
             </form>
         </Container>
     )
 
+}
+
+
+const Guide = () => {
+    return (<Container >
+        <ul>
+            <li>Type and Enter to add new input  </li>
+            <li>Click on X to remove an input</li>
+        </ul>
+    </Container>)
 }
 
 

@@ -1,39 +1,54 @@
-import { useState, useEffect } from "react"
-import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Anchor, Box, Button, Container, Input, NumberInput, Space, Table, Tabs, Title } from "@mantine/core"
-import { UseMutateAsyncFunction, UseMutationResult, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader } from '@mantine/core';
-import { VendorEdit, VendorInfo, VendorInput } from "../../Ultils/type";
+import React, { useEffect, useState } from "react";
+import { Flex, Button, Paper, Title, Text, Container, Center, NumberInput, Input, Box, Loader, Tabs, Table, Space, Anchor, Group } from "@mantine/core";
+import classes from './Home.module.css';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { UseMutationResult, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import vendorService from "../../Services/vendor.service";
-import { isNotEmpty, useForm } from '@mantine/form';
-
+import { useError } from "../../Hook";
+import { LandingData, VendorEdit, VendorInfo } from "../../Ultils/type";
+import Cookies from "js-cookie";
+import { useForm, isNotEmpty } from "@mantine/form";
 
 
 const Vendor = () => {
 
-    const params = useParams();
-    const id = params.id
+    const navigate = useNavigate()
+    const [showed, setShowed] = useState<boolean>(false)
+    const [ABN, setABN] = useState<string | number>('')
+    const errorMessage = useError()
 
-    if (!id) {
-        return <div>
-            404
-        </div>
-    }
 
-    const vendorId = parseInt(id)
+    const ABNCheck = useMutation({
+        mutationFn: async (input: string | number) => {
+            const ABN = Number(input)
+            const output = await vendorService.getVendorByABN(ABN)
+            return output
+        },
+        onSuccess: (result) => {
+            Cookies.set("ABN", String(result?.ABN))
+            setShowed(true)
+        },
+        onError: (e) => {
+            errorMessage.set("No Vendor found with this ABN")
+        },
+    })
 
+
+    const vendorABN = Number(Cookies.get("ABN"))
 
     const { isLoading, error, isError, data } = useQuery({
-        queryKey: ['vendor', vendorId],
+        queryKey: ['vendor', vendorABN],
         queryFn: async () => {
             try {
-                const res = await vendorService.getVendor(vendorId)
-                if (!res) {
-                    throw new Error()
-                }
-                console.log(res)
+                if (vendorABN) {
+                    const res = await vendorService.getVendorByABN(vendorABN)
+                    if (!res) {
+                        throw new Error()
+                    }
+                    setShowed(true)
 
-                return res
+                    return res
+                }
             }
             catch (e) {
                 console.log(e)
@@ -48,12 +63,34 @@ const Vendor = () => {
     const updateApplication = useMutation({
         mutationFn: async (input: VendorEdit
         ) => {
-            return await vendorService.editVendor(vendorId, input)
+            return await vendorService.editVendor(vendorABN, input)
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['vendor', vendorId] })
+            queryClient.invalidateQueries({ queryKey: ['vendor', vendorABN] })
         }
     })
+
+    if (!showed) {
+        return (<>
+            <Container p="2rem" maw={600}>
+                Enter your ABN to continue
+                <Input.Wrapper
+                    label="ABN :"
+                    mt={"1rem"}
+                >
+                    <NumberInput width="1px" value={ABN} onChange={setABN} size="md" />
+                </Input.Wrapper>
+                <Group justify="space-between" mt="xl">
+                    <a href="/vendor/create">Don't have an account? Register</a>
+                    <Button  onClick={() => ABNCheck.mutateAsync(ABN)}>Continue</Button>
+                </Group>
+                {errorMessage.value !== " " && <Text c="red">
+                    {errorMessage.value}
+                </Text>}
+            </Container>
+
+        </>)
+    }
 
 
 
@@ -87,13 +124,13 @@ const Vendor = () => {
 
                 </Tabs>
             </Container>
-
         </>
     )
+
 }
 
 
-const VendorDetail = ({ vendor, isLoading, update }: { vendor: VendorInfo, isLoading: boolean, update: UseMutationResult<void, Error, VendorEdit, unknown>}) => {
+const VendorDetail = ({ vendor, isLoading, update }: { vendor: VendorInfo, isLoading: boolean, update: UseMutationResult<void, Error, VendorEdit, unknown> }) => {
 
     const [searchParams] = useSearchParams();
     const userSearch = searchParams.get('type') === "user"
@@ -200,7 +237,7 @@ const VendorDetail = ({ vendor, isLoading, update }: { vendor: VendorInfo, isLoa
                         <Input   {...form.getInputProps('link')} size="md" />
                     </Input.Wrapper>
 
-                    <Button mt={"2rem"} mb={"1rem"} disabled={!form.isDirty()||update.isPending} type="submit">Save</Button>
+                    <Button mt={"2rem"} mb={"1rem"} disabled={!form.isDirty() || update.isPending} type="submit">Save</Button>
                 </form>
             </Box>
 

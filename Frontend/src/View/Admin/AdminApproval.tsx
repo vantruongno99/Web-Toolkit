@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { ActionIcon, Anchor, Button, Group, Space, Text, Tooltip, Title, Table, Container } from '@mantine/core'
+import { ActionIcon, Anchor, Button, Group, Space, Text, Tooltip, Title, Table, Container, Center } from '@mantine/core'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IconChevronUp, IconSelector } from '@tabler/icons-react';
 import sortBy from 'lodash/sortBy';
@@ -33,7 +33,9 @@ const Approval = () => {
 
     return (
         <Container p={"2rem"}>
-            <Title order={3} >PENDING APPROVAL LIST</Title>
+            <Center>
+                <Title c={"indigo"} order={2} >PENDING APPROVAL LIST</Title>
+            </Center>
             <Space h="xl" />
             <VendorTable data={data} isLoading={isLoading} />
 
@@ -63,7 +65,7 @@ const VendorTable = ({ data, isLoading }: { data: ApplicationVendor[], isLoading
 
 
     const rows = vendors.map((element, i) => (
-        <Table.Tr onClick={()=>navigate(`/admin/application/${element.applicationId}`)} key={i}>
+        <Table.Tr onClick={() => navigate(`/admin/application/${element.applicationId}`)} key={i}>
             <Table.Td>{element.Application.potentialApplications}</Table.Td>
             <Table.Td>{element.Vendor.name}</Table.Td>
 
@@ -72,7 +74,7 @@ const VendorTable = ({ data, isLoading }: { data: ApplicationVendor[], isLoading
 
     return (
         <>
-            <Table highlightOnHover withTableBorder>
+            <Table striped highlightOnHover withTableBorder>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>Name</Table.Th>

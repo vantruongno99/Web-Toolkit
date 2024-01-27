@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom";
 import React, { Suspense } from 'react'
-import { Loader } from '@mantine/core';
+import { Loader, Input } from '@mantine/core';
 import { Layout } from "./Layout";
 import { outerRoutes, innerRoutes } from "./Route";
 import { MantineProvider, createTheme } from '@mantine/core';
@@ -14,16 +14,21 @@ import {
 import Cookies from "js-cookie";
 
 
+import classes from './App.module.css';
+
+
+
 
 
 const App = () => {
 
 
+
     const loader = async () => {
-       const type = Cookies.get("role")
-       if(!type || type != "admin"){
-        return redirect("/");
-       }
+        const type = Cookies.get("role")
+        if (!type || type != "admin") {
+            return redirect("/");
+        }
         return null;
     };
 
@@ -50,8 +55,14 @@ const App = () => {
 
 
     const theme = createTheme({
-        fontFamily: 'Open Sans, sans-serif',
-        primaryColor: "gray"
+        primaryColor: "indigo",
+        components: {   
+            InputWrapper: Input.Wrapper.extend({
+              classNames: {
+                label: classes.label,
+              },
+            }),
+          },
     });
 
     const queryClient = new QueryClient()

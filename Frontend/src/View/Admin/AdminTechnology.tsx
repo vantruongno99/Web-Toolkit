@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { FileInput, Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, ActionIcon, Fieldset } from "@mantine/core"
+import { FileInput, Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, ActionIcon, Fieldset, Center } from "@mantine/core"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import technologyService from "../../Services/technology.service";
@@ -10,6 +10,8 @@ import { IconTablePlus, IconTrashX } from "@tabler/icons-react";
 import applicationService from "../../Services/application.service";
 import imageService from "../../Services/image.service";
 import dataService from "../../Services/data.service";
+import ApplicationCard from "../../Component/ApplicationCard/ApplicationCard";
+import classes from './AdminTechnology.module.css'
 
 const AdminTechnology = () => {
 
@@ -83,12 +85,6 @@ const AdminTechnology = () => {
 
     const update = async () => await updateTechnology.mutateAsync(form.values)
 
-    let rows =
-        (data?.Application.map((e, i) => (
-            <Table.Tr key={i} onClick={() => navigate(`/admin/application/${e.id}`)}>
-                <Table.Td>{e.potentialApplications}</Table.Td>
-            </Table.Tr>
-        )))
 
 
 
@@ -99,39 +95,39 @@ const AdminTechnology = () => {
 
     return (<>
         <Container p={"2rem"}>
-            <Group justify="space-between">
-                <Title order={3}>Details</Title>
-                <ActionIcon variant="outline" color="red" aria-label="Settings" onClick={() => deleteTechnology.mutateAsync()}>
-                    <IconTrashX style={{ width: '80%', height: '80%' }} stroke={1.5} />
-                </ActionIcon>
-            </Group>
-            <Input.Wrapper
-                label="Name:"
-                mt={"1rem"}
-            >
-                <TextInput size="md"   {...form.getInputProps('technology')} />
-            </Input.Wrapper>
-            <Input.Wrapper
-                label="Description:"
-                mt={"1rem"}
+            <Container pt={"1rem"} pb={"1rem"} className={classes.area}>
+                <Group justify="space-between">
+                    <Title order={2}>DETAILS</Title>
+                    <ActionIcon variant="outline" color="red" aria-label="Settings" onClick={() => deleteTechnology.mutateAsync()}>
+                        <IconTrashX style={{ width: '80%', height: '80%' }} stroke={1.5} />
+                    </ActionIcon>
+                </Group>
+                <Input.Wrapper
+                    label="Name:"
+                    mt={"1rem"}
+                >
+                    <TextInput size="md"   {...form.getInputProps('technology')} />
+                </Input.Wrapper>
+                <Input.Wrapper
+                    label="Description:"
+                    mt={"1rem"}
 
-            >
-                <Textarea autosize
-                    minRows={3} size="md"   {...form.getInputProps('description')} />
-            </Input.Wrapper>
+                >
+                    <Textarea autosize
+                        minRows={3} size="md"   {...form.getInputProps('description')} />
+                </Input.Wrapper>
 
-            <Button disabled={!form.isDirty()} onClick={() => update()} mt={"1rem"}> Save change</Button>
+                <Button disabled={!form.isDirty()} onClick={() => update()} mt={"1rem"}> Save change</Button>
 
-            <Title order={4} mt="2rem">Application list</Title>
+            </Container>
 
-            <Table highlightOnHover withTableBorder mb="1rem" mt="1rem">
-                <Table.Thead>
-                    <Table.Tr>
-                        <Table.Th>Name</Table.Th>
-                    </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>{rows}</Table.Tbody>
-            </Table>
+            <Title order={3} mt="2rem" mb={"2rem"}>Application list</Title>
+
+            <Grid justify="left" align="stretch" gutter="xl">
+                {data?.Application.map((a, i) => <Grid.Col span={4}> <ApplicationCard data={a} key={i} />   </Grid.Col>
+                )}
+            </Grid>
+
 
             <NewApplicationForm technologyId={data?.id as number} />
 
@@ -248,35 +244,35 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
 
     return (
         <>
-            <Modal size="xl" opened={opened} onClose={() => setOpened(false)} title="Add new Application">
+            <Modal withCloseButton={false} size="xl" opened={opened} onClose={() => setOpened(false)}>
+                <Center mb={"1rem"}>
+                    <Title order={3}>
+                        ADD NEW APPLICATION
+                    </Title>
+                </Center>
+                <Divider />
                 <form onSubmit={form.onSubmit(data => createApplication.mutate(data))}>
-                    <Group justify="left">
-                        <Title order={2}>
-                            <TextInput
-                                variant="unstyled"
-                                size="lg"
-                                withAsterisk
-                                placeholder="Technology"
-                                {...form.getInputProps('potentialApplications')}
-                            />
-                        </Title>
-                    </Group>
+                    <Title order={2}>
+                        <TextInput
+                            withAsterisk
+                            label="Technology"
+                            {...form.getInputProps('potentialApplications')}
+                        />
+                    </Title>
                     <Text fz="sm" mt={"1rem"} >
                         <Textarea
-                            variant="unstyled"
                             mt={"1rem"}
                             autosize
                             withAsterisk
-                            placeholder="Description"
+                            label="Description"
                             {...form.getInputProps('explanation')}
                         />                            </Text>
                     <Text fz="sm" >
                         <Textarea
-                            variant="unstyled"
                             mt={"1rem"}
                             autosize
                             withAsterisk
-                            placeholder="Maturity"
+                            label="Maturity"
                             {...form.getInputProps('maturity')}
                         />                            </Text>
                     <Divider mt="1rem" size="xs" color="black" />
@@ -394,14 +390,17 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
             </Modal>
 
 
-            <ActionIcon onClick={() => setOpened(!opened)} size={'lg'}>
-                <IconTablePlus />
-            </ActionIcon>
+            <Center>
+                <Button variant="filled" mt={"2rem"} color="indigo" onClick={() => setOpened(!opened)} size={'md'}>
+                    ADD MORE
+                </Button>
+            </Center>
 
         </>
 
     )
 }
+
 
 
 export default AdminTechnology

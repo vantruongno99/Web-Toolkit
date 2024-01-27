@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react"
-import { ActionIcon, Anchor, Button, Group, Space, Text, Tooltip, Title, Table, Container } from '@mantine/core'
+import { ActionIcon, Anchor, Button, Group, Space, Text, Tooltip, Title, Table, Container, Center } from '@mantine/core'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IconChevronUp, IconSelector } from '@tabler/icons-react';
 import sortBy from 'lodash/sortBy';
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { IconCirclePlus } from '@tabler/icons-react';
 import vendorService from "../../Services/vendor.service";
-import { ApplicationVendor, VendorInfo } from "../../Ultils/type";
-import adminService from "../../Services/admin.service";
+import { VendorInfo } from "../../Ultils/type";
 
 
 const Approval = () => {
@@ -33,7 +32,9 @@ const Approval = () => {
 
     return (
         <Container p={"2rem"}>
-            <Title order={3} >VENDOR LIST</Title>
+            <Center>
+                <Title c={"indigo"} order={2} >VENDOR LIST</Title>
+            </Center>
             <Space h="xl" />
             <VendorTable data={data} isLoading={isLoading} />
 
@@ -54,7 +55,7 @@ const VendorTable = ({ data, isLoading }: { data: VendorInfo[], isLoading: boole
 
 
     const rows = vendors.map((element, i) => (
-        <Table.Tr onClick={()=>navigate(`/vendor/${element.id}?type=admin`)} key={i}>
+        <Table.Tr onClick={() => navigate(`/vendor/${element.id}?type=admin`)} key={i}>
             <Table.Td>{element.ABN}</Table.Td>
             <Table.Td>{element.name}</Table.Td>
 
@@ -63,7 +64,8 @@ const VendorTable = ({ data, isLoading }: { data: VendorInfo[], isLoading: boole
 
     return (
         <>
-            <Table highlightOnHover withTableBorder>
+        
+            <Table striped highlightOnHover withTableBorder>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>Name</Table.Th>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Image, Box, Card, Container, Divider, Flex, Grid, Group, ActionIcon, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, FileButton } from "@mantine/core"
+import { Image, Box, Card, Container, Divider, Flex, Grid, Group, ActionIcon, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, FileButton, Center } from "@mantine/core"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import applicationService from "../../Services/application.service";
@@ -9,6 +9,7 @@ import { ApplicationInput } from "../../Ultils/type";
 import { IconCircleX, IconCircleCheck, IconTrashX } from "@tabler/icons-react";
 import adminService from "../../Services/admin.service";
 import imageService from "../../Services/image.service";
+import classes from "./AdminApplication.module.css"
 
 interface localApplicationForm {
     purposeOfEngagement: string[];
@@ -215,55 +216,54 @@ const AdminApplication = () => {
         return (<></>)
     }
 
-
-
-
-
-
-
-
-
-
     return (<>
-        <Container p={"2rem"}>
-            <Group justify="space-between">
-                <Title order={3}>Details</Title>
-                <IconTrashX />
-                <ActionIcon variant="outline" color="red" aria-label="Settings" onClick={() => deleteApplication.mutateAsync()}>
-                    <IconTrashX style={{ width: '80%', height: '80%' }} stroke={1.5} />
-                </ActionIcon>
-            </Group>
-            <FileButton onChange={uploadImage.mutateAsync} accept="image/png,image/jpeg">
-                {(props) => <Image  {...props} h={300} w={400} src={data.imageUrl} />}
-            </FileButton>
+        <Container p={"1rem"}>
 
-            <Title order={2} >
-                <TextInput
-                    variant="unstyled"
-                    size="md"
-                    withAsterisk
-                    placeholder="Technology"
-                    {...form.getInputProps('potentialApplications')}
-                />
-            </Title>
-            <Text fz="sm" mt={"1rem"} >
-                <Textarea
-                    variant="unstyled"
-                    mt={"1rem"}
-                    autosize
-                    withAsterisk
-                    placeholder="Description"
-                    {...form.getInputProps('explanation')}
-                />                            </Text>
-            <Text fz="sm" >
-                <Textarea
-                    variant="unstyled"
-                    mt={"1rem"}
-                    autosize
-                    withAsterisk
-                    placeholder="Maturity"
-                    {...form.getInputProps('maturity')}
-                />                            </Text>
+            <Center>
+                <Title mb={'4rem'} order={2} c="indigo">DETAILS</Title>
+            </Center>
+            <Grid
+                gutter="md">
+                <Grid.Col span={8} >
+                    <Title order={2} >
+                        <TextInput
+                            size="md"
+                            withAsterisk
+                            label="Technology"
+                            {...form.getInputProps('potentialApplications')}
+                        />
+                    </Title>
+                    <Text fz="sm" mt={"1rem"} >
+                        <Textarea
+                            mt={"1rem"}
+                            autosize
+                            minRows={5}
+                            withAsterisk
+                            label="Description"
+                            {...form.getInputProps('explanation')}
+                        />                            </Text>
+                    <Text fz="sm" >
+                        <Textarea
+                            mt={"1rem"}
+                            autosize
+                            minRows={3}
+                            label="Maturity"
+                            {...form.getInputProps('maturity')}
+                        />                            </Text>
+                </Grid.Col>
+                <Grid.Col span={4} >
+                    <Image className={classes.image} h={300} w={300} src={data.imageUrl} />
+                    <Space h="md" />
+                    <Group justify="flex-end" mt="1rem" gap="xs">
+
+                    <FileButton onChange={uploadImage.mutateAsync} accept="image/png,image/jpeg">
+                        {(props) => <Button color="indigo" {...props}>Upload photo</Button>}
+                    </FileButton>
+                    </Group>
+                </Grid.Col>
+            </Grid>
+
+
             <Divider mt="1rem" size="xs" color="black" />
 
 
@@ -380,7 +380,13 @@ const AdminApplication = () => {
                     />
                 </Grid.Col>
             </Grid >
-            <Button mt={"1rem"} mb={"1rem"} disabled={!form.isDirty()} onClick={() => update()}>Save</Button>
+            <Group justify="space-between" mt={"2rem"} mb={"1rem"} >
+                <Button disabled={!form.isDirty()} onClick={() => update()}>Save</Button>
+
+                <Button variant="outline" color="red" aria-label="Settings" onClick={() => deleteApplication.mutateAsync()}>
+                    Delete
+                </Button>
+            </Group>
 
             <Title mt="2rem" order={4}>Vendor</Title>
             <Table mt={"1rem"} mb={"1rem"} highlightOnHover withTableBorder>

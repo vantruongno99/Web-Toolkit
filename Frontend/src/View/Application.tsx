@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, Pill } from "@mantine/core"
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, Pill, Center } from "@mantine/core"
+import { focusManager, useMutation, useQuery } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import { ApplicationInfo, ApplicationInput } from "../Ultils/type";
 import applicationService from "../Services/application.service";
@@ -164,26 +164,35 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
     })
 
     return (
-        <div >
+        <Container p={1} >
+            <Center>
+                <Title mb={'4rem'} order={2} c="indigo">DETAILS</Title>
+            </Center>
+            <Grid
+                gutter="md">
+                <Grid.Col span={8} >
+                    <Title order={2} >
+                        {form.values.potentialApplications}
 
-            <Image h={300} w={500} src={application.imageUrl} />
+                    </Title>
+                    <Text fz="sm" mt={"1rem"} >
+                        {form.values.explanation}
+                    </Text>
+                    <Text fz="sm" >
+                        {form.values.maturity}
+                    </Text>
+                </Grid.Col>
+                <Grid.Col span={4} >
+                    <Image h={400} w={500} src={application.imageUrl} />
 
-
-            <Title mt={"1rem"}>
-                {form.values.potentialApplications}
-            </Title>
-
-
-            <Text mt={"1rem"} fz="sm"  >
-                {form.values.explanation}
-            </Text>
-
-            <Divider mt="1rem" size="xs" color="black" />
+                </Grid.Col>
+            </Grid>
+            <Divider mt="2rem" mb="2rem" size="xs" color="black" />
 
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
                 <Grid.Col span={3} ><Text fz="sm" >
-                    Stage of participation :
+                    <b>Stage of participation :</b>
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
@@ -196,7 +205,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
 
             <Grid justify="flex-start" align="center" mt={"1rem"}  >
                 <Grid.Col span={3} ><Text fz="sm" >
-                    Purpose :
+                    <b>Purpose :</b>
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
@@ -211,7 +220,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
                 <Grid.Col span={3} ><Text fz="sm" >
-                    Level :
+                    <b>Level :</b>
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
@@ -223,7 +232,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
                 <Grid.Col span={3} ><Text fz="sm" >
-                    Scale :
+                    <b>Scale :</b>
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
@@ -236,7 +245,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
                 <Grid.Col span={3} ><Text fz="sm" >
-                    Budget :
+                    <b>Budget :</b>
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
@@ -248,8 +257,8 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Grid.Col>
             </Grid >
             {rows && rows?.length > 0 && <>
-                <Divider mt="1rem" size="xs" color="black" />
-                <Text>Vendor partipation</Text>
+                <Divider mt="2rem" mb="2rem" size="xs" color="black" />
+                <Title order={3}>Vendor partipation</Title>
                 <Table mt={"1rem"} highlightOnHover withTableBorder>
                     <Table.Thead>
                         <Table.Tr>
@@ -277,7 +286,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
 
                 </div>}
 
-        </div>
+        </Container>
     )
 }
 

@@ -1,9 +1,9 @@
 import React from "react";
-import { Flex, Button, Paper, Title, Text } from "@mantine/core";
+import { Flex, Button, Paper, Title, Text, Grid ,Image, Divider} from "@mantine/core";
 import classes from './Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import { LandingData } from "../Ultils/type";
-
+import homeImage from "../../cover.jpeg"
 
 const Home = () => {
 
@@ -14,12 +14,12 @@ const Home = () => {
             link: '/admin'
         },
         {
-            title: " Toolkit ",
+            title: " About ",
             description: "Learn more",
             link: '/about'
         },
         {
-            title: "Find solutions",
+            title: "Toolkit : Find solutions",
             description: "Find",
             link: '/find'
         },
@@ -33,6 +33,30 @@ const Home = () => {
 
     return (
         <>
+         <Grid gutter="lg">
+                <Grid.Col span={6} p={"2rem"}>
+                    <Title order={3}>
+                        WE ARE
+                    </Title>
+                    <Text mt={"1rem"}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Cras non sem rhoncus, hendrerit felis malesuada, ornare nulla.
+                        Maecenas eu placerat urna. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                        Morbi ut fringilla lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+                    </Text>
+                    <Button variant="filled" color="indigo" mt={"2rem"} component="a" href="/about">
+                        FIND OUT MORE
+                    </Button>
+                </Grid.Col>
+                <Grid.Col span={6}>
+                    <Image
+                        radius="md"
+                        src={homeImage}
+                        h={300}
+                    />
+                </Grid.Col>
+            </Grid>
+            <Divider size="md" mt={"2rem"} />
             <Flex
             mt="2rem"
                 mih={100}

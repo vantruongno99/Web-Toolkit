@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { ActionIcon, Anchor, Button, Group, Space, Text, Tooltip, Title, Table, Container } from '@mantine/core'
+import { ActionIcon, Anchor, Button, Group, Space, Text, Tooltip, Title, Table, Container, Center } from '@mantine/core'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IconChevronUp, IconSelector } from '@tabler/icons-react';
 import sortBy from 'lodash/sortBy';
@@ -33,8 +33,9 @@ const Vendors = () => {
 
     return (
         <Container p={"2rem"}>
-
+<Center>
             <Title order={3} >VENDOR LIST</Title>
+            </Center>
             <Space h="xl" />
             <VendorTable data={data} isLoading={isLoading} />
 

@@ -7,7 +7,7 @@ const About = React.lazy(() => import("../View/About"));
 const CommunityEngagement = React.lazy(() => import("../View/CommunityEngagement"));
 const Admin = React.lazy(() => import("../View/Admin/Admin"));
 
-const Vendor = React.lazy(() => import("../View/Vendor/Vendors"));
+const Vendor = React.lazy(() => import("../View/Vendor/Vendor"));
 const VendorCreate = React.lazy(() => import("../View/Vendor/VendorCreate"));
 const VendorList = React.lazy(() => import("../View/Vendor/VendorList"));
 const VendorById = React.lazy(() => import("../View/Vendor/Vendor"));
