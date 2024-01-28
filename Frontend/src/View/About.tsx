@@ -2,8 +2,8 @@ import React from "react";
 import { Flex, Button, Paper, Title, Text, Grid, Container, Divider, Image } from "@mantine/core";
 import classes from './Home.module.css';
 import { useNavigate } from 'react-router-dom';
-import homeImage from "../../home.jpg"
-import aboutImage from "../../about.jpg"
+import homeImage from "../../public/home.jpg"
+import aboutImage from "../../public/about.jpg"
 
 
 const About = () => {

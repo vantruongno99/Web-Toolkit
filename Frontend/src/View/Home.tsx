@@ -3,7 +3,7 @@ import { Flex, Button, Paper, Title, Text, Grid ,Image, Divider} from "@mantine/
 import classes from './Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import { LandingData } from "../Ultils/type";
-import homeImage from "../../cover.jpeg"
+import homeImage from "../../public/cover.jpeg"
 
 const Home = () => {
 

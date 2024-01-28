@@ -20,6 +20,7 @@ async function loging(loginDetail: LoginDetail) {
         Cookies.set('token', result.token)
         Cookies.set('username', result.username)
         Cookies.set('role', result.role)
+        window.location.reload();
 
         return result
     }
@@ -38,7 +39,7 @@ const logout = async () => {
     Cookies.remove('username')
     Cookies.remove('token')
     Cookies.remove('role')
-    window.location.href = '/login'
+    window.location.href = '/'
 
 }
 
