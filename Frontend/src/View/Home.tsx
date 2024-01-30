@@ -1,9 +1,9 @@
 import React from "react";
-import { Flex, Button, Paper, Title, Text, Grid ,Image, Divider} from "@mantine/core";
+import { Flex, Button, Paper, Title, Text, Grid ,Image, Divider, Container} from "@mantine/core";
 import classes from './Home.module.css';
 import { useNavigate } from 'react-router-dom';
 import { LandingData } from "../Ultils/type";
-import homeImage from "../../public/cover.jpeg"
+import homeImage from "../../public/home.jpg"
 
 const Home = () => {
 
@@ -32,7 +32,7 @@ const Home = () => {
     ]
 
     return (
-        <>
+        <Container fluid p="2rem">
          <Grid gutter="lg">
                 <Grid.Col span={6} p={"2rem"}>
                     <Title order={3}>
@@ -56,7 +56,7 @@ const Home = () => {
                     />
                 </Grid.Col>
             </Grid>
-            <Divider size="md" mt={"2rem"} />
+            <Divider size="md" mt={"2rem"} color={"dark"} />
             <Flex
             mt="2rem"
                 mih={100}
@@ -68,7 +68,7 @@ const Home = () => {
             >
                 {data.map((d,i) => <Card data={d} key={i} />)}
             </Flex>
-        </>
+        </Container>
     )
 }
 

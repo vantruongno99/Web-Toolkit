@@ -20,7 +20,7 @@ export default function Layout() {
       <AppShell.Main>
         <Outlet />
       </AppShell.Main>
-      <AppShell.Section mt={"3rem"}>
+      <AppShell.Section >
         <Footer />
       </AppShell.Section>
     </AppShell>

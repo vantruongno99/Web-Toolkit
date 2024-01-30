@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import classes from './Header.module.css';
 import { useNavigate } from 'react-router-dom';
-import { Menu, Group, Center, Burger, Container } from '@mantine/core';
+import { Menu, Group, Center, Burger, Container, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconChevronDown } from '@tabler/icons-react';
 import Cookies from "js-cookie";
@@ -66,7 +66,7 @@ export default function Header() {
               onClick={(event) => event.preventDefault()}
             >
               <Center>
-                <span className={classes.linkLabel}>{link.label}</span>
+                <span className={classes.linkLabel} onClick={()=>navigate(link.link)}>{link.label}</span>
                 <IconChevronDown size="0.9rem" stroke={1.5} />
               </Center>
             </a>
@@ -96,7 +96,7 @@ export default function Header() {
     <header className={classes.header}>
       <Container size="md">
         <div className={classes.inner}>
-          Logo
+         <Title onClick={()=>navigate("/")}>Logo</Title> 
           <Group gap={5} visibleFrom="sm">
             {items}
           </Group>

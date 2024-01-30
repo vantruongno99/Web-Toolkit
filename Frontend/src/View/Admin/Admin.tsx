@@ -56,22 +56,27 @@ const Admin = () => {
     if (!showed)
         return (<>
             <Container>
-                <Box mt={"2rem"} maw={340} mx="auto">
-                    <form onSubmit={form.onSubmit(handleSubmit)}>
-                        <Title mt={"2rem"} order={4}>Enter password to continue</Title>
-                        <Text size="xs">Please use 12345678 for now </Text>
-                        <PasswordInput
-                         mt={"1rem"}
-                            withAsterisk
-                            {...form.getInputProps('password')}
-                        />
+                <Grid>
+                    <Grid.Col span={6}>
+                        <Box mt={"2rem"} maw={340} mx="auto">
+                            <form onSubmit={form.onSubmit(handleSubmit)}>
+                                <Title mt={"2rem"} order={4}>Enter password to continue</Title>
+                                <Text size="xs">Please use 12345678 for now </Text>
+                                <PasswordInput
+                                    mt={"1rem"}
+                                    withAsterisk
+                                    {...form.getInputProps('password')}
+                                />
 
-                        <Group justify="flex-start" mt="1rem">
-                            <Button type="submit">Submit</Button>
-                        </Group>
-                    </form>
-                </Box>
-            </Container>
+                                <Group justify="flex-start" mt="1rem">
+                                    <Button type="submit">Submit</Button>
+                                </Group>
+                            </form>
+                        </Box>
+                    </Grid.Col>
+                </Grid>
+
+            </Container >
         </>)
 
 

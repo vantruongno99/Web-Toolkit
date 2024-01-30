@@ -97,7 +97,7 @@ const AdminTechnology = () => {
         <Container p={"2rem"}>
             <Container pt={"1rem"} pb={"1rem"} className={classes.area}>
                 <Group justify="space-between">
-                    <Title order={2}>DETAILS</Title>
+                    <Title c={"indigo"} order={2}>DETAILS</Title>
                     <ActionIcon variant="outline" color="red" aria-label="Settings" onClick={() => deleteTechnology.mutateAsync()}>
                         <IconTrashX style={{ width: '80%', height: '80%' }} stroke={1.5} />
                     </ActionIcon>
@@ -117,11 +117,12 @@ const AdminTechnology = () => {
                         minRows={3} size="md"   {...form.getInputProps('description')} />
                 </Input.Wrapper>
 
-                <Button disabled={!form.isDirty()} onClick={() => update()} mt={"1rem"}> Save change</Button>
+                <Button disabled={!form.isDirty()} onClick={() => update()} mt={"2rem"}> Save change</Button>
 
             </Container>
+            <Divider size="lg" mt="2rem" mb={"2rem"} color={"dark"}/>
 
-            <Title order={3} mt="2rem" mb={"2rem"}>Application list</Title>
+            <Title c="indigo" order={3} mt="2rem" mb={"2rem"}>APPLICATION LIST</Title>
 
             <Grid justify="left" align="stretch" gutter="xl">
                 {data?.Application.map((a, i) => <Grid.Col span={4}> <ApplicationCard data={a} key={i} />   </Grid.Col>
@@ -250,7 +251,7 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                         ADD NEW APPLICATION
                     </Title>
                 </Center>
-                <Divider />
+                <Divider color={"dark"} />
                 <form onSubmit={form.onSubmit(data => createApplication.mutate(data))}>
                     <Title order={2}>
                         <TextInput

@@ -1,7 +1,4 @@
-import React from "react";
-import { Flex, Button, Paper, Title, Text, Grid, Container, Divider, Image } from "@mantine/core";
-import classes from './Home.module.css';
-import { useNavigate } from 'react-router-dom';
+import { Title, Text, Grid, Container, Divider, Image } from "@mantine/core";
 import homeImage from "../../public/home.jpg"
 import aboutImage from "../../public/about.jpg"
 
@@ -26,7 +23,7 @@ const About = () => {
                     />
                 </Grid.Col>
             </Grid>
-            <Divider my="md" />
+            <Divider size="lg" color={"dark"}/>
             <Grid pt="2rem" >
                 <Grid.Col span={6}>
                     <Image
@@ -40,7 +37,6 @@ const About = () => {
                     <Text mt={"1rem"}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras non sem rhoncus, hendrerit felis malesuada, ornare nulla. Maecenas eu placerat urna. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi ut fringilla lorem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
                     </Text>
                 </Grid.Col>
-
             </Grid>
         </Container>
     )

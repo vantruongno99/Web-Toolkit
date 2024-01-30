@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Button, Paper, Title, Text, Container, Center, NumberInput, Input, Box, Loader, Tabs, Table, Space, Anchor, Group } from "@mantine/core";
+import { Flex, Button, Paper, Title, Text, Container, Center, NumberInput, Input, Box, Loader, Tabs, Table, Space, Anchor, Group, Divider, Grid } from "@mantine/core";
 import classes from './Home.module.css';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { UseMutationResult, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -72,22 +72,28 @@ const Vendor = () => {
 
     if (!showed) {
         return (<>
-            <Container p="2rem" maw={600}>
-                Enter your ABN to continue
-                <Input.Wrapper
-                    label="ABN :"
-                    mt={"1rem"}
-                >
-                    <NumberInput width="1px" value={ABN} onChange={setABN} size="md" />
-                </Input.Wrapper>
-                <Group justify="space-between" mt="xl">
-                    <a href="/vendor/create">Don't have an account? Register</a>
-                    <Button  onClick={() => ABNCheck.mutateAsync(ABN)}>Continue</Button>
-                </Group>
-                {errorMessage.value !== " " && <Text c="red">
-                    {errorMessage.value}
-                </Text>}
-            </Container>
+            <Grid>
+                <Grid.Col span={6}>
+                    <Container p="2rem" maw={600}>
+                        Enter your ABN to continue
+                        <Input.Wrapper
+                            label="ABN :"
+                            mt={"1rem"}
+                        >
+                            <NumberInput width="1px" value={ABN} onChange={setABN} size="md" />
+                        </Input.Wrapper>
+                        <Group justify="space-between" mt="xl">
+                            <a href="/vendor/create">Don't have an account? Register</a>
+                            <Button onClick={() => ABNCheck.mutateAsync(ABN)}>Continue</Button>
+                        </Group>
+                        {errorMessage.value !== " " && <Text c="red">
+                            {errorMessage.value}
+                        </Text>}
+                    </Container>
+
+                </Grid.Col>
+
+            </Grid>
 
         </>)
     }
@@ -110,19 +116,10 @@ const Vendor = () => {
     return (
         <>
             <Container mt={"1rem"}>
-                <Tabs defaultValue="detail">
-                    <Tabs.List justify="center">
-                        <Tabs.Tab value="detail">DETAILS</Tabs.Tab>
-                        <Tabs.Tab value="applications">APPLICATIONS</Tabs.Tab>
-                    </Tabs.List>
-                    <Tabs.Panel value="detail">
-                        <VendorDetail vendor={data} isLoading={isLoading} update={updateApplication} />
-                    </Tabs.Panel>
-                    <Tabs.Panel value="applications">
-                        <VendorApplication vendor={data} isLoading={isLoading} />
-                    </Tabs.Panel>
+                <VendorDetail vendor={data} isLoading={isLoading} update={updateApplication} />
+                <Divider size="md" mt={"1rem"} mb={"2rem"} color={"dark"}/>
+                <VendorApplication vendor={data} isLoading={isLoading} />
 
-                </Tabs>
             </Container>
         </>
     )
@@ -162,84 +159,92 @@ const VendorDetail = ({ vendor, isLoading, update }: { vendor: VendorInfo, isLoa
 
     if (userSearch) {
         return (<>
-            <Title mt={"1rem"} order={3} >INFORMATION</Title>
-            <Space h="xl" />
-            <Box maw={440} >
-                <Input.Wrapper
-                    label="Name :"
-                >
-                    <Input size="md" value={form.values.name} />
-                </Input.Wrapper>
-                <Input.Wrapper
-                    label="ABN :"
-                    mt={"1rem"}
-                >
-                    <NumberInput value={form.values.ABN} size="md" />
-                </Input.Wrapper>
-                <Input.Wrapper
-                    label="Email :"
-                    mt={"1rem"}
-                >
-                    <Input value={form.values.email} size="md" />
-                </Input.Wrapper>
+            <Grid>
+                <Grid.Col span={6}>
+                    <Title c="indigo" mt={"1rem"} order={3} >DETAILS</Title>
+                    <Space h="xl" />
+                    <Box maw={440} >
+                        <Input.Wrapper
+                            label="Name :"
+                        >
+                            <Input size="md" value={form.values.name} />
+                        </Input.Wrapper>
+                        <Input.Wrapper
+                            label="ABN :"
+                            mt={"1rem"}
+                        >
+                            <NumberInput value={form.values.ABN} size="md" />
+                        </Input.Wrapper>
+                        <Input.Wrapper
+                            label="Email :"
+                            mt={"1rem"}
+                        >
+                            <Input value={form.values.email} size="md" />
+                        </Input.Wrapper>
 
-                <Input.Wrapper
-                    label="Phone :"
-                    mt={"1rem"}
-                >
-                    <Input value={form.values.phone} size="md" />
-                </Input.Wrapper>
-                <Input.Wrapper
-                    label="Link :"
-                    mt={"1rem"}
-                >
-                    <Anchor href={form.values.email} target="_blank">
-                        <Input value={form.values.email} size="md" />
-                    </Anchor>
-                </Input.Wrapper>
-            </Box>
+                        <Input.Wrapper
+                            label="Phone :"
+                            mt={"1rem"}
+                        >
+                            <Input value={form.values.phone} size="md" />
+                        </Input.Wrapper>
+                        <Input.Wrapper
+                            label="Link :"
+                            mt={"1rem"}
+                        >
+                            <Anchor href={form.values.email} target="_blank">
+                                <Input value={form.values.email} size="md" />
+                            </Anchor>
+                        </Input.Wrapper>
+                    </Box>
+                </Grid.Col>
+            </Grid>
         </>)
     }
 
     return (
         <>
-            <Title mt={"1rem"} order={3} >INFORMATION</Title>
-            <Space h="xl" />
-            <Box maw={440} >
-                <form onSubmit={form.onSubmit(handleUpdate)}>
-                    <Input.Wrapper
-                        label="Name :"
-                    >
-                        <Input size="md" value={form.values.name} />
-                    </Input.Wrapper>
-                    <Input.Wrapper
-                        label="ABN :"
-                        mt={"1rem"}
-                    >
-                        <Input size="md" value={form.values.ABN} />
-                    </Input.Wrapper>
-                    <Input.Wrapper
-                        label="Email :"
-                        mt={"1rem"}
-                    >
-                        <Input   {...form.getInputProps('email')} size="md" />
-                        <Input.Wrapper
-                            label="Phone :"
-                            mt={"1rem"}
-                        >
-                            <Input   {...form.getInputProps('phone')} size="md" />
-                        </Input.Wrapper>
-                    </Input.Wrapper>
-                    <Input.Wrapper
-                        label="Link :"
-                        mt={"1rem"}
-                    >
-                        <Input   {...form.getInputProps('link')} size="md" />
-                    </Input.Wrapper>
+            <Grid>
+                <Grid.Col span={6}>
+                    <Title c="indigo" mt={"1rem"} mb={"1rem"} order={3} >DETAILS</Title>
+                    <Box maw={440} >
+                        <form onSubmit={form.onSubmit(handleUpdate)}>
+                            <Input.Wrapper
+                                label="Name :"
+                            >
+                                <Input size="md" value={form.values.name} />
+                            </Input.Wrapper>
+                            <Input.Wrapper
+                                label="ABN :"
+                                mt={"1rem"}
+                            >
+                                <Input size="md" value={form.values.ABN} />
+                            </Input.Wrapper>
+                            <Input.Wrapper
+                                label="Email :"
+                                mt={"1rem"}
+                            >
+                                <Input   {...form.getInputProps('email')} size="md" />
+                                <Input.Wrapper
+                                    label="Phone :"
+                                    mt={"1rem"}
+                                >
+                                    <Input   {...form.getInputProps('phone')} size="md" />
+                                </Input.Wrapper>
+                            </Input.Wrapper>
+                            <Input.Wrapper
+                                label="Link :"
+                                mt={"1rem"}
+                            >
+                                <Input   {...form.getInputProps('link')} size="md" />
+                            </Input.Wrapper>
 
-                    <Button mt={"2rem"} mb={"1rem"} disabled={!form.isDirty() || update.isPending} type="submit">Save</Button>
-                </form>
-            </Box>
+                            <Button mt={"2rem"} mb={"1rem"} disabled={!form.isDirty() || update.isPending} type="submit">Save</Button>
+                        </form>
+                    </Box>
+                </Grid.Col>
+            </Grid>
+
 
 
         </>
@@ -280,9 +285,9 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
 
     return (
         <>
-            <Button mb="1rem" onClick={() => !userSearch && navigate(`/find?type=vendor&id=${vendor.id}`)}>Application List</Button>
-            <Table >
-                <Table.Thead>
+            <Center>  <Title c={"indigo"} mt={"1rem"} mb={"1rem"} order={3}>OFFERED APPLICATION </Title></Center>
+            <Table striped >
+                <Table.Thead >
                     <Table.Tr>
                         <Table.Th>Name</Table.Th>
                         <Table.Th>APPROVAL</Table.Th>
@@ -290,6 +295,9 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
+
+            <Button mt="2rem" onClick={() => !userSearch && navigate(`/find?type=vendor&id=${vendor.id}`)}>Add new offer </Button>
+
         </>)
 }
 

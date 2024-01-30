@@ -96,7 +96,7 @@ const NewTechology = () => {
                     ADD NEW TECHNOLOGY
                 </Title>
             </Center>
-            <Divider />
+            <Divider color={"dark"} />
             <form onSubmit={form.onSubmit(data => createApplication.mutate(data))}>
                 <Title order={2}>
                     <TextInput

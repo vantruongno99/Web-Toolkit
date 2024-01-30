@@ -322,7 +322,7 @@ const Request = ({ request, applicationId, vendorId }: { request: any, applicati
             <Button mt={"2rem"} onClick={() => onRequest()}>Request</Button>
 
         </Modal>
-        <Button mb={"2rem"} mt="2rem" onClick={() => setShowed(true)}>Request to particiapte</Button>
+        <Button mb={"2rem"} mt="2rem" onClick={() => setShowed(true)}>Request to offer</Button>
 
     </>)
 }
