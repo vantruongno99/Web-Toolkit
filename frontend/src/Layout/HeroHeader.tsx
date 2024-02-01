@@ -1,16 +1,18 @@
-import { Overlay, Container, Title, Button, Text } from '@mantine/core';
+import { Overlay, Container, Title, Button, Text, Box } from '@mantine/core';
 import classes from './HeroHeader.module.css';
 
 export default function HeroHeader() {
   return (
     <div className={classes.root}>
       <div className={classes.cover}>
-        <Container size="lg">
+        <Container size="lg" fluid>
           <div className={classes.inner}>
             <div className={classes.content}>
-              <Title className={classes.title}>
-                Technologies for crafting compelling campaigns with stronger impact
-              </Title>
+              <Box>
+                <Title className={classes.title}>
+                  EASY AND NOVEL WAYS TO ENGAGE COMMUNITY AROUND ROAD SAFETY
+                </Title>
+              </Box>
             </div>
           </div>
         </Container>

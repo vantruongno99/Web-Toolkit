@@ -1,5 +1,5 @@
 
-const domain = "http://170.64.212.219:3001/api" 
+const domain = "http://localhost:3001/api" 
 
 
 

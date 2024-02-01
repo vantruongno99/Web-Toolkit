@@ -256,6 +256,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                     </Pill>
                 </Grid.Col>
             </Grid >
+            
             {rows && rows?.length > 0 && <>
                 <Divider mt="2rem" mb="2rem" size="xs" color="black" />
                 <Title order={3}>Vendor partipation</Title>

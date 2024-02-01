@@ -1,4 +1,4 @@
-import { Flex, Button, Paper, Title, Text, Textarea, Grid, Select, MultiSelect, Divider, Modal, Group, TextInput, ActionIcon, Card, Center, Container, Box, PasswordInput } from "@mantine/core";
+import { Image ,Flex, Button, Paper, Title, Text, Textarea, Grid, Select, MultiSelect, Divider, Modal, Group, TextInput, ActionIcon, Card, Center, Container, Box, PasswordInput } from "@mantine/core";
 import { useNavigate } from 'react-router-dom';
 import { useForm } from "@mantine/form";
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import { useMutation } from "@tanstack/react-query";
 import authservice from "../../Services/auth.service";
 import { forEach } from "lodash";
+import adminImage from "../../../public/admin.jpg"
 
 
 
@@ -55,24 +56,30 @@ const Admin = () => {
 
     if (!showed)
         return (<>
-            <Container>
+            <Container fluid p="2rem">
                 <Grid>
                     <Grid.Col span={6}>
-                        <Box mt={"2rem"} maw={340} mx="auto">
+                        <Box mt={"2rem"} maw={500} mx="auto">
                             <form onSubmit={form.onSubmit(handleSubmit)}>
-                                <Title mt={"2rem"} order={4}>Enter password to continue</Title>
+                                <Title c="indigo" mt={"2rem"} order={2}>Admin Login</Title>
                                 <Text size="xs">Please use 12345678 for now </Text>
                                 <PasswordInput
+                                label="Password"
                                     mt={"1rem"}
                                     withAsterisk
                                     {...form.getInputProps('password')}
+                                    size="lg"
                                 />
 
-                                <Group justify="flex-start" mt="1rem">
-                                    <Button type="submit">Submit</Button>
+                                <Group justify="flex-start" mt="2rem">
+                                    <Button size="lg" type="submit">Log in</Button>
                                 </Group>
                             </form>
                         </Box>
+                    </Grid.Col>
+                    <Grid.Col span={6}>
+                    <Image h={800} src={adminImage} />
+
                     </Grid.Col>
                 </Grid>
 

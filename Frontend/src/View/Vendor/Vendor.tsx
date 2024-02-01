@@ -11,10 +11,11 @@ import { useForm, isNotEmpty } from "@mantine/form";
 
 
 const Vendor = () => {
-
-    const navigate = useNavigate()
     const [showed, setShowed] = useState<boolean>(false)
     const [ABN, setABN] = useState<string | number>('')
+    const params = useParams();
+    const isAdmin = params.role === "admin"
+    const isUser = params.role === "user"
     const errorMessage = useError()
 
 
@@ -24,11 +25,11 @@ const Vendor = () => {
             const output = await vendorService.getVendorByABN(ABN)
             return output
         },
-        onSuccess: (result) => {
+        onSuccess: (result : VendorInfo|undefined) => {
             Cookies.set("ABN", String(result?.ABN))
             setShowed(true)
         },
-        onError: (e) => {
+        onError: (e : Error) => {
             errorMessage.set("No Vendor found with this ABN")
         },
     })
@@ -40,6 +41,11 @@ const Vendor = () => {
         queryKey: ['vendor', vendorABN],
         queryFn: async () => {
             try {
+                if (isAdmin) {
+                    setShowed(true)
+                    return;
+                }
+
                 if (vendorABN) {
                     const res = await vendorService.getVendorByABN(vendorABN)
                     if (!res) {
@@ -63,7 +69,9 @@ const Vendor = () => {
     const updateApplication = useMutation({
         mutationFn: async (input: VendorEdit
         ) => {
-            return await vendorService.editVendor(vendorABN, input)
+            if (data && data.id) {
+                return await vendorService.editVendor(data.id, input)
+            }
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['vendor', vendorABN] })
@@ -117,7 +125,7 @@ const Vendor = () => {
         <>
             <Container mt={"1rem"}>
                 <VendorDetail vendor={data} isLoading={isLoading} update={updateApplication} />
-                <Divider size="md" mt={"1rem"} mb={"2rem"} color={"dark"}/>
+                <Divider size="md" mt={"1rem"} mb={"2rem"} color={"dark"} />
                 <VendorApplication vendor={data} isLoading={isLoading} />
 
             </Container>
@@ -255,6 +263,7 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
     const navigate = useNavigate()
     const [searchParams] = useSearchParams();
     const userSearch = searchParams.get('type') === "user"
+    
     const localQuery = useQuery({
         queryKey: ['vendorApplication', vendor.id],
         queryFn: async () => {
@@ -274,7 +283,7 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
     }
     )
 
-    const rows = localQuery?.data && localQuery?.data.map((e, i) => (
+    const rows = localQuery?.data && localQuery?.data.map((e : any, i : number) => (
         <Table.Tr key={i} onClick={() => !userSearch && navigate(`/data/application/${e.Application.id}?type=vendor&id=${e.Vendor.id}`)}>
             <Table.Td>{e.Application.potentialApplications}</Table.Td>
             <Table.Td>{e.approved}</Table.Td>
@@ -296,7 +305,7 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
 
-            <Button mt="2rem" onClick={() => !userSearch && navigate(`/find?type=vendor&id=${vendor.id}`)}>Add new offer </Button>
+            {!userSearch && <Button mt="2rem" onClick={() => !userSearch && navigate(`/find?type=vendor&id=${vendor.id}`)}>Add new offer </Button>}
 
         </>)
 }

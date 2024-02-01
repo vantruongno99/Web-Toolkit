@@ -94,7 +94,7 @@ export default function Header() {
 
   return (
     <header className={classes.header}>
-      <Container size="md">
+      <Container fluid size="md">
         <div className={classes.inner}>
          <Title onClick={()=>navigate("/")}>Logo</Title> 
           <Group gap={5} visibleFrom="sm">
