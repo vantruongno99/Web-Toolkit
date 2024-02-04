@@ -98,7 +98,7 @@ const ABNverify = (object: WebResponse): WebResponse => {
         return object
     }
     catch (e) {
-        throw ({ name: 'ValidationError', message: { ABN: ["ABN is not valid"] } });
+        throw ({ message: "ABN is not valid" } );
     }
 }
 
@@ -109,7 +109,7 @@ const addVendor = async (data: VendorInput) => {
         const a: string | undefined = await getABNDetail(data.ABN)
 
         if (!a) {
-            throw ({ name: 'ValidationError', message: { ABN: ["ABN serivce failed"] } });
+            throw ("message: ABN serivce failed");
         }
 
         const b = Function(a)

@@ -4,12 +4,14 @@ import { Image, Box, Card, Container, Divider, Flex, Grid, Group, ActionIcon, Nu
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import applicationService from "../../Services/application.service";
-import { useForm } from '@mantine/form';
+import { isNotEmpty, useForm } from '@mantine/form';
 import { ApplicationInput } from "../../Ultils/type";
 import { IconCircleX, IconCircleCheck, IconTrashX } from "@tabler/icons-react";
 import adminService from "../../Services/admin.service";
 import imageService from "../../Services/image.service";
 import classes from "./AdminApplication.module.css"
+import { showErorNotification, showSuccessNotification } from "../../Ultils/notification";
+import { DeleteModal } from "../../Ultils/modals"
 
 interface localApplicationForm {
     purposeOfEngagement: string[];
@@ -57,7 +59,10 @@ const AdminApplication = () => {
             budget: "",
             solutionFor: [],
             considerations: "",
-        }
+        },
+        validate: {
+            potentialApplications: isNotEmpty("can not be empty"),
+        },
     })
 
 
@@ -89,8 +94,8 @@ const AdminApplication = () => {
 
                 return res
             }
-            catch (e) {
-                console.log(e)
+            catch (e:any) {
+                showErorNotification(e.message)
             }
         },
 
@@ -103,7 +108,11 @@ const AdminApplication = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['admin', 'application', id] })
-        }
+            showSuccessNotification(`Application has been updated`)
+        },
+        onError: (e) => {
+            showErorNotification(e.message)
+         },
     })
 
     const deleteApplication = useMutation({
@@ -114,9 +123,11 @@ const AdminApplication = () => {
         onSuccess: () => {
             navigate(`/admin/technology/${data?.technologyId}`)
             queryClient.invalidateQueries({ queryKey: ['admin', 'technologies'] })
-
-
+            showErorNotification("Application has been successfully deleted")
         },
+        onError: (e) => {
+            showErorNotification(e.message)
+         },
     })
 
 
@@ -136,7 +147,7 @@ const AdminApplication = () => {
             queryClient.invalidateQueries({ queryKey: ['admin', 'application', id] })
         },
         onError: (e) => {
-            console.log(e)
+           showErorNotification(e.message)
         },
     })
 
@@ -150,7 +161,7 @@ const AdminApplication = () => {
             queryClient.invalidateQueries({ queryKey: ['admin', 'application', id] })
         },
         onError: (e) => {
-            console.log(e)
+            showErorNotification(e.message)
         },
     })
 
@@ -164,7 +175,6 @@ const AdminApplication = () => {
 
 
         }
-
 
         await updateApplication.mutateAsync(updateData)
     }
@@ -185,7 +195,7 @@ const AdminApplication = () => {
             queryClient.invalidateQueries({ queryKey: ['admin', 'application', id] })
         },
         onError: (e) => {
-            console.log(e)
+            showErorNotification(e.message)
         },
     })
 
@@ -256,9 +266,9 @@ const AdminApplication = () => {
                     <Space h="md" />
                     <Group justify="flex-end" mt="1rem" gap="xs">
 
-                    <FileButton onChange={uploadImage.mutateAsync} accept="image/png,image/jpeg">
-                        {(props) => <Button color="indigo" {...props}>Upload photo</Button>}
-                    </FileButton>
+                        <FileButton onChange={uploadImage.mutateAsync} accept="image/png,image/jpeg">
+                            {(props) => <Button color="indigo" {...props}>Upload photo</Button>}
+                        </FileButton>
                     </Group>
                 </Grid.Col>
             </Grid>
@@ -383,9 +393,11 @@ const AdminApplication = () => {
             <Group justify="space-between" mt={"2rem"} mb={"1rem"} >
                 <Button disabled={!form.isDirty()} onClick={() => update()}>Save</Button>
 
-                <Button variant="outline" color="red" aria-label="Settings" onClick={() => deleteApplication.mutateAsync()}>
-                    Delete
-                </Button>
+
+
+
+                <DeleteModal title={"Application"} func={() => deleteApplication.mutateAsync()} />
+
             </Group>
 
             <Title mt="2rem" order={4}>Vendor</Title>

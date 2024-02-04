@@ -10,6 +10,7 @@ const config = {
     headers: { Authorization: `bearer ${Cookies.get('token')}` }, // notice the Bearer before your token
 }
 
+
 async function loging(loginDetail: LoginDetail) {
     try {
 
@@ -20,8 +21,9 @@ async function loging(loginDetail: LoginDetail) {
         Cookies.set('token', result.token)
         Cookies.set('username', result.username)
         Cookies.set('role', result.role)
+        Cookies.set('logged', "true")
         window.location.reload();
-
+        window.location.href =  '/admin'
         return result
     }
 
@@ -39,6 +41,7 @@ const logout = async () => {
     Cookies.remove('username')
     Cookies.remove('token')
     Cookies.remove('role')
+    Cookies.remove('logged')
     window.location.href = '/'
 
 }

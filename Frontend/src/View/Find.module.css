@@ -28,7 +28,7 @@
 
 
 .card {
-    height: 280px;
+    height: 300px;
     background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
     border: solid;
     border-width: 0.5px;
@@ -73,7 +73,6 @@
 
 
 .outside {
-  background-color: var(--mantine-color-red-9);
   padding : 4rem;
   padding-top:5rem
 }

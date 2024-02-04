@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Data } from "../../Ultils/type";
 import { useForm } from "@mantine/form";
 import dataService from "../../Services/data.service";
+import { showErorNotification, showSuccessNotification } from "../../Ultils/notification";
 
 
 const AdminInput = () => {
@@ -33,8 +34,8 @@ const AdminInput = () => {
                     return res
                 }
             }
-            catch (e) {
-                console.log(e)
+            catch (e:any) {
+                showErorNotification(e.message)
             }
         }
     }
@@ -60,6 +61,7 @@ const AdminInput = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["admin , input"] })
+            showSuccessNotification("input has been updated")
         }
     })
 
@@ -210,8 +212,8 @@ const AdminInput = () => {
 
         }
 
-        catch (e) {
-            console.log(e)
+        catch (e:any) {
+            showErorNotification(e.message)
         }
     }
 

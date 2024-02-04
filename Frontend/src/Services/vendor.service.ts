@@ -20,7 +20,6 @@ const createVendor = async (newVendor: VendorInput): Promise<VendorInfo | undefi
     }
     catch (error: any | AxiosError) {
         if (axios.isAxiosError(error)) {
-            console.log(error)
             AxiosHandleResponse(error)
         } else {
             console.log(error)

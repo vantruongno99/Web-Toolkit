@@ -13,7 +13,8 @@ type CardInfo = {
 }
 
 
-const ApplicationCard = ({ data }: { data: CardInfo }) => {
+const TechnologyCard = ({ data }: { data: CardInfo }) => {
+    const navigate = useNavigate()
 
     return (
         <div>
@@ -21,7 +22,7 @@ const ApplicationCard = ({ data }: { data: CardInfo }) => {
             component="a"
             radius="xs"
             href={data.link}
-            className={classes.card}
+                        className={classes.card}
         >
             <div
                 className={classes.image}
@@ -44,4 +45,4 @@ const ApplicationCard = ({ data }: { data: CardInfo }) => {
     )
 }
 
-export default ApplicationCard
+export default TechnologyCard

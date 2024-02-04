@@ -88,23 +88,12 @@ filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#361A38", en
   }
 
 
-  @media (min-width: 1920px) {  
+  @media (min-width: 1920px) {
     .second {
       left:300px  ;  
       }
 }
 
-
-.vendor{
-  position:relative;
-  bottom:150px;
-}
-
-@media (min-width: 1920px) {
-.vendor{
-  bottom:300px;
-}
-}
 
 
   

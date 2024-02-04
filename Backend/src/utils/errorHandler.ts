@@ -11,7 +11,7 @@ const errorHandler = (e: any) => {
             default: throw ({ name: 'ValidationError', message: JSON.stringify(e) })
         }
     }
-    throw ({ name: 'ValidationError', message: JSON.stringify(e) });
+    throw ({ name: 'ValidationError', message: e.message });
 }
 
 export default errorHandler

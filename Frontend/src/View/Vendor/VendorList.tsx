@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { IconCirclePlus } from '@tabler/icons-react';
 import vendorService from "../../Services/vendor.service";
 import { VendorInfo } from "../../Ultils/type";
+import { showErorNotification } from "../../Ultils/notification";
 
 
 const Vendors = () => {
@@ -21,8 +22,8 @@ const Vendors = () => {
                 }
                 return res
             }
-            catch (e) {
-                console.log(e)
+            catch (e:any) {
+                showErorNotification(e.message)
             }
         }
 

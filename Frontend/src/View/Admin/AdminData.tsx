@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Flex, Button, Paper, Title, Text, Textarea, Grid, Select, MultiSelect, Divider, Modal, Group, TextInput, ActionIcon, Card, Center, Container } from "@mantine/core";
 import { useNavigate } from 'react-router-dom';
 import technologyService from "../../Services/technology.service";
-import { useForm } from '@mantine/form';
+import { isNotEmpty, useForm } from '@mantine/form';
 import { TechnologyInfo, TechnologyInput } from "../../Ultils/type";
 import { IconCheck, IconCirclePlus, IconTablePlus, IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import TechnologyCard from "../../Component/ApplicationCard/TechnologyCard";
+import { showErorNotification } from "../../Ultils/notification";
 
 
 const AdminData = () => {
@@ -21,8 +23,8 @@ const AdminData = () => {
 
                 return res
             }
-            catch (e) {
-                console.log(e)
+            catch (e:any) {
+                showErorNotification(e.message)
             }
         }
     }
@@ -41,7 +43,19 @@ const AdminData = () => {
                     TECHNOLOGY LIST
                 </Title>
             </Center>
-            {data.map((d, i) => <Outside data={d} key={i} />)}
+            <Flex
+                mt={"3rem"}
+                gap="md"
+                justify="center"
+                align="center"
+            >
+
+               {data.map((a,i)=><TechnologyCard data={{
+                   label: a.technology,
+                   link: `/admin/technology/${a.id}`,
+               }}></TechnologyCard>)}
+
+            </Flex>
             <NewTechology />
 
         </Container>
@@ -56,6 +70,10 @@ const NewTechology = () => {
         initialValues: {
             technology: "",
             description: ""
+        },
+        validate: {
+            description: isNotEmpty("can not be empty"),
+            technology:  isNotEmpty("can not be empty"),
         },
     })
 
@@ -77,17 +95,16 @@ const NewTechology = () => {
             navigate(`/admin/technology/${result.id}`)
         },
         onError: (e) => {
-            console.log(e)
+            showErorNotification(e.message)
         },
     })
 
     return (<>
-        <Group justify="center" mt={"2rem"}>
-            <Button onClick={() => setOpened(!opened)} size={'md'}>
+        <Group justify="center" mt={"3rem"}>
+            <Button onClick={() => setOpened(!opened)} size={'lg'}>
                 ADD MORE
             </Button>
         </Group>
-
 
 
         <Modal withCloseButton={false} size="xl" opened={opened} onClose={() => setOpened(false)}>
@@ -124,36 +141,6 @@ const NewTechology = () => {
 
 
     </>)
-}
-
-
-
-
-const Outside = ({ data }: { data: TechnologyInfo }) => {
-
-    const [showed, setShowed] = useState<boolean>(false)
-    const navigate = useNavigate()
-
-
-    return (<>
-        <div style={{ width: "auto" }}>
-
-            <Card p={"2rem"} radius="md" mt={"1rem"} withBorder onClick={() => navigate(`/admin/technology/${data.id}`)}>
-                <Card.Section onClick={() => setShowed(!showed)}>
-                    <Group justify="center">
-                        <Title order={3}>
-                            {data.technology}
-                        </Title>
-                    </Group>
-                    <Text fz="sm" mt="1rem">
-                        {data.description}
-                    </Text>
-                </Card.Section>
-            </Card>
-        </div>
-
-    </>
-    )
 }
 
 

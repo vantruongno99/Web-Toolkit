@@ -8,6 +8,7 @@ import applicationService from "../Services/application.service"
 import { useNavigate, useSearchParams } from "react-router-dom"
 import { useQuery } from '@tanstack/react-query';
 import dataService from '../Services/data.service';
+import { showErorNotification } from '../Ultils/notification';
 
 const Find = () => {
     const [applications, setApplications] = useState<ApplicationInfo[] | undefined>([])
@@ -99,8 +100,8 @@ const Find = () => {
 
                 return res
             }
-            catch (e) {
-                console.log(e)
+            catch (e:any) {
+                showErorNotification(e.message)
             }
         }
     }
@@ -117,7 +118,7 @@ const Find = () => {
                             <Grid>
                                 <Grid.Col span={2} className={classes.leftFilter}>
                                     <Center pb={"1rem"}>
-                                        <Title order={5}>Stage of participation</Title>
+                                        <Title order={6}>Stage of participation</Title>
                                     </Center>
                                     <MultiSelect
                                         data={data?.participation}
@@ -126,7 +127,7 @@ const Find = () => {
                                 </Grid.Col>
                                 <Grid.Col span={2} className={classes.leftFilter}>
                                     <Center pb={"1rem"}>
-                                        <Title order={5}>Level of Engagement</Title>
+                                        <Title order={6}>Level of Engagement</Title>
                                     </Center>
                                     <MultiSelect
                                         data={data?.engagement}
@@ -236,8 +237,7 @@ const Inside = ({ data }: { data: ApplicationInfo }) => {
                 component="a"
                 radius="xs"
                 href={`/data/application/${data.id}${objString}`}
-                target="_blank"
-                className={classes.card}
+                                className={classes.card}
             >
                 <div
                     className={classes.image}

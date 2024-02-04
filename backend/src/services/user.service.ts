@@ -10,11 +10,11 @@ const createUser = async (register: RegisterInput): Promise<User | undefined> =>
   const role: string | undefined = register?.role
 
   if (!username) {
-    throw ({ name: 'ValidationError', message: { username: ["can't be blank"] } });
+    throw ("username : can't be blank" );
   }
 
   if (!password) {
-    throw ({ name: 'ValidationError', message: { password: ["can't be blank"] } });
+    throw ("password : can't be blank" );
   }
   const saltRounds = 10
   const hashedPassword = await bcrypt.hash(password, saltRounds);

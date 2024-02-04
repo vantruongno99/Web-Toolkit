@@ -1,38 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Button, Paper, Title, Text, Container, Center, NumberInput, Input, Box, Loader, Tabs, Table, Space, Anchor, Group, Divider, Grid } from "@mantine/core";
-import classes from './Home.module.css';
+import { Flex, Button, Image, Title, Text, Container, Center, NumberInput, Input, Box, Loader, Tabs, Table, Space, Anchor, Group, Divider, Grid, TextInput } from "@mantine/core";
+import classes from './Vendor.module.css';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { UseMutationResult, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import vendorService from "../../Services/vendor.service";
 import { useError } from "../../Hook";
 import { LandingData, VendorEdit, VendorInfo } from "../../Ultils/type";
 import Cookies from "js-cookie";
-import { useForm, isNotEmpty } from "@mantine/form";
-
+import { useForm, isNotEmpty, isEmail } from "@mantine/form";
+import loginImage from "../../../public/login.jpg"
+import { showErorNotification, showSuccessNotification } from "../../Ultils/notification";
 
 const Vendor = () => {
-    const [showed, setShowed] = useState<boolean>(false)
-    const [ABN, setABN] = useState<string | number>('')
-    const params = useParams();
-    const isAdmin = params.role === "admin"
-    const isUser = params.role === "user"
+
     const errorMessage = useError()
-
-
-    const ABNCheck = useMutation({
-        mutationFn: async (input: string | number) => {
-            const ABN = Number(input)
-            const output = await vendorService.getVendorByABN(ABN)
-            return output
-        },
-        onSuccess: (result : VendorInfo|undefined) => {
-            Cookies.set("ABN", String(result?.ABN))
-            setShowed(true)
-        },
-        onError: (e : Error) => {
-            errorMessage.set("No Vendor found with this ABN")
-        },
-    })
 
 
     const vendorABN = Number(Cookies.get("ABN"))
@@ -41,23 +22,16 @@ const Vendor = () => {
         queryKey: ['vendor', vendorABN],
         queryFn: async () => {
             try {
-                if (isAdmin) {
-                    setShowed(true)
-                    return;
-                }
-
                 if (vendorABN) {
                     const res = await vendorService.getVendorByABN(vendorABN)
                     if (!res) {
                         throw new Error()
                     }
-                    setShowed(true)
-
                     return res
                 }
             }
-            catch (e) {
-                console.log(e)
+            catch (e:any) {
+                showErorNotification(e.message)
             }
         }
     }
@@ -75,38 +49,9 @@ const Vendor = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['vendor', vendorABN] })
+            showSuccessNotification("Vendor has been updated")
         }
     })
-
-    if (!showed) {
-        return (<>
-            <Grid>
-                <Grid.Col span={6}>
-                    <Container p="2rem" maw={600}>
-                        Enter your ABN to continue
-                        <Input.Wrapper
-                            label="ABN :"
-                            mt={"1rem"}
-                        >
-                            <NumberInput width="1px" value={ABN} onChange={setABN} size="md" />
-                        </Input.Wrapper>
-                        <Group justify="space-between" mt="xl">
-                            <a href="/vendor/create">Don't have an account? Register</a>
-                            <Button onClick={() => ABNCheck.mutateAsync(ABN)}>Continue</Button>
-                        </Group>
-                        {errorMessage.value !== " " && <Text c="red">
-                            {errorMessage.value}
-                        </Text>}
-                    </Container>
-
-                </Grid.Col>
-
-            </Grid>
-
-        </>)
-    }
-
-
 
     if (isLoading) {
         return <Loader />
@@ -123,8 +68,62 @@ const Vendor = () => {
 
     return (
         <>
-            <Container mt={"1rem"}>
+            <Container fluid p={"2rem"} >
                 <VendorDetail vendor={data} isLoading={isLoading} update={updateApplication} />
+                <Divider size="md" mt={"1rem"} mb={"2rem"} color={"dark"} />
+                <Container className={classes.vendor} fluid bg="var(--mantine-color-blue-light)">
+                    <Container fluid p={"3rem"} pb={"7rem"}>
+                        <Center>
+                            <Title order={1} mt="1rem">
+                                For Vendor , follow this to submit a new use case
+                            </Title>
+                        </Center>
+
+                        <Grid mt="6rem" gutter="xl">
+                            <Grid.Col mt="2rem" span={6}>
+                                <Title order={2}>
+                                    Step 1 : Create new Account
+                                </Title>
+                                <Text pt={"1rem"} size="lg">
+                                    A vendor can navigate either to vendor navigation<br />
+                                    tab or clikc on login to my venodr button down below and slect doesn't have<br />
+                                    an account option
+                                </Text>
+                            </Grid.Col>
+                            <Grid.Col span={6}>
+                                <Title order={2}>
+                                    Step 2 : Set up an Account
+                                </Title>
+                                <Text pt={"1rem"} size="lg">
+                                    A vendor can create an account by signing-up adminfilling all the necessary deatils such as ABN ,<br />
+                                    Email , Phone Number etc
+                                </Text>
+                            </Grid.Col>
+                        </Grid>
+                        <Grid mt="4rem" gutter="xl">
+
+                            <Grid.Col span={6}>
+                                <Title order={2}>
+                                    Step 2 : Set up an Account
+                                </Title>
+                                <Text pt={"1rem"} size="lg">
+                                    A vendor can create an account by signing-up adminfilling all the necessary deatils such as ABN ,<br />
+                                    Email , Phone Number etc
+                                </Text>
+                            </Grid.Col>
+                            <Grid.Col span={6}>
+                                <Title order={2}>
+                                    Step 2 : Set up an Account
+                                </Title>
+                                <Text pt={"1rem"} size="lg">
+                                    A vendor can create an account by signing-up adminfilling all the necessary deatils such as ABN ,<br />
+                                    Email , Phone Number etc
+                                </Text>
+                            </Grid.Col>
+                        </Grid>
+                    </Container>
+
+                </Container>
                 <Divider size="md" mt={"1rem"} mb={"2rem"} color={"dark"} />
                 <VendorApplication vendor={data} isLoading={isLoading} />
 
@@ -150,7 +149,7 @@ const VendorDetail = ({ vendor, isLoading, update }: { vendor: VendorInfo, isLoa
         },
         validate: {
             phone: (value) => (value.length < 10 ? 'phone must have at least 10 letters' : null),
-            email: isNotEmpty('Email must not be empty'),
+            email: isEmail('Invalid email'),
         },
     });
 
@@ -165,92 +164,51 @@ const VendorDetail = ({ vendor, isLoading, update }: { vendor: VendorInfo, isLoa
         form.setValues(vendor)
     }, [vendor])
 
-    if (userSearch) {
-        return (<>
-            <Grid>
-                <Grid.Col span={6}>
-                    <Title c="indigo" mt={"1rem"} order={3} >DETAILS</Title>
-                    <Space h="xl" />
-                    <Box maw={440} >
-                        <Input.Wrapper
-                            label="Name :"
-                        >
-                            <Input size="md" value={form.values.name} />
-                        </Input.Wrapper>
-                        <Input.Wrapper
-                            label="ABN :"
-                            mt={"1rem"}
-                        >
-                            <NumberInput value={form.values.ABN} size="md" />
-                        </Input.Wrapper>
-                        <Input.Wrapper
-                            label="Email :"
-                            mt={"1rem"}
-                        >
-                            <Input value={form.values.email} size="md" />
-                        </Input.Wrapper>
-
-                        <Input.Wrapper
-                            label="Phone :"
-                            mt={"1rem"}
-                        >
-                            <Input value={form.values.phone} size="md" />
-                        </Input.Wrapper>
-                        <Input.Wrapper
-                            label="Link :"
-                            mt={"1rem"}
-                        >
-                            <Anchor href={form.values.email} target="_blank">
-                                <Input value={form.values.email} size="md" />
-                            </Anchor>
-                        </Input.Wrapper>
-                    </Box>
-                </Grid.Col>
-            </Grid>
-        </>)
-    }
 
     return (
         <>
             <Grid>
-                <Grid.Col span={6}>
-                    <Title c="indigo" mt={"1rem"} mb={"1rem"} order={3} >DETAILS</Title>
-                    <Box maw={440} >
+                <Grid.Col span={6} pl="7rem">
+                    <Title c="indigo" mt={"1rem"} mb={"1rem"} order={2} >DETAILS</Title>
+                    <Box maw={300} >
                         <form onSubmit={form.onSubmit(handleUpdate)}>
                             <Input.Wrapper
                                 label="Name :"
                             >
-                                <Input size="md" value={form.values.name} />
+                                <TextInput size="md" value={form.values.name} />
                             </Input.Wrapper>
                             <Input.Wrapper
                                 label="ABN :"
                                 mt={"1rem"}
                             >
-                                <Input size="md" value={form.values.ABN} />
+                                <TextInput size="md" value={form.values.ABN} />
                             </Input.Wrapper>
                             <Input.Wrapper
                                 label="Email :"
                                 mt={"1rem"}
                             >
-                                <Input   {...form.getInputProps('email')} size="md" />
+                                <TextInput   {...form.getInputProps('email')} size="md" />
                                 <Input.Wrapper
                                     label="Phone :"
                                     mt={"1rem"}
                                 >
-                                    <Input   {...form.getInputProps('phone')} size="md" />
+                                    <TextInput   {...form.getInputProps('phone')} size="md" />
                                 </Input.Wrapper>
                             </Input.Wrapper>
                             <Input.Wrapper
                                 label="Link :"
                                 mt={"1rem"}
                             >
-                                <Input   {...form.getInputProps('link')} size="md" />
+                                <TextInput   {...form.getInputProps('link')} size="md" />
                             </Input.Wrapper>
 
-                            <Button mt={"2rem"} mb={"1rem"} disabled={!form.isDirty() || update.isPending} type="submit">Save</Button>
+                            <Button size="lg" color="indigo" mt={"2rem"} mb={"1rem"} disabled={!form.isDirty() || update.isPending} type="submit">SAVE</Button>
                         </form>
                     </Box>
                 </Grid.Col>
+                <Grid.Col span={6}>
+                        <Image src={loginImage} />
+                    </Grid.Col>
             </Grid>
 
 
@@ -263,7 +221,7 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
     const navigate = useNavigate()
     const [searchParams] = useSearchParams();
     const userSearch = searchParams.get('type') === "user"
-    
+
     const localQuery = useQuery({
         queryKey: ['vendorApplication', vendor.id],
         queryFn: async () => {
@@ -276,14 +234,14 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
 
                 return res
             }
-            catch (e) {
-                console.log(e)
+            catch (e:any) {
+                showErorNotification(e.message)
             }
         }
     }
     )
 
-    const rows = localQuery?.data && localQuery?.data.map((e : any, i : number) => (
+    const rows = localQuery?.data && localQuery?.data.map((e: any, i: number) => (
         <Table.Tr key={i} onClick={() => !userSearch && navigate(`/data/application/${e.Application.id}?type=vendor&id=${e.Vendor.id}`)}>
             <Table.Td>{e.Application.potentialApplications}</Table.Td>
             <Table.Td>{e.approved}</Table.Td>
@@ -295,7 +253,7 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
     return (
         <>
             <Center>  <Title c={"indigo"} mt={"1rem"} mb={"1rem"} order={3}>OFFERED APPLICATION </Title></Center>
-            <Table striped >
+            <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead >
                     <Table.Tr>
                         <Table.Th>Name</Table.Th>
@@ -304,9 +262,9 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
-
-            {!userSearch && <Button mt="2rem" onClick={() => !userSearch && navigate(`/find?type=vendor&id=${vendor.id}`)}>Add new offer </Button>}
-
+            <Center>
+                <Button size="lg" mt="2rem" onClick={() => navigate(`/find?type=vendor&id=${vendor.id}`)}>Add new offer </Button>
+            </Center>
         </>)
 }
 

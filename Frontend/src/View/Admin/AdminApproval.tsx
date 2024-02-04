@@ -8,6 +8,7 @@ import { IconCirclePlus } from '@tabler/icons-react';
 import vendorService from "../../Services/vendor.service";
 import { ApplicationVendor, VendorInfo } from "../../Ultils/type";
 import adminService from "../../Services/admin.service";
+import { showErorNotification } from "../../Ultils/notification";
 
 
 const Approval = () => {
@@ -21,8 +22,8 @@ const Approval = () => {
                 }
                 return res.filter(a => a.approved === "PENDING")
             }
-            catch (e) {
-                console.log(e)
+            catch (e:any) {
+                showErorNotification(e.message)
             }
         }
 
@@ -48,12 +49,6 @@ const VendorTable = ({ data, isLoading }: { data: ApplicationVendor[], isLoading
 
     const queryClient = useQueryClient()
 
-    interface ApprovalInput {
-        vendorId: number,
-        applicationId: number
-    }
-
-
 
     const [vendors, setVendors] = useState<ApplicationVendor[]>(data)
 
@@ -74,12 +69,11 @@ const VendorTable = ({ data, isLoading }: { data: ApplicationVendor[], isLoading
 
     return (
         <>
-            <Table striped highlightOnHover withTableBorder>
+            <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead>
                     <Table.Tr>
                         <Table.Th>Name</Table.Th>
                         <Table.Th>ABN</Table.Th>
-                        <Table.Th></Table.Th>
                     </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>{rows}</Table.Tbody>

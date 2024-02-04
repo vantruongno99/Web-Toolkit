@@ -30,6 +30,7 @@
 
 .card {
     height: 280px;
+    width: 250px;
     background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
     border: solid;
     border-width: 0.5px;

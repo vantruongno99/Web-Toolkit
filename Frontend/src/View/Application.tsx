@@ -8,6 +8,7 @@ import applicationService from "../Services/application.service";
 import { useForm } from '@mantine/form';
 import vendorService from "../Services/vendor.service";
 import { IconTrashX } from "@tabler/icons-react";
+import { showErorNotification } from "../Ultils/notification";
 
 
 interface Option {
@@ -48,8 +49,8 @@ const Application = () => {
 
                 return res
             }
-            catch (e) {
-                console.log(e)
+            catch (e:any) {
+                showErorNotification(e.message)
             }
         }
     }
@@ -159,7 +160,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
             navigate(`/vendor/${option.id}`)
         },
         onError: (e: Error) => {
-            console.log(e)
+            showErorNotification(e.message)
         },
     })
 
@@ -304,8 +305,8 @@ const Request = ({ request, applicationId, vendorId }: { request: any, applicati
                 showcase: showcase
             })
         }
-        catch (e) {
-            console.log(e)
+        catch (e:any) {
+            showErorNotification(e.message)
         }
     }
 

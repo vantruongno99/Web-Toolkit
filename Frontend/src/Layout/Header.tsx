@@ -7,8 +7,9 @@ import { IconChevronDown } from '@tabler/icons-react';
 import Cookies from "js-cookie";
 import authservice from '../Services/auth.service';
 
-const vendorLogged = Cookies.get("ABN") !== undefined||null
+const vendorLogged = Cookies.get("ABN") !== undefined || null
 const adminLogged = Cookies.get("role") === "admin"
+const logged = Cookies.get("logged") === "true"
 
 
 const adminLogout = async () => {
@@ -17,31 +18,50 @@ const adminLogout = async () => {
 
 const vendorLogout = async () => {
   Cookies.remove("ABN")
+  Cookies.remove("logged")
   window.location.reload();
   window.location.href = '/'
 }
 
-const links = [
+
+type Link = {
+  link: string,
+  label: string,
+  links?: {
+    label: string,
+    onClick: () => Promise<void>
+  }[]
+
+}
+
+let links: Link[] = [
   { link: '/about', label: 'About' },
   { link: '/find', label: 'Solution' },
-  {
-    link: '/admin', label: 'Admin',
-    ...(adminLogged && {
-      links: [
-        { label: 'Sign out', onClick: adminLogout },
-      ],
-    })
-  },
+  { link: '/login', label: 'Login' },
+];
+
+if (adminLogged) links.push({
+  link: '/admin', label: 'Admin',
+  links: [
+    { label: 'Sign out', onClick: adminLogout },
+  ],
+})
+
+if (vendorLogged) links.push(
   {
     link: '/vendor', label: 'Vendor',
-    ...(vendorLogged && {
-      links: [
-        { label: 'Sign out', onClick: vendorLogout },
-      ],
-    })
-  },
+    links: [
+      { label: 'Sign out', onClick: vendorLogout },
+    ],
+  }
+)
 
-];
+
+if (logged) {
+  links = links.filter(a => a.label !== "Login")
+}
+
+
 
 export default function Header() {
   const [opened, { toggle }] = useDisclosure(false);
@@ -66,7 +86,7 @@ export default function Header() {
               onClick={(event) => event.preventDefault()}
             >
               <Center>
-                <span className={classes.linkLabel} onClick={()=>navigate(link.link)}>{link.label}</span>
+                <span className={classes.linkLabel} onClick={() => navigate(link.link)}>{link.label}</span>
                 <IconChevronDown size="0.9rem" stroke={1.5} />
               </Center>
             </a>
@@ -96,7 +116,7 @@ export default function Header() {
     <header className={classes.header}>
       <Container fluid size="md">
         <div className={classes.inner}>
-         <Title onClick={()=>navigate("/")}>Logo</Title> 
+          <Title onClick={() => navigate("/")}>Logo</Title>
           <Group gap={5} visibleFrom="sm">
             {items}
           </Group>

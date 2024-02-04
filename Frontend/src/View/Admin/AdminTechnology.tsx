@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { FileInput, Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, ActionIcon, Fieldset, Center } from "@mantine/core"
+import { FileInput, Image, Box, Card, Container, Divider, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, ActionIcon, Fieldset, Center } from "@mantine/core"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import technologyService from "../../Services/technology.service";
-import { useForm } from '@mantine/form';
+import { isNotEmpty, useForm } from '@mantine/form';
 import { TechnologyInput } from "../../Ultils/type";
 import { IconTablePlus, IconTrashX } from "@tabler/icons-react";
 import applicationService from "../../Services/application.service";
@@ -12,6 +12,9 @@ import imageService from "../../Services/image.service";
 import dataService from "../../Services/data.service";
 import ApplicationCard from "../../Component/ApplicationCard/ApplicationCard";
 import classes from './AdminTechnology.module.css'
+import { showErorNotification, showSuccessNotification } from "../../Ultils/notification";
+import { DeleteModal } from "../../Ultils/modals";
+
 
 const AdminTechnology = () => {
 
@@ -26,11 +29,16 @@ const AdminTechnology = () => {
     const queryClient = useQueryClient()
 
     const navigate = useNavigate()
+
     const form = useForm<TechnologyInput>({
         initialValues: {
             technology: "",
             description: ""
-        }
+        },
+        validate: {
+            description: isNotEmpty("can not be empty"),
+            technology: isNotEmpty("can not be empty"),
+        },
     })
 
 
@@ -53,8 +61,8 @@ const AdminTechnology = () => {
 
                 return res
             }
-            catch (e) {
-                console.log(e)
+            catch (e: any) {
+                showErorNotification(e.message)
             }
         },
 
@@ -67,7 +75,11 @@ const AdminTechnology = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['admin', 'technology', id] })
-        }
+            showSuccessNotification("Technology has been updated")
+        },
+        onError: (e: Error) => {
+            showErorNotification(e.message)
+        },
     })
 
     const deleteTechnology = useMutation({
@@ -77,55 +89,51 @@ const AdminTechnology = () => {
         },
         onSuccess: () => {
             navigate('/admin/data')
+            showErorNotification("Technology has been deleted successfully")
             queryClient.invalidateQueries({ queryKey: ['admin', 'technologies'] })
-
-
+        },
+        onError: (e: Error) => {
+            showErorNotification(e.message)
         },
     })
 
-    const update = async () => await updateTechnology.mutateAsync(form.values)
-
-
-
-
-
-
-
-
-
     return (<>
         <Container p={"2rem"}>
+        <form onSubmit={form.onSubmit(data => updateTechnology.mutateAsync(data))}>
             <Container pt={"1rem"} pb={"1rem"} className={classes.area}>
-                <Group justify="space-between">
-                    <Title c={"indigo"} order={2}>DETAILS</Title>
-                    <ActionIcon variant="outline" color="red" aria-label="Settings" onClick={() => deleteTechnology.mutateAsync()}>
-                        <IconTrashX style={{ width: '80%', height: '80%' }} stroke={1.5} />
-                    </ActionIcon>
+                <Title c={"indigo"} order={2}>DETAILS</Title>
+                <Title order={2}>
+                    <TextInput
+                        withAsterisk
+                        label="Technology"
+                        size="md"
+                        {...form.getInputProps('technology')}
+                    />
+                </Title>
+                <Text fz="sm" mt={"1rem"} >
+                    <Textarea
+                        mt={"1rem"}
+                        size="md"
+                        autosize
+                        minRows={3}
+                        withAsterisk
+                        label="Description"
+                        {...form.getInputProps('description')}
+                    />
+                </Text>
+                <Group justify="space-between" mt={"2rem"}>
+
+                    <Button disabled={!form.isDirty()} type="submit" > Save change</Button>
+                    <DeleteModal title="Technology" func={() => deleteTechnology.mutateAsync()} />
                 </Group>
-                <Input.Wrapper
-                    label="Name:"
-                    mt={"1rem"}
-                >
-                    <TextInput size="md"   {...form.getInputProps('technology')} />
-                </Input.Wrapper>
-                <Input.Wrapper
-                    label="Description:"
-                    mt={"1rem"}
-
-                >
-                    <Textarea autosize
-                        minRows={3} size="md"   {...form.getInputProps('description')} />
-                </Input.Wrapper>
-
-                <Button disabled={!form.isDirty()} onClick={() => update()} mt={"2rem"}> Save change</Button>
-
             </Container>
-            <Divider size="lg" mt="2rem" mb={"2rem"} color={"dark"}/>
+            </form>
+            <Divider size="lg" mt="2rem" mb={"2rem"} color={"dark"} />
 
             <Title c="indigo" order={3} mt="2rem" mb={"2rem"}>APPLICATION LIST</Title>
 
             <Grid justify="left" align="stretch" gutter="xl">
-                {data?.Application.map((a, i) => <Grid.Col span={4}> <ApplicationCard data={a} key={i} />   </Grid.Col>
+                {data?.Application.map((a, i) => <Grid.Col span={4}> <ApplicationCard data={{ label: a.potentialApplications, link: `/admin/application/${a.id}`, imageUrl: a.imageUrl }} key={i} />   </Grid.Col>
                 )}
             </Grid>
 
@@ -172,6 +180,10 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
             image: null
 
         },
+        validate: {
+            potentialApplications: isNotEmpty("can not be empty"),
+        },
+
     })
 
 
@@ -213,7 +225,7 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
             setOpened(!opened)
         },
         onError: (e) => {
-            console.log(e)
+            showErorNotification(e.message)
         },
     })
 
@@ -228,8 +240,8 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                 }
                 return res
             }
-            catch (e) {
-                console.log(e)
+            catch (e: any) {
+                showErorNotification(e.message)
             }
         }
     }

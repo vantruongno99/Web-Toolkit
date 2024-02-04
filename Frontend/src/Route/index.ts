@@ -1,5 +1,6 @@
-import innerRoutes from "./innerRoutes";
+import adminRouter from "./adminRoutes";
 import outerRoutes from "./outerRoute";
+import vendorRoutes from "./vendorRoute";
 
-export { innerRoutes, outerRoutes }
+export { adminRouter, outerRoutes, vendorRoutes }
 

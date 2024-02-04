@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import vendorService from "../../Services/vendor.service";
 import { VendorInput } from "../../Ultils/type";
-import Cookies from "js-cookie";
-
+import { showErorNotification, showSuccessNotification } from "../../Ultils/notification";
 const CreateVendor = () => {
 
 
@@ -23,8 +22,7 @@ const CreateVendor = () => {
         validate: {
             phone: (value) => (value.length < 10 ? 'phone must have at least 10 letters' : null),
             ABN: (value) => (value.toString().length !== 11 ? 'ABN must have 11 numbers' : null),
-            email: isNotEmpty('Email must not be empty'),
-
+            email: isEmail('Invalid email'),
         },
     });
 
@@ -37,13 +35,20 @@ const CreateVendor = () => {
             return res
         },
         onSuccess: (res) => {
-            if (res && res.ABN) {
-                Cookies.set("ABN",String (res?.ABN))
-            }
+            if(res)
+            showSuccessNotification(`Vendor with ABN ${res.ABN} has been created `)
             navigate(`/vendor`)
         },
         onError: (e: Error) => {
-            form.setErrors({ ABN: "ABN is not valid" })
+            if (e.message === "Vendor_name_key already exist") {
+                form.setErrors({ ABN: "ABN is already exist" })
+            }
+            else if (e.message === "ABN is not valid") {
+                form.setErrors({ ABN: "ABN is not valid" })
+            }
+            else {
+                showErorNotification(e.message)
+            }
         },
     })
 

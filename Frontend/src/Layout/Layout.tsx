@@ -12,6 +12,7 @@ export default function Layout() {
   return (
     <AppShell
       header={{ height: "10px" }}
+      
     >
       <AppShell.Header>
         <Header />

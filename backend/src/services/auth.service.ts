@@ -10,11 +10,11 @@ const login = async (input: LoginInput): Promise<LoginResponse> => {
   const password = input.password?.trim();
 
   if (!username) {
-    throw ({ name: 'ValidationError', message: { username: ["can't be blank"] } });
+    throw ({ message: "username: can't be blank" });
   }
 
   if (!password) {
-    throw ({ name: 'ValidationError', message: { password: ["can't be blank"] } });
+    throw ({ message: "password: can't be blank" });
   }
 
   const user = await prisma.user.findUnique({
@@ -111,16 +111,16 @@ const adminResetPassword = async (input: AdminPasswordChangeInput): Promise<void
   const newPassword = input.newPassword?.trim()
 
   if (!username) {
-    throw ({ name: 'ValidationError', message: " username is blank" });
+    throw ({  message: " username is blank" });
   }
 
 
   if (!newPassword) {
-    throw ({ name: 'ValidationError', message: " newPassword is blank" });
+    throw ({  message: " new Password is blank" });
   }
 
   if (username === "super") {
-    throw ({ name: 'ValidationError', message: "For super , please change username in Profile" });
+    throw ({  message: "For super , please change username in Profile" });
   }
 
 
