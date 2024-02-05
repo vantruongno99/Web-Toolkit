@@ -251,8 +251,9 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
 
 
     return (
-        <>
-            <Center>  <Title c={"indigo"} mt={"1rem"} mb={"1rem"} order={3}>OFFERED APPLICATION </Title></Center>
+        <Container>
+            <Center> 
+                 <Title c={"indigo"} mt={"1rem"} mb={"1rem"} order={3}>OFFERED APPLICATION </Title></Center>
             <Table striped highlightOnHover withTableBorder withColumnBorders>
                 <Table.Thead >
                     <Table.Tr>
@@ -265,7 +266,7 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
             <Center>
                 <Button size="lg" mt="2rem" onClick={() => navigate(`/find?type=vendor&id=${vendor.id}`)}>Add new offer </Button>
             </Center>
-        </>)
+        </Container>)
 }
 
 

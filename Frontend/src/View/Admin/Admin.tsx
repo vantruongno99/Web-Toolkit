@@ -15,12 +15,12 @@ const Admin = () => {
             link: `/admin/data`,
             url : adminImage
         }, {
-            label: "Approval Magemement",
+            label: "Approval",
             link: `/admin/approve`,
             url : adminImage
 
         }, {
-            label: "Input Magemement",
+            label: "Input",
             link: `/admin/input`,
             url : adminImage
 

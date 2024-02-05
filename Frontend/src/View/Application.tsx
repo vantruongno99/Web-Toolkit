@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, Pill, Center } from "@mantine/core"
-import { focusManager, useMutation, useQuery } from "@tanstack/react-query";
+import { focusManager, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import { ApplicationInfo, ApplicationInput } from "../Ultils/type";
 import applicationService from "../Services/application.service";
 import { useForm } from '@mantine/form';
 import vendorService from "../Services/vendor.service";
 import { IconTrashX } from "@tabler/icons-react";
-import { showErorNotification } from "../Ultils/notification";
+import { showErorNotification, showSuccessNotification } from "../Ultils/notification";
 
 
 interface Option {
@@ -151,13 +151,19 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
         showcase: string
     }
 
+    const queryClient = useQueryClient()
+
+
 
     const assignRequest = useMutation({
         mutationFn: async (input: assignInput) => {
             return await vendorService.applicationRequest(input.applicationId, input.vendorId, { showcase: input.showcase })
         },
-        onSuccess: () => {
-            navigate(`/vendor/${option.id}`)
+        onSuccess: (result) => {
+            navigate(`/vendor`)
+            queryClient.invalidateQueries({ queryKey: ['vendor',option.id ] })
+            showSuccessNotification("Request has been made successfully")
+
         },
         onError: (e: Error) => {
             showErorNotification(e.message)

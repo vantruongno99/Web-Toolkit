@@ -157,6 +157,24 @@ const editVendor = async ( id: number ,data: VendorEdit): Promise<void> => {
     }
 }
 
+const deleteVendor = async ( id: number ): Promise<void> => {
+    try {
+        await axios.delete(`${baseUrl}/${id}`, 
+            config
+        )
+
+    }
+    catch (error: any | AxiosError) {
+        if (axios.isAxiosError(error)) {
+            console.log(error)
+            AxiosHandleResponse(error)
+        } else {
+            console.log(error)
+
+        }
+    }
+}
+
 
 const vendorService = {
     getAllVendor,
@@ -166,7 +184,8 @@ const vendorService = {
     getAllVendorApplication,
     applicationRequest,
     getVendorByABN,
-    editVendor
+    editVendor,
+    deleteVendor
 }
 
 export default vendorService

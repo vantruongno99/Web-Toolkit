@@ -50,6 +50,12 @@ vendorRoute.get('/ABN/:ABN', async (req: Request, res: Response) => {
     res.status(200).json(sensors)
 })
 
+vendorRoute.delete('/:id',middleware.userExtractor, middleware.adminRequire,  async (req: Request, res: Response) => {
+    const id = Number(req.params.id)
+    await vendorService.deleteVendor(id)
+    res.status(204).end()
+})
+
 
 
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Flex, Button, Paper, Title, Text, Container, Center, NumberInput, Input, Box, Loader, Tabs, Table, Space, Anchor, Group, Divider, Grid, TextInput } from "@mantine/core";
+import { Flex, Button, Image, Title, Text, Container, Center, NumberInput, Input, Box, Loader, Tabs, Table, Space, Anchor, Group, Divider, Grid, TextInput } from "@mantine/core";
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { UseMutationResult, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import vendorService from "../Services/vendor.service";
 import { useForm, isNotEmpty, isEmail } from "@mantine/form";
 import { VendorInfo } from "../Ultils/type";
+import loginImage from "../../public/login.jpg"
 import { showErorNotification } from "../Ultils/notification";
 
 
@@ -44,7 +45,7 @@ const Vendor = () => {
 
     return (
         <>
-            <Container mt={"1rem"}>
+            <Container fluid p={"2rem"} >
                 <VendorDetail vendor={data} isLoading={isLoading} />
                 <Divider size="md" mt={"1rem"} mb={"2rem"} color={"dark"} />
                 <VendorApplication vendor={data} isLoading={isLoading} />
@@ -78,8 +79,10 @@ const VendorDetail = ({ vendor, isLoading }: { vendor: VendorInfo, isLoading: bo
     }, [vendor])
 
     return (<>
-        <Grid>
-            <Grid.Col span={6}>
+
+<Grid>
+                <Grid.Col span={6} pl="7rem">
+                <Grid.Col span={6}>
                 <Title c="indigo" mt={"1rem"} order={3} >DETAILS</Title>
                 <Space h="xl" />
                 <Box maw={440} >
@@ -117,7 +120,11 @@ const VendorDetail = ({ vendor, isLoading }: { vendor: VendorInfo, isLoading: bo
                     </Input.Wrapper>
                 </Box>
             </Grid.Col>
-        </Grid>
+                </Grid.Col>
+                <Grid.Col span={6}>
+                        <Image src={loginImage} />
+                    </Grid.Col>
+            </Grid>
     </>)
 }
 
@@ -154,7 +161,7 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
 
 
     return (
-        <>
+        <Container>
             <Center>  <Title c={"indigo"} mt={"1rem"} mb={"1rem"} order={3}>OFFERED APPLICATION </Title></Center>
             <Table striped >
                 <Table.Thead >
@@ -165,7 +172,7 @@ const VendorApplication = ({ vendor, isLoading }: { vendor: VendorInfo, isLoadin
                 <Table.Tbody>{rows}</Table.Tbody>
             </Table>
 
-        </>)
+        </Container>)
 }
 
 

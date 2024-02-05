@@ -182,6 +182,21 @@ const editVendor = async (id: number, data: VendorEdit) => {
     }
 }
 
+const deleteVendor = async (id: number) => {
+    try {
+        await prisma.vendor.delete({
+            where: {
+                id
+            }
+        })
+
+    }
+    catch (e: any) {
+        errorHandler(e)
+    }
+}
+
+
 
 export default {
     getAllVendor,
@@ -190,7 +205,8 @@ export default {
     assignVendor,
     getApplicationByVendorId,
     getVendorByABN,
-    editVendor
+    editVendor,
+    deleteVendor
 }
 
 

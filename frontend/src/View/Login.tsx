@@ -115,7 +115,6 @@ const Login = () => {
     }
     )
 
-    const queryClient = useQueryClient()
 
 
     return (
