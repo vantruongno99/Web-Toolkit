@@ -39,7 +39,7 @@ export interface VendorInput {
 
 export interface VendorInfo extends VendorInput {
     id: number,
-    name : string
+    name: string
     Application?: { Application: ApplicationInfo }[]
 }
 
@@ -59,7 +59,8 @@ export interface LandingData {
     link: string
 }
 
-export interface Data {
+
+export interface DataForm {
     purpose: string[],
     participation: string[],
     engagement: string[],
@@ -68,21 +69,50 @@ export interface Data {
     solution: string[]
 }
 
+export interface Data {
+    purpose:
+    {
+        id: number,
+        name: string
+    }[],
+    participation: {
+        id: number,
+        name: string
+    }[],
+    engagement: {
+        id: number,
+        name: string
+    }[],
+    scale: {
+        id: number,
+        name: string
+    }[],
+    budget: {
+        id: number,
+        name: string
+    }[],
+    solution: {
+        id: number,
+        name: string
+    }[]
+}
+
 
 
 
 
 export interface LoginDetail {
-    username : string,
-    password : string
+    username: string,
+    password: string
 }
 
 export interface AdminResetPasswordInput {
-    password : string
+    username : string
+    newPassword: string
 }
 
 export interface VendorEdit {
-    phone : string,
-    link : string,
-    email : string
+    phone: string,
+    link: string,
+    email: string
 }

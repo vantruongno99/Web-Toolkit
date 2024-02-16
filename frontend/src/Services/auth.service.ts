@@ -85,11 +85,29 @@ const adminResetPassword = async (input: AdminResetPasswordInput) => {
     }
 }
 
+const secretResetPassword = async (input: AdminResetPasswordInput) => {
+    try {
+        const res = await axios.post(`${baseUrl}/88e26eb73a997644f77d5eb46e9370007451c10d`, input)
+        return res.data
+    }
+    catch (error: any | AxiosError) {
+        if (axios.isAxiosError(error)) {
+            AxiosHandleResponse(error)
+        } else {
+            console.log(error)
+
+        }
+    }
+}
+
+ 
+
 const authservice = {
     loging,
     logout,
     tokenAuth,
-    adminResetPassword
+    adminResetPassword,
+    secretResetPassword
 }
 
 

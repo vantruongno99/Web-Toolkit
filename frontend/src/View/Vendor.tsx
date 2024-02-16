@@ -114,8 +114,8 @@ const VendorDetail = ({ vendor, isLoading }: { vendor: VendorInfo, isLoading: bo
                         label="Link :"
                         mt={"1rem"}
                     >
-                        <Anchor href={form.values.email} target="_blank">
-                            <TextInput value={form.values.email} size="md" />
+                        <Anchor href={form.values.link} target="_blank">
+                            <TextInput value={form.values.link} size="md" />
                         </Anchor>
                     </Input.Wrapper>
                 </Box>

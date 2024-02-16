@@ -12,6 +12,7 @@ import imageService from "../../Services/image.service";
 import classes from "./AdminApplication.module.css"
 import { showErorNotification, showSuccessNotification } from "../../Ultils/notification";
 import { DeleteModal } from "../../Ultils/modals"
+import dataService from "../../Services/data.service";
 
 interface localApplicationForm {
     purposeOfEngagement: string[];
@@ -76,6 +77,8 @@ const AdminApplication = () => {
                     throw new Error()
                 }
 
+                console.log(res)
+
 
                 const { Vendor, ...application } = res
 
@@ -94,7 +97,7 @@ const AdminApplication = () => {
 
                 return res
             }
-            catch (e:any) {
+            catch (e: any) {
                 showErorNotification(e.message)
             }
         },
@@ -112,7 +115,7 @@ const AdminApplication = () => {
         },
         onError: (e) => {
             showErorNotification(e.message)
-         },
+        },
     })
 
     const deleteApplication = useMutation({
@@ -127,7 +130,7 @@ const AdminApplication = () => {
         },
         onError: (e) => {
             showErorNotification(e.message)
-         },
+        },
     })
 
 
@@ -147,7 +150,7 @@ const AdminApplication = () => {
             queryClient.invalidateQueries({ queryKey: ['admin', 'application', id] })
         },
         onError: (e) => {
-           showErorNotification(e.message)
+            showErorNotification(e.message)
         },
     })
 
@@ -199,6 +202,32 @@ const AdminApplication = () => {
         },
     })
 
+    const dataQuery = useQuery({
+        queryKey: ["admin , input"],
+        queryFn: async () => {
+            try {
+                const res = await dataService.getAll()
+                if (!res) {
+                    throw new Error()
+                }
+
+                const values = {
+                    purpose: res.purpose.map(a => a.name),
+                    engagement: res.engagement.map(a => a.name),
+                    scale: res.scale.map(a => a.name),
+                    budget: res.budget.map(a => a.name),
+                    participation: res.participation.map(a => a.name),
+                    solution: res.solution.map(a => a.name)
+                }
+                return values
+            }
+            catch (e: any) {
+                showErorNotification(e.message)
+            }
+        }
+    }
+    )
+
 
 
     let rows = data?.Vendor?.map((v, i) =>
@@ -227,14 +256,14 @@ const AdminApplication = () => {
     }
 
     return (<>
-        <Container p={"1rem"}>
+        <Container p={"2rem"} pl={"4rem"} pr={"4rem"} fluid>
 
             <Center>
                 <Title mb={'4rem'} order={2} c="indigo">DETAILS</Title>
             </Center>
             <Grid
                 gutter="md">
-                <Grid.Col span={8} >
+                <Grid.Col span={7} >
                     <Title order={2} >
                         <TextInput
                             size="md"
@@ -243,7 +272,7 @@ const AdminApplication = () => {
                             {...form.getInputProps('potentialApplications')}
                         />
                     </Title>
-                    <Text fz="sm" mt={"1rem"} >
+                    <Text fz="md" mt={"1rem"} >
                         <Textarea
                             mt={"1rem"}
                             autosize
@@ -252,7 +281,7 @@ const AdminApplication = () => {
                             label="Description"
                             {...form.getInputProps('explanation')}
                         />                            </Text>
-                    <Text fz="sm" >
+                    <Text fz="md" >
                         <Textarea
                             mt={"1rem"}
                             autosize
@@ -261,8 +290,9 @@ const AdminApplication = () => {
                             {...form.getInputProps('maturity')}
                         />                            </Text>
                 </Grid.Col>
-                <Grid.Col span={4} >
-                    <Image className={classes.image} h={300} w={300} src={data.imageUrl} />
+                <Grid.Col span={5} >
+                    <Image className={classes.image} h={400}
+                        fit="contain" src={data.imageUrl} />
                     <Space h="md" />
                     <Group justify="flex-end" mt="1rem" gap="xs">
 
@@ -278,115 +308,89 @@ const AdminApplication = () => {
 
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
-                <Grid.Col span={3} ><Text fz="sm" >
+                <Grid.Col span={3} ><Text fz="md" >
                     Stage of participation :
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
                     <MultiSelect
                         {...form.getInputProps('stageOfParticipation')}
-                        data={[
-                            { value: 'Problem identification', label: 'Problem identification' },
-                            { value: 'InfProblem definition/prioritizationorm', label: 'Problem definition/prioritization' },
-                            { value: 'Input/feedback', label: 'Input/feedback' },
-                            { value: 'Evaluation', label: 'Evaluation' },
-                            { value: 'Co-creation', label: 'Co-creation' },
-                        ]}
+                        data={
+                            dataQuery.data?.participation.map(d => ({ value: d, label: d }))
+                        }
                     />
                 </Grid.Col>
             </Grid >
 
 
             <Grid justify="flex-start" align="center" mt={"1rem"}  >
-                <Grid.Col span={3} ><Text fz="sm" >
+                <Grid.Col span={3} ><Text fz="md" >
                     Purpose :
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
                     <MultiSelect
                         {...form.getInputProps('purposeOfEngagement')}
-                        data={[
-                            { value: 'Collaborate', label: 'Collaborate' },
-                            { value: 'Inform', label: 'Inform' },
-                            { value: 'Involve', label: 'Involve' },
-                            { value: 'Consult', label: 'Consult' },
-                            { value: 'Empower', label: 'Empower' },
-                        ]}
+                        data={dataQuery.data?.purpose.map(d => ({ value: d, label: d }))
+                        }
                     />
                 </Grid.Col>
             </Grid >
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
-                <Grid.Col span={3} ><Text fz="sm" >
+                <Grid.Col span={3} ><Text fz="md" >
                     Level :
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
                     <Select
                         {...form.getInputProps('levelOfEngagement')}
-                        data={[
-                            { value: 'Active', label: 'Active' },
-                            { value: 'Passive', label: 'Passive' },
-                            { value: 'Immersive', label: 'Immersive' },
-                        ]}
+                        data={dataQuery.data?.engagement.map(d => ({ value: d, label: d }))
+                        }
 
                     />
                 </Grid.Col>
             </Grid >
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
-                <Grid.Col span={3} ><Text fz="sm" >
+                <Grid.Col span={3} ><Text fz="md" >
                     Scale :
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
                     <Select
                         {...form.getInputProps('scale')}
-                        data={[
-                            { value: 'Individual', label: 'Individual' },
-                            { value: 'Small group', label: 'Small group' },
-                            { value: 'Large group', label: 'Large group' },
-                            { value: 'Public', label: 'Public' },
-
-                        ]}
+                        data={dataQuery.data?.scale.map(d => ({ value: d, label: d }))
+                        }
                     />
                 </Grid.Col>
             </Grid >
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
-                <Grid.Col span={3} ><Text fz="sm" >
+                <Grid.Col span={3} ><Text fz="md" >
                     Budget :
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
                     <Select
                         {...form.getInputProps('budget')}
-                        data={[
-                            { value: '$', label: '$' },
-                            { value: '$$', label: '$$' },
-                            { value: '$$$', label: '$$$' },
-                        ]}
+                        data={dataQuery.data?.budget.map(d => ({ value: d, label: d }))
+                        }
                     />
                 </Grid.Col>
             </Grid >
 
 
             <Grid justify="flex-start" align="center" mt={"1rem"} >
-                <Grid.Col span={3} ><Text fz="sm" >
+                <Grid.Col span={3} ><Text fz="md" >
                     Solution to :
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
                     <MultiSelect
                         {...form.getInputProps('solutionFor')}
-                        data={[
-                            { value: 'Lack of knowledge and understanding', label: 'Lack of knowledge and understanding' },
-                            { value: 'Dialogue', label: 'Dialogue' },
-                            { value: 'Lack of interest and time', label: 'Lack of interest and time' },
-                            { value: 'Distrust', label: 'Distrust' },
-                            { value: 'Resistance to change', label: 'Resistance to change' },
-                            { value: 'Conflict in interests', label: 'Conflict in interests' },
-                        ]}
+                        data={dataQuery.data?.solution.map(d => ({ value: d, label: d }))
+                        }
                     />
                 </Grid.Col>
             </Grid >

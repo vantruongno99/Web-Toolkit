@@ -42,16 +42,6 @@ const Find = () => {
     });
 
 
-    const optionForm = useForm<FilterOption>({
-        initialValues: {
-            purpose: false,
-            engagement: false,
-            scale: false,
-            budget: false,
-            stage: false,
-            solution: false
-        },
-    });
 
     interface FilterForm {
         purpose: string[],
@@ -62,14 +52,6 @@ const Find = () => {
         solution: string[]
     }
 
-    interface FilterOption {
-        purpose: boolean,
-        engagement: boolean,
-        scale: boolean,
-        budget: boolean,
-        stage: boolean,
-        solution: boolean
-    }
 
     const filterData = (data: FilterForm) => {
         const b = applications?.filter((a: ApplicationInfo) =>
@@ -96,11 +78,18 @@ const Find = () => {
                 if (!res) {
                     throw new Error()
                 }
-                console.log(data)
+                const values = {
+                    purpose: res.purpose.map(a => a.name),
+                    engagement: res.engagement.map(a => a.name),
+                    scale: res.scale.map(a => a.name),
+                    budget: res.budget.map(a => a.name),
+                    participation: res.participation.map(a => a.name),
+                    solution: res.solution.map(a => a.name)
+                }
 
-                return res
+                return values
             }
-            catch (e:any) {
+            catch (e: any) {
                 showErorNotification(e.message)
             }
         }
@@ -112,11 +101,33 @@ const Find = () => {
         <Container fluid p="1rem" >
             <form onSubmit={form.onSubmit(filterData)}>
                 <div className={classes.outside}>
+                    <Flex
+                        gap="md"
+                        justify="center"
+                        align="center"
+                        direction="column"
+                        wrap="wrap"
+                        pl={"8rem"}
+                        pr={"8rem"}
+
+                    >
+                        <Title className={classes.header} order={1}>Find the right technology usecase for your project</Title>
+                        <Title className={classes.header}  order={3} mt={"3rem"}>
+                            You'll discover various engagement scenarios tailored to different contexts, levels of participation, budget, and scale, all designed to fulfill specific needs and objectives.
+                        </Title>
+                        <Title className={classes.header}   order={3} mt={"3rem"} mb={"5rem"}>
+                            Browse through the entire database of usecases to find inspiration, or apply our search filters to. narrow down technology usecases that are well-suited for your specific needs.
+                        </Title>
+                    </Flex>
+
+                    <Group mr={"1rem"} justify="flex-end">
+                        <Text>Propose a usecase based on filter selection</Text>
+                    </Group>
                     <Container fluid className={classes.outerFilter}>
                         <br />
                         <Container className={classes.filter} m={"2rem"} fluid pt={"1rem"} pb={"1rem"} >
                             <Grid>
-                                <Grid.Col span={2} className={classes.leftFilter}>
+                                <Grid.Col span={2.4} className={classes.leftFilter}>
                                     <Center pb={"1rem"}>
                                         <Title order={6}>Stage of participation</Title>
                                     </Center>
@@ -125,16 +136,8 @@ const Find = () => {
                                         {...form.getInputProps('stage')}
                                     />
                                 </Grid.Col>
-                                <Grid.Col span={2} className={classes.leftFilter}>
-                                    <Center pb={"1rem"}>
-                                        <Title order={6}>Level of Engagement</Title>
-                                    </Center>
-                                    <MultiSelect
-                                        data={data?.engagement}
-                                        {...form.getInputProps('engagement')}
-                                    />
-                                </Grid.Col>
-                                <Grid.Col span={2} className={classes.leftFilter}>
+                            
+                                <Grid.Col span={2.4} className={classes.leftFilter}>
                                     <Center pb={"1rem"}>
                                         <Title order={5}>Purpose</Title>
                                     </Center>
@@ -143,7 +146,7 @@ const Find = () => {
                                         {...form.getInputProps('purpose')}
                                     />
                                 </Grid.Col>
-                                <Grid.Col span={2} className={classes.leftFilter}>
+                                <Grid.Col span={2.4} className={classes.leftFilter}>
                                     <Center pb={"1rem"}>
                                         <Title order={5}>Scale</Title>
                                     </Center>
@@ -152,7 +155,7 @@ const Find = () => {
                                         {...form.getInputProps('scale')}
                                     />
                                 </Grid.Col>
-                                <Grid.Col span={2} className={classes.leftFilter}>
+                                <Grid.Col span={2.4} className={classes.leftFilter}>
                                     <Center pb={"1rem"}>
                                         <Title order={5}>Budget</Title>
 
@@ -162,7 +165,7 @@ const Find = () => {
                                         {...form.getInputProps('budget')}
                                     />
                                 </Grid.Col>
-                                <Grid.Col span={2} >
+                                <Grid.Col span={2.4} >
                                     <Center pb={"1rem"}>
                                         <Title order={5}>Solution For</Title>
 
@@ -237,7 +240,7 @@ const Inside = ({ data }: { data: ApplicationInfo }) => {
                 component="a"
                 radius="xs"
                 href={`/data/application/${data.id}${objString}`}
-                                className={classes.card}
+                className={classes.card}
             >
                 <div
                     className={classes.image}

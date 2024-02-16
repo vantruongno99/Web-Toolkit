@@ -12,9 +12,9 @@ const About = () => {
              <Grid gutter="lg" pb={"2rem"}>
                 <Grid.Col span={6} p={"2rem"}>
                     <Title>About Us</Title>
-                    <Text  size="lg" mt={"1rem"}>Welcome to the Transport Accident Commission (TAC), where our journey toward a safer future begins. 
-                    Committed to our vision of eradicating deaths and serious injuries on roads by 2050, we have initiated the development of this toolkit.
-                     Our dedication extends beyond mere intentions, reflecting a continuous effort to create a future where every journey is synonymous with safety.
+                    <Text  size="lg" mt={"1rem"}>Welcome to the Transport Accident Commission (TAC), where our journey toward a safer future begins.
+                     Committed to our vision of eradicating deaths and serious injuries on roads by 2050, we have initiated the development of this toolkit.
+                      Our dedication extends beyond mere intentions, reflecting a continuous effort to create a future where every journey is synonymous with safety.
                     </Text>
                 </Grid.Col>
                 <Grid.Col span={6}>

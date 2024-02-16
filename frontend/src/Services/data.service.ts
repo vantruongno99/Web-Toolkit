@@ -131,8 +131,7 @@ const createBudget = async (input: string) => {
 
 const deletePurpose = async (input: string) => {
     try {
-        const res = await axios.delete(`${baseUrl}/purpose/${input}`,
-        )
+        const res = await axios.delete(`${baseUrl}/purpose`, { data: { name: input } })
 
         return res.data
     }
@@ -147,9 +146,7 @@ const deletePurpose = async (input: string) => {
 }
 const deleteParticipation = async (input: string) => {
     try {
-        const res = await axios.delete(`${baseUrl}/participation/${input}`,
-        )
-
+        const res = await axios.delete(`${baseUrl}/participation`, { data: { name: input } })
         return res.data
     }
     catch (error: any | AxiosError) {
@@ -163,9 +160,7 @@ const deleteParticipation = async (input: string) => {
 }
 const deleteEngagement = async (input: string) => {
     try {
-        const res = await axios.delete(`${baseUrl}/engagement/${input}`,
-        )
-
+        const res = await axios.delete(`${baseUrl}/engagement`, { data: { name: input } })
         return res.data
     }
     catch (error: any | AxiosError) {
@@ -179,8 +174,8 @@ const deleteEngagement = async (input: string) => {
 }
 const deleteScale = async (input: string) => {
     try {
-        const res = await axios.delete(`${baseUrl}/scale/${input}`,
-        )
+        const res = await axios.delete(`${baseUrl}/scale`, { data: { name: input } })
+
 
         return res.data
     }
@@ -195,8 +190,7 @@ const deleteScale = async (input: string) => {
 }
 const deletesolution = async (input: string) => {
     try {
-        const res = await axios.delete(`${baseUrl}/solution/${input}`,
-        )
+        const res = await axios.delete(`${baseUrl}/solution`, { data: { name: input } })
 
         return res.data
     }
@@ -211,9 +205,7 @@ const deletesolution = async (input: string) => {
 }
 const deleteBudget = async (input: string) => {
     try {
-        const res = await axios.delete(`${baseUrl}/budget/${input}`,
-        )
-
+        const res = await axios.delete(`${baseUrl}/budget`, { data: { name: input } })
         return res.data
     }
     catch (error: any | AxiosError) {
@@ -225,9 +217,6 @@ const deleteBudget = async (input: string) => {
         }
     }
 }
-
-
-
 
 
 const dataService = {

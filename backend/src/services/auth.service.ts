@@ -2,6 +2,7 @@ import { LoginInput, PasswordChangeInput, AdminPasswordChangeInput, LoginRespons
 import bcrypt from 'bcrypt'
 import { prisma } from "../../prisma/prismaClient"
 import tokenGenerator from "../utils/tokenGenerator"
+import errorHandler from "../utils/errorHandler"
 
 
 
@@ -110,24 +111,11 @@ const adminResetPassword = async (input: AdminPasswordChangeInput): Promise<void
   const username = input.username?.trim();
   const newPassword = input.newPassword?.trim()
 
-  if (!username) {
-    throw ({  message: " username is blank" });
-  }
-
-
-  if (!newPassword) {
-    throw ({  message: " new Password is blank" });
-  }
-
-  if (username === "super") {
-    throw ({  message: "For super , please change username in Profile" });
-  }
-
-
+  try {
 
   const user = await prisma.user.findUnique({
     where: {
-      username,
+      username : username,
     },
     select: {
       username: true,
@@ -140,25 +128,25 @@ const adminResetPassword = async (input: AdminPasswordChangeInput): Promise<void
 
   }
 
+  console.log(user)
+
 
   const saltRounds = 10
   const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-  try {
-    await prisma.user.update({
+   
+  await prisma.user.update({
       where: {
-        username
+        username : username
       },
       data: {
-        hashedPassword
+        hashedPassword : hashedPassword
       }
-    });
+    })
   }
+  
 
   catch (e: any) {
-    if (e.meta.target) {
-      throw ({ name: 'ValidationError', message: `${e.meta.target} is not unique` });
-    }
-
+    errorHandler(e)
   }
 }
 

@@ -17,20 +17,56 @@ declare global {
 
 const getAll = async () => {
   try {
-    const purpose = await prisma.purpose.findMany()
-    const participation = await prisma.participation.findMany()
-    const engagement = await prisma.engagement.findMany()
-    const scale = await prisma.scale.findMany()
-    const budget = await prisma.budget.findMany()
-    const solution = await prisma.solution.findMany()
+    const purpose = await prisma.purpose.findMany({
+      orderBy: [
+        {
+          id: 'asc',
+        },
+      ],
+    })
+    const participation = await prisma.participation.findMany({
+      orderBy: [
+        {
+          id: 'asc',
+        },
+      ],
+    })
+    const engagement = await prisma.engagement.findMany({
+      orderBy: [
+        {
+          id: 'asc',
+        },
+      ],
+    })
+    const scale = await prisma.scale.findMany({
+      orderBy: [
+        {
+          id: 'asc',
+        },
+      ],
+    })
+    const budget = await prisma.budget.findMany({
+      orderBy: [
+        {
+          id: 'asc',
+        },
+      ],
+    })
+    const solution = await prisma.solution.findMany({
+      orderBy: [
+        {
+          id: 'asc',
+        },
+      ],
+    })
 
     return ({
-      purpose: purpose.map(a => a.name),
-      participation: participation.map(a => a.name),
-      engagement: engagement.map(a => a.name),
-      scale: scale.map(a => a.name),
-      budget: budget.map(a => a.name),
-      solution: solution.map(a => a.name)
+      purpose: purpose,
+      participation: participation,
+      engagement: engagement,
+      scale: scale,
+      budget: budget,
+      solution: solution
 
     })
 
@@ -57,7 +93,7 @@ const participationDelete = async (input: string) => {
   try {
     await prisma.participation.delete({
       where: {
-        name: input
+        name:input
       }
     })
   }
@@ -70,7 +106,7 @@ const engagementDelete = async (input: string) => {
   try {
     await prisma.engagement.delete({
       where: {
-        name: input
+        name:input
       }
     })
   }
@@ -83,7 +119,7 @@ const scaleDelete = async (input: string) => {
   try {
     await prisma.scale.delete({
       where: {
-        name: input
+        name:input
       }
     })
   }
@@ -96,7 +132,7 @@ const solutionDelete = async (input: string) => {
   try {
     await prisma.solution.delete({
       where: {
-        name: input
+        name:input
       }
     })
   }
@@ -109,7 +145,7 @@ const budgetDelete = async (input: string) => {
   try {
     await prisma.budget.delete({
       where: {
-        name: input
+        name:input
       }
     })
   }
@@ -123,7 +159,7 @@ const purposeAdd = async (input: string) => {
   try {
     await prisma.purpose.create({
       data: {
-        name: input
+        name:input
       }
     })
   }
@@ -136,7 +172,7 @@ const   budgetAdd = async (input: string) => {
   try {
     await prisma.budget.create({
       data: {
-        name: input
+        name:input
       }
     })
   }
@@ -149,7 +185,7 @@ const participationAdd = async (input: string) => {
   try {
     await prisma.participation.create({
       data: {
-        name: input
+        name:input
       }
     })
   }
@@ -162,7 +198,7 @@ const engagementAdd = async (input: string) => {
   try {
     await prisma.engagement.create({
       data: {
-        name: input
+        name:input
       }
     })
   }
@@ -175,7 +211,7 @@ const scaleAdd = async (input: string) => {
   try {
     await prisma.scale.create({
       data: {
-        name: input
+        name:input
       }
     })
   }
@@ -188,7 +224,7 @@ const solutionAdd = async (input: string) => {
   try {
     await prisma.solution.create({
       data: {
-        name: input
+        name:input
       }
     })
   }

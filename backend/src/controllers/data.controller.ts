@@ -12,8 +12,6 @@ dataRouter.get('/', async (req: Request, res: Response) => {
 })
 
 
-
-
 dataRouter.post('/purpose', async (req: Request, res: Response) => {
     const input = req.body.name
     const data = await dataService.purposeAdd(input)
@@ -56,39 +54,39 @@ dataRouter.post('/solution', async (req: Request, res: Response) => {
 
 
 
-dataRouter.delete('/purpose/:name', async (req: Request, res: Response) => {
-    const input = req.params.name
+dataRouter.delete('/purpose/', async (req: Request, res: Response) => {
+    const input = req.body.name
     await dataService.purposeDelete(input)
     res.status(204).end()
 })
 
-dataRouter.delete('/participation/:name', async (req: Request, res: Response) => {
-    const input = req.params.name
+dataRouter.delete('/participation', async (req: Request, res: Response) => {
+    const input = req.body.name
     await dataService.participationDelete(input)
     res.status(204).end()
 })
 
-dataRouter.delete('/engagement/:name', async (req: Request, res: Response) => {
-    const input = req.params.name
+dataRouter.delete('/engagement', async (req: Request, res: Response) => {
+    const input = req.body.name
     await dataService.engagementDelete(input)
     res.status(204).end()
 })
 
-dataRouter.delete('/scale/:name', async (req: Request, res: Response) => {
-    const input = req.params.name
+dataRouter.delete('/scale', async (req: Request, res: Response) => {
+    const input = req.body.name
     console.log(input)
     await dataService.scaleDelete(input)
     res.status(204).end()
 })
 
-dataRouter.delete('/budget/:name', async (req: Request, res: Response) => {
-    const input = req.params.name
+dataRouter.delete('/budget', async (req: Request, res: Response) => {
+    const input = req.body.name
     await dataService.budgetDelete(input)
     res.status(204).end()
 })
 
-dataRouter.delete('/solution/:name', async (req: Request, res: Response) => {
-    const input = req.params.name
+dataRouter.delete('/solution', async (req: Request, res: Response) => {
+    const input = req.body.name
     await dataService.solutionDelete(input)
     res.status(204).end()
 })

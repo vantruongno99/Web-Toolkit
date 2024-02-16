@@ -23,7 +23,7 @@ const AdminData = () => {
 
                 return res
             }
-            catch (e:any) {
+            catch (e: any) {
                 showErorNotification(e.message)
             }
         }
@@ -37,25 +37,24 @@ const AdminData = () => {
 
 
     return (
-        <Container>
+        <Container fluid maw={1050}>
             <Center mt={"1rem"} mb={"2rem"}>
                 <Title order={2} c="indigo">
                     TECHNOLOGY LIST
                 </Title>
             </Center>
-            <Flex
-                mt={"3rem"}
-                gap="md"
-                justify="center"
-                align="center"
-            >
+            <Grid gutter={"md"}>
 
-               {data.map((a,i)=><TechnologyCard data={{
-                   label: a.technology,
-                   link: `/admin/technology/${a.id}`,
-               }}></TechnologyCard>)}
+                {data.map((a, i) =>
+                    <Grid.Col span={3}>
+                        <TechnologyCard data={{
+                            label: a.technology,
+                            link: `/admin/technology/${a.id}`,
+                        }}></TechnologyCard>
+                    </Grid.Col>
+                )}
 
-            </Flex>
+            </Grid>
             <NewTechology />
 
         </Container>
@@ -73,7 +72,7 @@ const NewTechology = () => {
         },
         validate: {
             description: isNotEmpty("can not be empty"),
-            technology:  isNotEmpty("can not be empty"),
+            technology: isNotEmpty("can not be empty"),
         },
     })
 

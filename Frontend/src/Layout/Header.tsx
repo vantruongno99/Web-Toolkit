@@ -16,6 +16,9 @@ const adminLogout = async () => {
   authservice.logout()
 }
 
+const changePassword = async () => {
+  window.location.href = '/admin/password'}
+
 const vendorLogout = async () => {
   Cookies.remove("ABN")
   Cookies.remove("logged")
@@ -43,6 +46,7 @@ let links: Link[] = [
 if (adminLogged) links.push({
   link: '/admin', label: 'Admin',
   links: [
+    { label: 'Change Password', onClick: changePassword },
     { label: 'Sign out', onClick: adminLogout },
   ],
 })

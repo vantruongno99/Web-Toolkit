@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider, redirect } from "react-router-dom"
 import React, { Suspense } from 'react'
 import { Loader, Input } from '@mantine/core';
 import { Layout } from "./Layout";
-import { outerRoutes, adminRouter, vendorRoutes } from "./Route";
+import { outerRoutes, adminRouter, vendorRoutes, noHeroHeaderRoutes } from "./Route";
 import { MantineProvider, createTheme } from '@mantine/core';
 import {
     QueryClient,
@@ -14,6 +14,7 @@ import { ModalsProvider } from '@mantine/modals';
 
 
 import classes from './App.module.css';
+import LayoutWithoutHeroHeader from "./Layout/LayoutWithoutHeroHeader";
 
 
 
@@ -41,7 +42,13 @@ const App = () => {
 
 
 
-    const routes = [{
+    const routes = [
+        {
+        path: "/", element: <LayoutWithoutHeroHeader />,
+        children: [
+            ...noHeroHeaderRoutes
+        ]
+    },{
         path: "/", element: <Layout />,
         children: [
             ...outerRoutes
@@ -62,6 +69,7 @@ const App = () => {
             ...vendorRoutes
         ]
     },
+      
 
 
     ]

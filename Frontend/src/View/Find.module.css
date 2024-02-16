@@ -71,10 +71,21 @@
     
   }
 
+  .header {
+    color: var(--mantine-color-white);
+    text-align: center; 
+  }
+
 
 .outside {
+  
   padding : 4rem;
-  padding-top:5rem
+  padding-top:5rem;
+  background-color: #11284b;
+  background-size: cover;
+  background-position: 75% 18%;;
+  background-image:   url("../../solution.jpg");
+  
 }
 
 .outerFilter{

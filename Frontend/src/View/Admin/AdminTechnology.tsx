@@ -98,9 +98,10 @@ const AdminTechnology = () => {
     })
 
     return (<>
-        <Container p={"2rem"}>
+        <Container fluid maw={1100}>
+            
         <form onSubmit={form.onSubmit(data => updateTechnology.mutateAsync(data))}>
-            <Container pt={"1rem"} pb={"1rem"} className={classes.area}>
+            <Container fluid  pt={"1rem"} pb={"1rem"} className={classes.area}>
                 <Title c={"indigo"} order={2}>DETAILS</Title>
                 <Title order={2}>
                     <TextInput
@@ -133,7 +134,7 @@ const AdminTechnology = () => {
             <Title c="indigo" order={3} mt="2rem" mb={"2rem"}>APPLICATION LIST</Title>
 
             <Grid justify="left" align="stretch" gutter="xl">
-                {data?.Application.map((a, i) => <Grid.Col span={4}> <ApplicationCard data={{ label: a.potentialApplications, link: `/admin/application/${a.id}`, imageUrl: a.imageUrl }} key={i} />   </Grid.Col>
+                {data?.Application.map((a, i) => <Grid.Col span={3}> <ApplicationCard data={{ label: a.potentialApplications, link: `/admin/application/${a.id}`, imageUrl: a.imageUrl }} key={i} />   </Grid.Col>
                 )}
             </Grid>
 
@@ -194,7 +195,7 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
 
             const data = {
                 ...rest,
-                stageOfParticipation: rest.purposeOfEngagement.join(', '),
+                stageOfParticipation: rest.stageOfParticipation.join(', '),
                 purposeOfEngagement: rest.purposeOfEngagement.join(', '),
                 solutionFor: rest.solutionFor.join(', '),
                 technologyId
@@ -222,6 +223,7 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['admin', 'technology', technologyId] })
+            form.reset()
             setOpened(!opened)
         },
         onError: (e) => {
@@ -238,7 +240,17 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                 if (!res) {
                     throw new Error()
                 }
-                return res
+
+                const values = {
+                    purpose: res.purpose.map(a => a.name),
+                    engagement: res.engagement.map(a => a.name),
+                    scale: res.scale.map(a => a.name),
+                    budget: res.budget.map(a => a.name),
+                    participation: res.participation.map(a => a.name),
+                    solution: res.solution.map(a => a.name)
+                }
+
+                return values
             }
             catch (e: any) {
                 showErorNotification(e.message)
@@ -268,7 +280,7 @@ const NewApplicationForm = ({ technologyId }: { technologyId: number }) => {
                     <Title order={2}>
                         <TextInput
                             withAsterisk
-                            label="Technology"
+                            label="Application"
                             {...form.getInputProps('potentialApplications')}
                         />
                     </Title>

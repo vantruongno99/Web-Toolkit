@@ -29,7 +29,7 @@ const Admin = () => {
             link: `/admin/vendors`,
             url : adminImage
 
-        },
+        }
     ]
 
 

@@ -1,3 +1,0 @@
--- AlterTable
-ALTER TABLE `Vendor` ALTER COLUMN `email` DROP DEFAULT,
-    ALTER COLUMN `link` DROP DEFAULT;

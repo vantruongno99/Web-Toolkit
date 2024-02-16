@@ -56,28 +56,34 @@ model ApplicationVendor {
 }
 
 model Purpose{
-  name String @unique @id
+  id       Int       @id @default(autoincrement())
+  name String @unique 
 }
 
 model Participation{
-  name String @unique @id
+    id       Int       @id @default(autoincrement())
+  name String @unique 
 }
 
 model Engagement{
-  name String @unique @id
+    id       Int       @id @default(autoincrement())
+  name String @unique 
 }
 
 model Scale{
-  name String @unique @id
-}
+  id       Int       @id @default(autoincrement())
+  name String @unique 
+  }
 
 model Budget{
-  name String @unique @id
-}
+  id       Int       @id @default(autoincrement())
+  name String @unique 
+  }
 
 model Solution{
-  name String @unique @id
-}
+  id       Int       @id @default(autoincrement())
+  name String @unique 
+  }
 
 model User {
   id             Int    @id @default(autoincrement())

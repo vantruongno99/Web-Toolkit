@@ -8,12 +8,15 @@ const AdminInput = React.lazy(() => import("../View/Admin/AdminInput"));
 const AdminVendors = React.lazy(() => import("../View/Admin/AdminVendors"));
 const AdminVendor = React.lazy(() => import("../View/Admin/AdminVendor"));
 const Admin = React.lazy(() => import("../View/Admin/Admin"));
+const AdminResetPassword = React.lazy(() => import("../View/Admin/AdminChangePassword"));
+
 
 
 
 const adminRouter = [
     { path: '/admin', element: <Admin /> },
     { path: '/admin/approve', element: <AdminApproval /> },
+    { path: '/admin/password', element: <AdminResetPassword /> },
     { path: '/admin/data', element: <AdminData /> },
     { path: '/admin/input', element: <AdminInput /> },
     { path: '/admin/vendors', element: <AdminVendors /> },

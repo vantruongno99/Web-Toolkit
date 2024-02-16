@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useNavigate, useParams, useSearchParams } from "react-router-dom"
-import { Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, Pill, Center } from "@mantine/core"
+import { Image, Box, Card, Container, Divider, Flex, Grid, Group, Input, NumberInput, Select, Space, Table, Tabs, Textarea, Title, Text, MultiSelect, TextInput, Button, Modal, Pill, Center, GridCol } from "@mantine/core"
 import { focusManager, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader } from '@mantine/core';
 import { ApplicationInfo, ApplicationInput } from "../Ultils/type";
@@ -49,7 +49,7 @@ const Application = () => {
 
                 return res
             }
-            catch (e:any) {
+            catch (e: any) {
                 showErorNotification(e.message)
             }
         }
@@ -73,7 +73,7 @@ const Application = () => {
 
     return (
         <>
-            <Container mt={"1rem"}>
+            <Container fluid p="4rem" mt={"1rem"}>
                 <ApplicationDetail application={data} isLoading={isLoading} option={option} />
             </Container>
 
@@ -140,6 +140,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
             <Table.Tr >
                 <Table.Td key={i} onClick={() => navigate(`/vendor/${e.Vendor.id}?type=user`)}>{e.Vendor.name}</Table.Td>
                 <Table.Td key={i} onClick={() => navigate(`/vendor/${e.Vendor.id}?type=user`)}>{e.Vendor.ABN}</Table.Td>
+                <Table.Td key={i} onClick={() => navigate(e.showcase)}>{e.showcase}</Table.Td>
             </Table.Tr>
         )))
 
@@ -161,7 +162,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
         },
         onSuccess: (result) => {
             navigate(`/vendor`)
-            queryClient.invalidateQueries({ queryKey: ['vendor',option.id ] })
+            queryClient.invalidateQueries({ queryKey: ['vendor', option.id] })
             showSuccessNotification("Request has been made successfully")
 
         },
@@ -171,28 +172,27 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
     })
 
     return (
-        <Container p={1} >
+        <Container fluid p={1} >
             <Center>
                 <Title mb={'4rem'} order={2} c="indigo">DETAILS</Title>
             </Center>
             <Grid
                 gutter="md">
-                <Grid.Col span={8} >
+                <Grid.Col span={7} >
                     <Title order={2} >
                         {form.values.potentialApplications}
 
                     </Title>
-                    <Text fz="sm" mt={"1rem"} >
+                    <Text fz="md" mt={"1rem"} >
                         {form.values.explanation}
                     </Text>
-                    <Text fz="sm" >
+                    <Text fz="md" >
                         {form.values.maturity}
                     </Text>
                 </Grid.Col>
-                <Grid.Col span={4} >
-                    <Image h={400} w={500} src={application.imageUrl} />
-
-                </Grid.Col>
+                <Grid.Col span={5} >
+                    <Image h={400}
+                        fit="contain" src={application?.imageUrl} />                </Grid.Col>
             </Grid>
             <Divider mt="2rem" mb="2rem" size="xs" color="black" />
 
@@ -203,9 +203,9 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
-                    <Text fz="sm"  >
-                        {form.values.stageOfParticipation.map(a => <Pill mr={"0.5rem"}>{a}</Pill>)}
-                    </Text>
+                    {form.values.stageOfParticipation.map(a => <Pill mr={"0.5rem"}>                    <Text fz="sm"  >
+                        {a} </Text></Pill>)}
+
                 </Grid.Col>
             </Grid >
 
@@ -216,9 +216,9 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={9} >
-                    <Text fz="sm"  >
-                        {form.values.purposeOfEngagement.map(a => <Pill mr={"0.5rem"}>{a}</Pill>)}
-                    </Text>
+
+                    {form.values.purposeOfEngagement.map(a => <Pill mr={"0.5rem"}><Text fz="sm"  >{a}</Text></Pill>)}
+
                 </Grid.Col>
             </Grid >
 
@@ -231,9 +231,11 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Text >
                 </Grid.Col>
                 <Grid.Col span={3} >
-                    <Text fz="sm"  >
-                        <Pill>   {form.values.levelOfEngagement}</Pill>
-                    </Text>
+                    <Pill>
+                        <Text fz="sm"  >
+                            {form.values.levelOfEngagement}
+                        </Text>
+                    </Pill>
                 </Grid.Col>
             </Grid >
 
@@ -244,9 +246,11 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                 </Grid.Col>
                 <Grid.Col span={3} >
 
-                    <Text fz="sm"  >
-                        <Pill> {form.values.scale}</Pill>
-                    </Text>
+                    <Pill>
+                        <Text fz="sm"  >
+                            {form.values.scale}
+                        </Text>
+                    </Pill>
                 </Grid.Col>
             </Grid >
 
@@ -263,7 +267,7 @@ const ApplicationDetail = ({ application, isLoading, option }: { application: Ap
                     </Pill>
                 </Grid.Col>
             </Grid >
-            
+
             {rows && rows?.length > 0 && <>
                 <Divider mt="2rem" mb="2rem" size="xs" color="black" />
                 <Title order={3}>Vendor partipation</Title>
@@ -311,7 +315,7 @@ const Request = ({ request, applicationId, vendorId }: { request: any, applicati
                 showcase: showcase
             })
         }
-        catch (e:any) {
+        catch (e: any) {
             showErorNotification(e.message)
         }
     }

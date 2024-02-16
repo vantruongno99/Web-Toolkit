@@ -3,14 +3,14 @@ import { Text, Button, Paper, Title, Loader, Center, Container, TagsInput, Tabs 
 import { useNavigate } from 'react-router-dom';
 import { IconCheck, IconCirclePlus, IconTablePlus, IconTrash } from "@tabler/icons-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Data } from "../../Ultils/type";
+import { Data, DataForm } from "../../Ultils/type";
 import { useForm } from "@mantine/form";
 import dataService from "../../Services/data.service";
 import { showErorNotification, showSuccessNotification } from "../../Ultils/notification";
 
 
 const AdminInput = () => {
-    let initial = useRef<Data>({
+    let initial = useRef<DataForm>({
         purpose: [],
         engagement: [],
         scale: [],
@@ -28,9 +28,17 @@ const AdminInput = () => {
                     throw new Error()
                 }
                 else {
-                    form.setInitialValues(res)
-                    form.setValues(res)
-                    initial.current = res
+                    const values = {
+                        purpose: res.purpose.map(a => a.name),
+                        engagement: res.engagement.map(a => a.name),
+                        scale: res.scale.map(a => a.name),
+                        budget: res.budget.map(a => a.name),
+                        participation: res.participation.map(a => a.name),
+                        solution: res.solution.map(a => a.name)
+                    }
+                    form.setInitialValues(values)
+                    form.setValues(values)
+                    initial.current = values
                     return res
                 }
             }
@@ -42,8 +50,8 @@ const AdminInput = () => {
     )
 
     interface MutationFormat {
-        add: Data,
-        remove: Data
+        add: DataForm,
+        remove: DataForm
     }
 
     const queryClient = useQueryClient()
@@ -68,7 +76,7 @@ const AdminInput = () => {
 
 
 
-    const form = useForm<Data>({
+    const form = useForm<DataForm>({
         initialValues: {
             purpose: [],
             engagement: [],
@@ -80,7 +88,6 @@ const AdminInput = () => {
         validate: {
             purpose: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
             engagement: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
-            scale: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
             participation: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
             solution: (value) => value.every(a => a.charCodeAt(0) >= 65 && a.charCodeAt(0) <= 90) ? null : "First letter need to be in capital",
         }
@@ -186,7 +193,7 @@ const AdminInput = () => {
         }
     }
 
-    const handleSubmit = async (input: Data) => {
+    const handleSubmit = async (input: DataForm) => {
         try {
             const data = {
                 add: {
@@ -230,8 +237,11 @@ const AdminInput = () => {
             </Center>
             <form onSubmit={form.onSubmit(handleSubmit)}>
 
-                <Tabs defaultValue="purpose">
+                <Tabs defaultValue="participation">
                     <Tabs.List>
+                    <Tabs.Tab value="participation">
+                            Participation
+                        </Tabs.Tab>
                         <Tabs.Tab value="purpose" >
                             Purpose
                         </Tabs.Tab>
@@ -244,9 +254,7 @@ const AdminInput = () => {
                         <Tabs.Tab value="budget">
                             Budget
                         </Tabs.Tab>
-                        <Tabs.Tab value="participation">
-                            Participation
-                        </Tabs.Tab>
+                      
                         <Tabs.Tab value="solution">
                             Solution
                         </Tabs.Tab>
@@ -254,27 +262,27 @@ const AdminInput = () => {
 
                     <Tabs.Panel value="purpose">
                         <Guide />
-                        <TagsInput mt="1rem" size="md" splitChars={[',']} {...form.getInputProps('purpose')} />
+                        <TagsInput mt="1rem" size="md"  {...form.getInputProps('purpose')} />
                     </Tabs.Panel>
                     <Tabs.Panel value="enagagement">
                         <Guide />
-                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('engagement')} />
+                        <TagsInput mt="1rem" size="md"  {...form.getInputProps('engagement')} />
                     </Tabs.Panel>
                     <Tabs.Panel value="scale">
                         <Guide />
-                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('scale')} />
+                        <TagsInput mt="1rem" size="md"   {...form.getInputProps('scale')} />
                     </Tabs.Panel>
                     <Tabs.Panel value="budget">
                     <Guide/>
-                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('budget')} />
+                        <TagsInput mt="1rem" size="md"  {...form.getInputProps('budget')} />
                     </Tabs.Panel>
                     <Tabs.Panel value="participation">
                     <Guide/>
-                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('participation')} />
+                        <TagsInput mt="1rem" size="md"   {...form.getInputProps('participation')} />
                     </Tabs.Panel>
                     <Tabs.Panel value="solution">
                     <Guide/>
-                        <TagsInput mt="1rem" size="md" splitChars={[',']}  {...form.getInputProps('solution')} />
+                        <TagsInput mt="1rem" size="md"   {...form.getInputProps('solution')} />
                     </Tabs.Panel>
 
 
